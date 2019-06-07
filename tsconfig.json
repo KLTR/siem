@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -14,6 +13,19 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@env/*": ["environments/*"],
+      "@guards": ["app/guards"],
+      "@services": ["app/services"],
+      "@pipes": ["app/pipes"],
+      "@modules": ["app/modules"],
+      "@components": ["app/components"],
+      "@directives": ["app/directives"],
+      "@models": ["app/models"],
+      "@assets": ["assets/*"]
+    },
     "lib": [
       "es2018",
       "dom"

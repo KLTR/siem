@@ -1,0 +1,100 @@
+@mixin ca-margins($min-margin, $max-margin, $measurement) {
+  @for $size from $min-margin through $max-margin {
+    .m-#{$size} {
+      margin: $size * $measurement;
+    }
+    .mt-#{$size},
+    .my-#{$size} {
+      margin-top: $size * $measurement;
+    }
+
+    .mr-#{$size},
+    .mx-#{$size} {
+      margin-right: $size * $measurement;
+    }
+
+    .mb-#{$size},
+    .my-#{$size} {
+      margin-bottom: $size * $measurement;
+    }
+
+    .ml-#{$size},
+    .mx-#{$size} {
+      margin-left: $size * $measurement;
+    }
+
+    .m-#{$size}i {
+      margin: $size * $measurement !important;
+    }
+
+    .mt-#{$size}i,
+    .my-#{$size}i {
+      margin-top: $size * $measurement !important;
+    }
+
+    .mr-#{$size}i,
+    .mx-#{$size}i {
+      margin-right: $size * $measurement !important;
+    }
+
+    .mb-#{$size}i,
+    .my-#{$size}i {
+      margin-bottom: $size * $measurement !important;
+    }
+
+    .ml-#{$size}i,
+    .mx-#{$size}i {
+      margin-left: $size * $measurement !important;
+    }
+
+    @if $size !=0 {
+      .m-n#{$size} {
+        margin: -$size * $measurement;
+      }
+
+      .mt-n#{$size},
+      .my-n#{$size} {
+        margin-top: -$size * $measurement;
+      }
+
+      .mr-n#{$size},
+      .mx-n#{$size} {
+        margin-right: -$size * $measurement;
+      }
+
+      .mb-n#{$size},
+      .my-n#{$size} {
+        margin-bottom: -$size * $measurement;
+      }
+
+      .ml-n#{$size},
+      .mx-n#{$size} {
+        margin-left: -$size * $measurement;
+      }
+
+      .m-n#{$size}i {
+        margin: -$size * $measurement !important;
+      }
+
+      .mt-n#{$size}i,
+      .my-n#{$size}i {
+        margin-top: -$size * $measurement !important;
+      }
+
+      .mr-n#{$size}i,
+      .mx-n#{$size}i {
+        margin-right: -$size * $measurement !important;
+      }
+
+      .mb-n#{$size}i,
+      .my-n#{$size}i {
+        margin-bottom: -$size * $measurement !important;
+      }
+
+      .ml-n#{$size}i,
+      .mx-n#{$size}i {
+        margin-left: -$size * $measurement !important;
+      }
+    }
+  }
+}
