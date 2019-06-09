@@ -1,0 +1,49 @@
+@import '../../../styles/colors.scss';
+.form-wrapper {
+  // width: 100%;
+  // height: 100%;
+  background-color: $blue;
+}
+span{
+  color: white;
+  font-size: 18px;
+  &.sign-up{
+    text-decoration: underline;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+.form {
+  width: 100%;
+  color: white;
+}
+
+.form-element {
+  padding: 5px 0px 15px 2px;
+  width: 100%;
+}
+
+.button {
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.mat-toolbar.mat-primary {
+
+  span {
+    text-align: center;
+
+  }
+}
+::ng-deep{
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    color: white !important;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: white;
+ }
+ .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: white;
+}
+}

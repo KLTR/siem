@@ -13,12 +13,16 @@ import { DndDirective } from '@directives';
 // Services
 import { WebSocketService } from '@services';
 import { WelcomeComponent } from '@components';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 // Components
 @NgModule({
   declarations: [
     AppComponent,
     DndDirective,
-    WelcomeComponent
+    WelcomeComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
