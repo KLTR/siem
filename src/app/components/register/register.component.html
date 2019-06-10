@@ -1,3 +1,53 @@
-<p>
-  register works!
-</p>
+<div class="form-wrapper full-screen p-50" fxLayout="column" fxLayoutAlign="start center">
+    <button mat-fab color="primary" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    <div class="form-container"  *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
+      <img class="logo" src="../../../assets/copa/white_copa_black.png">
+      <span class="mt-35 title">SIGN UP</span>
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form mt-5">
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Email*" formControlName="email" />
+          <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
+            {{ getErrorEmail() }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Username*" formControlName="username" />
+          <mat-error *ngIf="!username.valid && username.touched">
+            {{ titleAlert }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Password*" formControlName="password" />
+          <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint>
+          <mat-error *ngIf="!formGroup.controls['password'].valid && formGroup.controls['password'].touched">
+            {{ getErrorPassword() }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-element">
+            <input matInput placeholder="Confirm Password*" formControlName="confirmPassword"/>
+            <mat-error *ngIf="!formGroup.controls['confirmPassword'].valid && formGroup.controls['confirmPassword'].touched">
+              {{ getNotSamePassword() }}
+            </mat-error>
+          </mat-form-field>
+        <div class="form-element text">
+            <p>
+                <span>By creating an account you agree to our <b>Terms of Use</b> and <b>Privacy Policy</b></span>
+                <span class="register" (click)="register()"></span>
+            </p>
+          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Create Account</button>
+          <span> Or </span>
+        </div>
+      </form>
+      <button mat-raised-button color="accent" class="button">Go Anonymous</button>
+    </div>
+
+    <ng-template #forminfo>
+      <div class="p-10">
+        {{ post | json }}
+      </div>
+    </ng-template>
+  </div>

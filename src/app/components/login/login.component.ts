@@ -25,10 +25,8 @@ export class LoginComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
-      // name: [null, Validators.required],
+      email: [null, [Validators.required, Validators.pattern(emailregex)]],
       password: [null, [Validators.required, this.checkPassword]],
-      // description: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
       validate: ''
     });
   }
@@ -54,17 +52,6 @@ export class LoginComponent implements OnInit {
     return !passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
   }
 
-  checkInUseEmail(control) {
-    // mimic http database access
-    const db = ['tony@gmail.com'];
-    return new Observable(observer => {
-      setTimeout(() => {
-        const result = db.indexOf(control.value) !== -1 ? { alreadyInUse: true } : null;
-        observer.next(result);
-        observer.complete();
-      }, 4000);
-    });
-  }
 
   getErrorEmail() {
     return this.formGroup.get('email').hasError('required')
