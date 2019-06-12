@@ -7,6 +7,9 @@
 @include ca-paddings(0, 50, 1px);
 @include ca-margins(0, 50, 1px);
 
+main{
+  position: relative;
+}
 .full-height-width {
   @include full-height-width();
 }
@@ -22,3 +25,10 @@ body{
   font-weight: bold;
 }
 
+.underline{
+  text-decoration: underline;
+}
+.back-btn{
+  position: absolute;
+  left: 5%;
+}

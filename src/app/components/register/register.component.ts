@@ -14,13 +14,15 @@ export class RegisterComponent implements OnInit {
   formGroup: FormGroup;
   titleAlert = 'This field is required';
   post: any = '';
+  mobile = false;
   constructor(private formBuilder: FormBuilder, private router: Router) {
   }
 
   ngOnInit() {
     this.createForm();
-    // this.setChangeValidate();
-  }
+    if (window.screen.width <= 480) { // 768px portrait
+      this.mobile = true;
+    }  }
 
   createForm() {
     // tslint:disable-next-line:max-line-length
@@ -34,17 +36,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  setChangeValidate() {
-    this.formGroup.get('validate').valueChanges.subscribe(validate => {
-      if (validate === '1') {
-        this.formGroup.get('username').setValidators([Validators.required, Validators.minLength(3)]);
-        this.titleAlert = 'You need to specify at least 3 characters';
-      } else {
-        this.formGroup.get('username').setValidators(Validators.required);
-      }
-      this.formGroup.get('username').updateValueAndValidity();
-    });
-  }
   get username() {
     return this.formGroup.get('username') as FormControl;
   }

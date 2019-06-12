@@ -15,6 +15,8 @@ import { WebSocketService } from '@services';
 import { WelcomeComponent } from '@components';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 // Components
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { RegisterComponent } from './components/register/register.component';
     DndDirective,
     WelcomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ForgotPasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

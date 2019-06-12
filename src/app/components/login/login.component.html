@@ -1,4 +1,4 @@
-<div class="form-wrapper full-screen p-50" fxLayout="column" fxLayoutAlign="start center">
+<div class="form-wrapper full-screen  p-50" fxfill fxLayout="column" fxLayoutAlign="start center">
 
     <div  class="form-container" *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
       <img class="logo" src="../../../assets/copa/white_copa_black.png">
@@ -18,17 +18,18 @@
           <!-- <mat-error *ngIf="!formGroup.controls['password'].valid && formGroup.controls['password'].touched">
             {{ getErrorPassword() }}
           </mat-error> -->
+        <span class="forgot-pass underline" (click)="forgotPass()">Forgot password?</span>
         </mat-form-field>
-
         <div class="form-element mt-25">
           <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Login</button>
         </div>
       </form>
 
-      <p>
-        <span>New to COPA? </span>
-        <span class="sign-up" (click)="signUp()"> Sign up</span>
-      </p>
+      <div fxLayout="column" fxLayoutAlign="space-around center">
+        <span>New to COPA?  <span class="sign-up" (click)="signUp()"> Sign up</span></span>
+        <span>OR</span>
+        <span class="underline">GO ANONYMOUS</span>
+      </div>
     </div>
 
     <ng-template #forminfo>

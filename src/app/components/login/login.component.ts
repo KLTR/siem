@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +17,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    // this.setChangeValidate();
   }
 
   createForm() {
@@ -31,35 +29,17 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  setChangeValidate() {
-    this.formGroup.get('validate').valueChanges.subscribe(validate => {
-      if (validate === '1') {
-        this.formGroup.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-        this.titleAlert = 'You need to specify at least 3 characters';
-      } else {
-        this.formGroup.get('name').setValidators(Validators.required);
-      }
-      this.formGroup.get('name').updateValueAndValidity();
-    });
-  }
-  get name() {
-    return this.formGroup.get('name') as FormControl;
-  }
-
   checkPassword(control) {
     const enteredPassword = control.value;
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
     return !passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
   }
 
-
   getErrorEmail() {
     return this.formGroup.get('email').hasError('required')
       ? 'Field is required'
       : this.formGroup.get('email').hasError('pattern')
       ? 'Not a valid email address'
-      : this.formGroup.get('email').hasError('alreadyInUse')
-      ? 'This email address is already in use'
       : '';
   }
   getErrorPassword() {
@@ -77,5 +57,8 @@ export class LoginComponent implements OnInit {
 
   signUp() {
     this.router.navigateByUrl('register');
+  }
+  forgotPass() {
+    this.router.navigateByUrl('forgot-password');
   }
 }

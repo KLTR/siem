@@ -1,10 +1,13 @@
-import { WelcomeComponent, LoginComponent, RegisterComponent } from '@components';
+import { WelcomeComponent, LoginComponent, RegisterComponent, ForgotPasswordComponent, ChangePasswordComponent } from '@components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: '', component: WelcomeComponent  },
+  { path: 'login', component: LoginComponent , data: {animation: 'isRight'} },
+  { path: 'register', component: RegisterComponent,  data: {animation: 'isLeft'} },
+  { path: 'forgot-password', component: ForgotPasswordComponent,  data: {animation: 'isLeft'} },
+  { path: 'change-password', component: ChangePasswordComponent,  data: {animation: 'isLeft'} },
+
 ];
 
 @NgModule({

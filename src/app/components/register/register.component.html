@@ -1,7 +1,10 @@
-<div class="form-wrapper full-screen p-50" fxLayout="column" fxLayoutAlign="start center">
-    <button mat-fab color="primary" class="back-btn" (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
+<div class="form-wrapper  p-50" fxLayout="column" fxLayoutAlign="start center">
+  <button *ngIf="!mobile" mat-fab color="primary" class="back-btn" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button *ngIf="mobile" mat-mini-fab color="primary" class="back-btn" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
     <div class="form-container"  *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
       <img class="logo" src="../../../assets/copa/white_copa_black.png">
       <span class="mt-35 title">SIGN UP</span>
