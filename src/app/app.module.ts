@@ -1,4 +1,4 @@
-import { PrivacyPolicyDialog } from './components/register/register.component';
+import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -28,9 +28,10 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     RegisterComponent,
     ForgotPasswordComponent,
     ChangePasswordComponent,
-    PrivacyPolicyDialog
+    PrivacyPolicyDialog,
+    TermsOfUseDialog
   ],
-  entryComponents: [PrivacyPolicyDialog],
+  entryComponents: [PrivacyPolicyDialog, TermsOfUseDialog],
   imports: [
     BrowserModule,
     AppRoutingModule,

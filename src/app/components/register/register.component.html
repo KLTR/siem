@@ -41,7 +41,7 @@
           </mat-form-field>
         <div class="form-element text">
             <p>
-                <span>By creating an account you agree to our <b>Terms of Use</b> and <b class="underline pointer" (click)="openDialog()">Privacy Policy</b></span>
+                <span>By creating an account you agree to our <b class="underline pointer" (click)="openTermsOfUse()">Terms of Use</b> and <b class="underline pointer" (click)="openPrivacyPolicy()">Privacy Policy</b></span>
                 <span class="register" (click)="register()"></span>
             </p>
           <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Create Account</button>

@@ -102,9 +102,15 @@ checkConfirmPassword(control) {
     this.router.navigateByUrl('login');
   }
 
-  openDialog() {
+  openPrivacyPolicy() {
     const dialogRef = this.dialog.open(PrivacyPolicyDialog);
 
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
+  }
+  openTermsOfUse() {
+    const dialogRef = this.dialog.open(TermsOfUseDialog);
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
@@ -118,3 +124,11 @@ checkConfirmPassword(control) {
 })
 // tslint:disable-next-line:component-class-suffix
 export class PrivacyPolicyDialog {}
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'terms-of-use-dialog',
+  templateUrl: 'terms-of-use-dialog.html',
+})
+// tslint:disable-next-line:component-class-suffix
+export class TermsOfUseDialog {}
