@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,9 @@ export class RegisterComponent implements OnInit {
   titleAlert = 'This field is required';
   post: any = '';
   mobile = false;
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  hide = false;
+
+  constructor(private formBuilder: FormBuilder, private router: Router, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -98,4 +101,20 @@ checkConfirmPassword(control) {
   goBack() {
     this.router.navigateByUrl('login');
   }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(PrivacyPolicyDialog);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
+  }
 }
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'privacy-policy-dialog',
+  templateUrl: 'privacy-policy-dialog.html',
+})
+// tslint:disable-next-line:component-class-suffix
+export class PrivacyPolicyDialog {}

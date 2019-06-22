@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   titleAlert = 'This field is required';
   post: any = '';
+  hide = false;
   constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
