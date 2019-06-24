@@ -2,17 +2,19 @@ import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
-import { fader, slider, stepper, transformer  } from './animations/route-animations';
+import { fader, slider, stepper, transformer } from './animations/route-animations';
+import { Sails, SailsListener } from "ngx-sails-socketio";
+import { ApiService } from '@services'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [ slider ]
+  animations: [slider]
 })
 export class AppComponent {
   title = 'copa';
   path = '../assets/svg-icons';
-  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private sails: Sails, private apiService: ApiService) {
     this.matIconRegistry.addSvgIcon(`email`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/email.svg`));
     this.matIconRegistry.addSvgIcon(`done`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done.svg`));
     this.matIconRegistry.addSvgIcon(`done_all`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done_all.svg`));
@@ -24,7 +26,43 @@ export class AppComponent {
     this.matIconRegistry.addSvgIcon(`error`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/error.svg`));
     this.matIconRegistry.addSvgIcon(`upload`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/upload.svg`));
     this.matIconRegistry.addSvgIcon(`arrow_back`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/arrow_back.svg`));
+
+    sails.addEventListener(SailsListener.CONNECTING, data => {
+      console.log("CONNECTING...");
+      console.dir(data);
+    });
+
+    sails.addEventListener(SailsListener.RECONNECTING, data => {
+      console.log("RECONNECTING...");
+      console.dir(data);
+    });
+
+    sails.addEventListener(SailsListener.RECONNECT, data => {
+      console.log("RECONNECT...");
+      console.dir(data);
+    });
+
+    sails.addEventListener(SailsListener.DISCONNECT, data => {
+      console.log("DISCONNECT...");
+      console.dir(data);
+    });
+
+    sails.addEventListener(SailsListener.CONNECT, data => {
+      console.log("🎉🎉🎉 IT WORKS!!! 🎉🎉🎉");
+      console.log("CONNECTED!!!");
+      console.dir(data);
+
+      this.apiService.getSocketInfo();
+
+    });
+
+//
+
+    sails.connect();
+
+
   }
+
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
