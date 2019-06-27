@@ -1,8 +1,10 @@
+import { ApiService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-register',
@@ -16,9 +18,19 @@ export class RegisterComponent implements OnInit {
   titleAlert = 'This field is required';
   post: any = '';
   mobile = false;
-  hide = false;
-
-  constructor(private formBuilder: FormBuilder, private router: Router, public dialog: MatDialog) {
+  hide = true;
+  isError: Observable<boolean> = null;
+  errorSeparator = '```';
+  color = 'white';
+  mode = 'determinate';
+  isRegistering = false;
+  value = 50;
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    public dialog: MatDialog,
+    private apiService: ApiService,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -31,11 +43,10 @@ export class RegisterComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
-      username: [null, Validators.required],
-      password: [null, [Validators.required, this.checkPassword]],
-      confirmPassword: [null, [Validators.required, this.checkConfirmPassword]],
-      validate: ''
+      email: ['lev@gmail.com', [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
+      username: ['reeferblower', Validators.required],
+      loginPassword: ['AaAa1234', [Validators.required, this.checkPassword]],
+      loginConfirmPassword: ['AaAa1234', [Validators.required, this.checkConfirmPassword]],
     });
   }
 
@@ -51,7 +62,7 @@ export class RegisterComponent implements OnInit {
 checkConfirmPassword(control) {
   const confirmPass = control.value;
   try {
-    return control.parent.controls.password.value !== confirmPass ?  { notSame: true } : null;
+    return control.parent.controls.loginPAssword.value !== confirmPass ?  { notSame: true } : null;
   } catch {
     return '';
   }
@@ -78,26 +89,41 @@ checkConfirmPassword(control) {
       : '';
   }
   getErrorPassword() {
-    return this.formGroup.get('password').hasError('required')
+    return this.formGroup.get('loginPassword').hasError('required')
       ? 'Field is required (at least eight characters, one uppercase letter and one number)'
-      : this.formGroup.get('password').hasError('requirements')
+      : this.formGroup.get('loginPassword').hasError('requirements')
       ? 'Password needs to be at least eight characters, one uppercase letter and one number'
       : '';
   }
 
   getNotSamePassword() {
-    return this.formGroup.get('confirmPassword').hasError('notSame')
+    return this.formGroup.get('loginConfirmPassword').hasError('notSame')
     ? 'Passwords does not match'
     : '';
   }
-  onSubmit(post) {
-    this.post = post;
-    console.log(this.post);
+  onSubmit(registrationData) {
+    console.log(registrationData);
+    this.isRegistering = true;
+    this.apiService.register(registrationData)
+    .subscribe(
+      (res) => {
+        console.log(res);
+        this.error = null;
+        this.isRegistering = false;
+      },
+      (err) => {
+        console.log(err);
+        this.isRegistering = false;
+        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
+        console.log(err);
+        // this.snackBar.open(`Failed to Login ${err.message}`, 'ok', {
+        //   duration: 3000
+        // });
+        this.error = err;
+      }
+      );
   }
 
-  signUp() {
-    this.router.navigateByUrl('register');
-  }
   goBack() {
     this.router.navigateByUrl('login');
   }

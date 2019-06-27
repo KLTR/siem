@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  webSocketUrl: 'https://backend-sandbox.copa.io:443'
 };

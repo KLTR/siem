@@ -1,6 +1,9 @@
+import { ApiService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +12,16 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   error: string | null;
-  // @Output() submitEM = new EventEmitter();
   formGroup: FormGroup;
   titleAlert = 'This field is required';
-  post: any = '';
-  hide = false;
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  hide = true;
+  errorSeparator = '```';
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private apiService: ApiService,
+    private snackBar: MatSnackBar,
+    ) {}
 
   ngOnInit() {
     this.createForm();
@@ -24,9 +31,8 @@ export class LoginComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)]],
-      password: [null, [Validators.required, this.checkPassword]],
-      validate: ''
+      email: ['rr@rr.com', [Validators.required, Validators.pattern(emailregex)]],
+      loginPassword: ['AaAa1234', [Validators.required, this.checkPassword]],
     });
   }
 
@@ -44,16 +50,29 @@ export class LoginComponent implements OnInit {
       : '';
   }
   getErrorPassword() {
-    return this.formGroup.get('password').hasError('required')
+    return this.formGroup.get('loginPassword').hasError('required')
       ? 'Field is required (at least eight characters, one uppercase letter and one number)'
-      : this.formGroup.get('password').hasError('requirements')
+      : this.formGroup.get('loginPassword').hasError('requirements')
       ? 'Password needs to be at least eight characters, one uppercase letter and one number'
       : '';
   }
 
-  onSubmit(post) {
-    this.post = post;
-    console.log(this.post);
+  onSubmit(credentials) {
+    console.log(credentials);
+    this.apiService.login(credentials)
+    .subscribe(
+      (res) => {
+        console.log(res);
+        this.error = null;
+      },
+      (err) => {
+        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).err;
+        console.log(err);
+        this.snackBar.open(`Failed to Login ${err.message}`, 'ok', {
+          duration: 3000
+        });
+      }
+      );
   }
 
   signUp() {

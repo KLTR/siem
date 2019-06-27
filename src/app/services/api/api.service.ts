@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
-import { SailsModel, Sails, SailsQuery, RequestCriteria, SailsRequest, SailsResponse, SailsSubscription } from "ngx-sails-socketio";
+import { SailsModel, Sails, SailsQuery, RequestCriteria, SailsRequest, SailsResponse, SailsSubscription } from 'ngx-sails-socketio';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   req: SailsRequest;
+  serverUrls = {
+    getSocketInfo: '/api/socketinfo',
+    login: '/api/auth/login',
+    register: '/api/auth/register',
+  };
   constructor(private sails: Sails) {
-    // this.req = new SailsRequest(this.sails);
+    this.req = new SailsRequest(this.sails);
   }
 
-  // getSocketInfo() {
-  //   const req = new SailsRequest(this.sails);
-  //   req.get('/api/socketinfo').pipe(map((response: SailsResponse) => {
-  //           console.log(response);
-  //       }));
-  // }
+
   getSocketInfo() {
-    const req = new SailsRequest(this.sails);
-    req.get('/api/socketinfo').subscribe((res) => {
-      console.log(req)
-      console.log(res)
+    this.req.get(`${this.serverUrls.getSocketInfo}`).subscribe((res) => {
+      console.log(res.getBody());
     });
+  }
+
+  login(credentials): Observable<SailsResponse> {
+    return this.req.post(`${this.serverUrls.login}`, credentials);
+  }
+
+  register(credentials): Observable<SailsResponse> {
+    return this.req.post(`${this.serverUrls.register}`, credentials);
   }
 }

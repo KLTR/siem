@@ -24,18 +24,18 @@
         </mat-form-field>
 
         <mat-form-field class="form-element">
-          <input matInput placeholder="Password*" formControlName="password"  [type]="hide ? 'password' : 'text'"/>
+          <input matInput placeholder="Password*" formControlName="loginPassword"  [type]="hide ? 'password' : 'text'"/>
           <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint>
-          <mat-error *ngIf="!formGroup.controls['password'].valid && formGroup.controls['password'].touched">
+          <mat-error *ngIf="!formGroup.controls['loginPassword'].valid && formGroup.controls['loginPassword'].touched">
             {{ getErrorPassword() }}
           </mat-error>
         </mat-form-field>
         <mat-form-field class="form-element">
-            <input matInput placeholder="Confirm Password*" formControlName="confirmPassword"/>
-            <mat-error *ngIf="!formGroup.controls['confirmPassword'].valid && formGroup.controls['confirmPassword'].touched">
+            <input matInput placeholder="Confirm Password*" formControlName="loginConfirmPassword" [type]="hide ? 'password' : 'text'"/>
+            <mat-error *ngIf="!formGroup.controls['loginConfirmPassword'].valid && formGroup.controls['loginConfirmPassword'].touched">
               {{ getNotSamePassword() }}
             </mat-error>
           </mat-form-field>
@@ -44,7 +44,9 @@
                 <span>By creating an account you agree to our <b class="underline pointer" (click)="openTermsOfUse()">Terms of Use</b> and <b class="underline pointer" (click)="openPrivacyPolicy()">Privacy Policy</b></span>
                 <span class="register" (click)="register()"></span>
             </p>
-          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Create Account</button>
+          <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">Create Account
+
+          </button>
           <span> Or </span>
         </div>
       </form>

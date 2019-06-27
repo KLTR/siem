@@ -1,3 +1,16 @@
 <main [@routeAnimations]="prepareRoute(outlet)" class="content">
+    <button mat-icon-button class="menu-icon" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu class="menu" #menu="matMenu">
+        <button mat-menu-item (click)="useLanguage('en')">
+          <img class="flag-icon" src="../assets/flags/en.png">
+          <span>English</span>
+        </button>
+        <button mat-menu-item (click)="useLanguage('fr')">
+          <img class="flag-icon" src="../assets/flags/fr.png">
+          <span>French</span>
+        </button>
+      </mat-menu>
     <router-outlet #outlet="outlet"></router-outlet>
 </main>

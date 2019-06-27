@@ -66,7 +66,7 @@ const modules = [
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
 ];
 
 @NgModule({
