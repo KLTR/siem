@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: ['rr@rr.com', [Validators.required, Validators.pattern(emailregex)]],
-      loginPassword: ['AaAa1234', [Validators.required, this.checkPassword]],
+      email: [null, [Validators.required, Validators.pattern(emailregex)]],
+      loginPassword: [null, [Validators.required, this.checkPassword]],
     });
   }
 
@@ -58,11 +58,11 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(credentials) {
-    console.log(credentials);
     this.apiService.login(credentials)
     .subscribe(
       (res) => {
-        console.log(res);
+        const body = res.getBody();
+        localStorage.setItem('Token', `Bearer ${body.token}`);
         this.error = null;
       },
       (err) => {

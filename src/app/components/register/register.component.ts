@@ -43,10 +43,10 @@ export class RegisterComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: ['lev@gmail.com', [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
-      username: ['reeferblower', Validators.required],
-      loginPassword: ['AaAa1234', [Validators.required, this.checkPassword]],
-      loginConfirmPassword: ['AaAa1234', [Validators.required, this.checkConfirmPassword]],
+      email: [null, [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
+      username: [null, Validators.required],
+      loginPassword: [null, [Validators.required, this.checkPassword]],
+      loginConfirmPassword: [null, [Validators.required, this.checkConfirmPassword]],
     });
   }
 

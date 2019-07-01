@@ -30,7 +30,7 @@ const sailsOptions: SailsOptions = {
 import { DndDirective } from '@directives';
 
 // Services
-import { ApiService, InterceptorService } from '@services';
+import { ApiService, INTERCEPTORS} from '@services';
 
 // Components
 import {
@@ -69,7 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    SailsModule.forRoot(sailsOptions),
+    SailsModule.forRoot(sailsOptions, INTERCEPTORS),
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
@@ -78,7 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
   })
   ],
-  providers: [ApiService, InterceptorService],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
