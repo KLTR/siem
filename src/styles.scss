@@ -30,6 +30,9 @@ body{
 }
 .pointer{
   cursor: pointer;
+  &:hover{
+    cursor: pointer;
+  }
 }
 .back-btn{
   position: absolute;

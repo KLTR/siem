@@ -1,0 +1,26 @@
+.wrapper{
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  .drop-zone{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    padding: 3rem 1.5rem;
+  }
+  .nav{
+    margin-top: auto;
+    mat-toolbar-row{
+      padding: 0 24px;
+    }
+    .circle-icon{
+      &:hover{
+        cursor: pointer
+      }
+    border: 2px solid;
+    border-radius: 50px;
+    padding: 8px;
+    }
+  }
+}

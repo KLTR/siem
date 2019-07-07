@@ -23,17 +23,22 @@ export class AppComponent {
     private apiService: ApiService,
     public translate: TranslateService
     ) {
-    this.matIconRegistry.addSvgIcon(`email`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/email.svg`));
-    this.matIconRegistry.addSvgIcon(`done`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done.svg`));
-    this.matIconRegistry.addSvgIcon(`done_all`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done_all.svg`));
-    this.matIconRegistry.addSvgIcon(`favorite_empty`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_empty.svg`));
-    this.matIconRegistry.addSvgIcon(`favorite_full`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_full.svg`));
-    this.matIconRegistry.addSvgIcon(`attach_file`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/attach_file.svg`));
-    this.matIconRegistry.addSvgIcon(`send`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/send.svg`));
-    this.matIconRegistry.addSvgIcon(`settings`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/settings.svg`));
-    this.matIconRegistry.addSvgIcon(`error`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/error.svg`));
-    this.matIconRegistry.addSvgIcon(`upload`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/upload.svg`));
-    this.matIconRegistry.addSvgIcon(`arrow_back`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/arrow_back.svg`));
+    // this.matIconRegistry.addSvgIcon(`email`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/email.svg`));
+    // this.matIconRegistry.addSvgIcon(`done`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done.svg`));
+    // this.matIconRegistry.addSvgIcon(`done_all`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done_all.svg`));
+    // this.matIconRegistry.addSvgIcon(`favorite_empty`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_empty.svg`));
+    // this.matIconRegistry.addSvgIcon(`favorite_full`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_full.svg`));
+    // this.matIconRegistry.addSvgIcon(`attach_file`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/attach_file.svg`));
+    // this.matIconRegistry.addSvgIcon(`send`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/send.svg`));
+    // this.matIconRegistry.addSvgIcon(`settings`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/settings.svg`));
+    // this.matIconRegistry.addSvgIcon(`error`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/error.svg`));
+    // this.matIconRegistry.addSvgIcon(`upload`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/upload.svg`));
+    // this.matIconRegistry.addSvgIcon(`arrow_back`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/arrow_back.svg`));
+    // this.matIconRegistry.addSvgIcon(`transfer`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/transfer.svg`));
+    // this.matIconRegistry.addSvgIcon(`history`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/history.svg`));
+    // this.matIconRegistry.addSvgIcon(`group`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/group.svg`));
+    // this.matIconRegistry.addSvgIcon(`eye`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/eye.svg`));
+    // this.matIconRegistry.addSvgIcon(`chat_bubble`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/chat_bubble.svg`));
 
 
     // this language will be used as a fallback when a translation isn't found in the current language

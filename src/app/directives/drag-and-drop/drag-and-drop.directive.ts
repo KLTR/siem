@@ -4,7 +4,7 @@ import { Directive, HostBinding, HostListener } from '@angular/core';
   selector: '[appDnd]'
 })
 export class DndDirective {
-  @HostBinding('style.background') private background = '#eee';
+  @HostBinding('style.background') private background = '#ffffff';
 
   constructor() {}
 

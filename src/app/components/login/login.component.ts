@@ -62,8 +62,10 @@ export class LoginComponent implements OnInit {
     .subscribe(
       (res) => {
         const body = res.getBody();
-        localStorage.setItem('Token', `Bearer ${body.token}`);
+        localStorage.setItem(`COPA/JWT`, `${body.token}`);
         this.error = null;
+        this.apiService.decodeToken();
+        this.router.navigateByUrl('home');
       },
       (err) => {
         err = JSON.parse(err.toString().split(this.errorSeparator)[1]).err;

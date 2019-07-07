@@ -13,11 +13,12 @@ export class SailsInterceptorService implements SailsInterceptorInterface {
       // if(!request.url.includes('logout')) {
       // }
       request.clone({
-          headers: request.headers.set('Authorization', localStorage.getItem('Token'))
+          headers: request.headers.set('Authorization', `Bearer ${localStorage.getItem('COPA/JWT')}`)
       });
       const response = next.handle(request);
 
       return response.pipe(map((res: SailsResponse) => {
+          console.log(res);
           if (res.getStatusCode() === 401) {
               this.router.navigateByUrl('login');
           }

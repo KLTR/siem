@@ -27,7 +27,7 @@ const sailsOptions: SailsOptions = {
   // timeout: 3000,
 };
 // Directives
-import { DndDirective } from '@directives';
+import { DndDirective, UniqueEmailValidatorDirective } from '@directives';
 
 // Services
 import { ApiService, INTERCEPTORS} from '@services';
@@ -41,6 +41,8 @@ import {
   RegisterComponent,
 } from '@components';
 import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
+import { HomeComponent } from './components/home/home.component';
+import { DragAndDropComponent } from './components/home/drag-and-drop/drag-and-drop.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -51,13 +53,16 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     DndDirective,
+    UniqueEmailValidatorDirective,
     WelcomeComponent,
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
     ChangePasswordComponent,
     PrivacyPolicyDialog,
-    TermsOfUseDialog
+    TermsOfUseDialog,
+    HomeComponent,
+    DragAndDropComponent,
   ],
   entryComponents: [PrivacyPolicyDialog, TermsOfUseDialog],
   imports: [

@@ -1,0 +1,35 @@
+@import 'styles/colors.scss';
+
+.dropzone {
+  height: 100%;
+  width: 100%;
+  display: table;
+  border: dashed 4px $main;
+
+  .header{
+    font-size: 36px;
+    color: $main;
+  }
+  .img{
+    height: 350px;
+    width: 350px;
+  }
+  .buttons{
+    padding: 10px 0;
+    button{
+      margin: 0 0.5rem;
+    }
+  }
+}
+
+.text-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centered {
+  font-family: sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align: center;
+}

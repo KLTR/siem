@@ -1,6 +1,6 @@
 import { ApiService } from '@services';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.apiService.isRegisteredEmail('levyroy1990@gmail.com').subscribe(res => console.log(res));
     this.createForm();
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
@@ -53,7 +54,13 @@ export class RegisterComponent implements OnInit {
   get username() {
     return this.formGroup.get('username') as FormControl;
   }
-
+  // validateEmailNotTaken(control: AbstractControl) {
+  //   console.log(control.value);
+  //   return this.apiService.searchEmail(control.value).map(res => {
+  //     console.log(res);
+  //     return res ? null : { emailTaken: true };
+  //   });
+  // }
   checkPassword(control) {
     const enteredPassword = control.value;
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
@@ -72,10 +79,11 @@ checkConfirmPassword(control) {
     const db = ['tony@gmail.com'];
     return new Observable(observer => {
       setTimeout(() => {
+        this.apiService.isRegisteredEmail(control.value).subscribe(res => console.log(res));
         const result = db.indexOf(control.value) !== -1 ? { alreadyInUse: true } : null;
         observer.next(result);
         observer.complete();
-      }, 4000);
+      }, 1000);
     });
   }
 
