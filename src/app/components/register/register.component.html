@@ -8,7 +8,7 @@
     <div class="form-container"  *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
       <img class="logo" src="../../../assets/copa/white_copa_black.png">
       <span class="mt-35 title">SIGN UP</span>
-      <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form mt-5">
+      <form *ngIf="!isRegistrationComplete; else completed" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form mt-5">
         <mat-form-field class="form-element">
           <input matInput placeholder="Email*" formControlName="email" />
           <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
@@ -45,17 +45,17 @@
                 <span class="register" (click)="register()"></span>
             </p>
           <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">Create Account
-
           </button>
           <span> Or </span>
+          <button mat-raised-button type="button" color="accent" class="button">Go Anonymous</button>
         </div>
       </form>
-      <button mat-raised-button color="accent" class="button">Go Anonymous</button>
+      <ng-template #completed>
+        <div class="completed mt-50" fxLayout="column" fxLayoutAlign="start center">
+        <span>Thank you for registering with us!</span>
+        <span>Please check your email to verify your account</span>
+      </div>
+      </ng-template>
     </div>
 
-    <ng-template #forminfo>
-      <div class="p-10">
-        {{ post | json }}
-      </div>
-    </ng-template>
   </div>

@@ -22,6 +22,7 @@ export class ApiService {
 
   constructor(private sails: Sails) {
     this.request = new SailsRequest(this.sails);
+    this.decodeToken();
   }
   getToken(): any {
     const token = localStorage.getItem('COPA/JWT');
@@ -32,7 +33,12 @@ export class ApiService {
   decodeToken(): void {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(this.getToken());
+    this.user = decodedToken;
     console.log(decodedToken);
+  }
+
+  getUser(): any {
+    return this.user;
   }
 
   getSocketInfo() {

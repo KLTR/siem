@@ -39,10 +39,12 @@ import {
   ChangePasswordComponent,
   LoginComponent,
   RegisterComponent,
+  HomeComponent,
+  DragAndDropComponent,
+  TransfersComponent,
+  UserSettingsComponent
 } from '@components';
 import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
-import { HomeComponent } from './components/home/home.component';
-import { DragAndDropComponent } from './components/home/drag-and-drop/drag-and-drop.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -63,8 +65,15 @@ export function createTranslateLoader(http: HttpClient) {
     TermsOfUseDialog,
     HomeComponent,
     DragAndDropComponent,
+    TransfersComponent,
+    UserSettingsComponent,
   ],
-  entryComponents: [PrivacyPolicyDialog, TermsOfUseDialog],
+  entryComponents: [
+    PrivacyPolicyDialog,
+    TermsOfUseDialog,
+    TransfersComponent,
+    UserSettingsComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

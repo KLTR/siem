@@ -1,0 +1,46 @@
+<div class="container">
+  <h2 mat-dialog-title>MY TRANSFERS
+      <button mat-icon-button class="close-btn" aria-hidden="false" mat-dialog-close >
+          <mat-icon>close</mat-icon>
+      </button>
+  </h2>
+  <mat-dialog-content color="primary">
+  <mat-tab-group>
+    <mat-tab label="Incoming">
+      <div class="tab-content">
+        <div *ngIf="incoming.length > 0; else noIncoming" class="list-container">
+          <ul>
+            <li *ngFor="let item of incoming">
+
+            </li>
+          </ul>
+        </div>
+    <ng-template #noIncoming>
+      <div class="empty">
+        <span>NO INCOMING REQUEST</span>
+      </div>
+    </ng-template>
+      </div>
+    </mat-tab>
+    <mat-tab label="Outgoing">
+        <div class="tab-content">
+            <div *ngIf="outgoing.length > 0; else noOutgoing" class="list-container">
+                <ul>
+                  <li *ngFor="let item of outgoing">
+
+                  </li>
+                </ul>
+              </div>
+          <ng-template #noOutgoing>
+            <div class="empty">
+              <span>NO OUTGOING REQUEST</span>
+            </div>
+          </ng-template>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+      <button class="mat-raised-button mat-primary"  (click)="clearAll()">Clear All</button>
+  </mat-dialog-actions>
+</div>

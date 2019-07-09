@@ -1,0 +1,32 @@
+<div class="container">
+    <h2 mat-dialog-title >ACCOUNT SETTINGS
+        <button mat-icon-button class="close-btn" aria-hidden="false" mat-dialog-close >
+            <mat-icon>close</mat-icon>
+        </button>
+    </h2>
+    <mat-dialog-content fxLayout="column" fxLayoutAlign="space-evenly start" color="primary" >
+      <div fxLayout="row" fxLayoutAlign="none center">
+        <span>Email:</span>
+        <span>{{user?.email}}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="none center">
+          <span>Username:</span>
+          <span>{{user?.username}}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="none center">
+          <span>Password:</span>
+          <mat-form-field class="form-element">
+              <input matInput placeholder="*********" disabled/>
+            </mat-form-field>
+            <button mat-raised-button type="button" color="accent" class="button">reset</button>
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="none center">
+          <span>Email Notifications:</span>
+            <button mat-button type="button" color="accent" class="button">unsubscribe</button>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="mat-raised-button mat-primary"  (click)="clearAll()">Clear All</button>
+    </mat-dialog-actions>
+  </div>

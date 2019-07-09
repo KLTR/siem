@@ -1,6 +1,6 @@
 import { ApiService } from '@services';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   mode = 'determinate';
   isRegistering = false;
   value = 50;
+  isRegistrationComplete = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)], this.checkInUseEmail],
+      email: [null, [Validators.required, Validators.pattern(emailregex)]],
       username: [null, Validators.required],
       loginPassword: [null, [Validators.required, this.checkPassword]],
       loginConfirmPassword: [null, [Validators.required, this.checkConfirmPassword]],
@@ -69,7 +70,7 @@ export class RegisterComponent implements OnInit {
 checkConfirmPassword(control) {
   const confirmPass = control.value;
   try {
-    return control.parent.controls.loginPAssword.value !== confirmPass ?  { notSame: true } : null;
+    return control.parent.controls.loginPassword.value !== confirmPass ?  { notSame: true } : null;
   } catch {
     return '';
   }
@@ -116,8 +117,10 @@ checkConfirmPassword(control) {
     .subscribe(
       (res) => {
         console.log(res);
+        this.snackBar.open(`An email has been sent to ${registrationData.email}`, 'ok');
         this.error = null;
         this.isRegistering = false;
+        this.isRegistrationComplete = true;
       },
       (err) => {
         console.log(err);

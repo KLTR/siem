@@ -3,8 +3,10 @@
     <img class="img" src="../../../../assets/copa/computer-transfer.png">
     <span>-Or-</span>
     <div class="buttons" fxLayout="row">
-      <button mat-raised-button color="primary">Choose files</button>
-      <button mat-raised-button color="primary">Choose folder</button>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">Choose files</button>
+      <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+      <button mat-raised-button color="primary" (click)="folderInput.click()">Choose folder</button>
+      <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
     </div>
     <span>Direct, private, any size, encrypted transfer. </span>
 </div>

@@ -4,3 +4,6 @@ export * from './register/register.component';
 export * from './forgot-password/forgot-password.component';
 export * from './change-password/change-password.component';
 export * from './home/home.component';
+export * from './home/drag-and-drop/drag-and-drop.component';
+export * from './home/menu-items/transfers/transfers.component';
+export * from './home/menu-items/user-settings/user-settings.component';
