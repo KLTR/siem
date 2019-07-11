@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   titleAlert = 'This field is required';
   hide = true;
-  errorSeparator = '```';
+  errorSeparator = environment.errorSeparator;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,

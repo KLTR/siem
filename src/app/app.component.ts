@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { fader, slider, stepper, transformer } from './animations/route-animations';
 import { Sails, SailsListener } from 'ngx-sails-socketio';
-import { ApiService } from '@services';
+import { ApiService, SocketService } from '@services';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -21,12 +21,13 @@ export class AppComponent {
     private domSanitizer: DomSanitizer,
     public sails: Sails,
     private apiService: ApiService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public socketService: SocketService,
+    public router: Router
     ) {
     // this.matIconRegistry.addSvgIcon(`email`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/email.svg`));
     // this.matIconRegistry.addSvgIcon(`done`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done.svg`));
     // this.matIconRegistry.addSvgIcon(`done_all`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done_all.svg`));
-    // this.matIconRegistry.addSvgIcon(`favorite_empty`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_empty.svg`));
     // this.matIconRegistry.addSvgIcon(`favorite_full`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/favorite_full.svg`));
     // this.matIconRegistry.addSvgIcon(`attach_file`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/attach_file.svg`));
     // this.matIconRegistry.addSvgIcon(`send`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/send.svg`));
@@ -49,30 +50,36 @@ export class AppComponent {
 
     sails.addEventListener(SailsListener.CONNECTING, data => {
       console.log('CONNECTING...');
-      console.dir(data);
     });
 
     sails.addEventListener(SailsListener.RECONNECTING, data => {
-      console.log('RECONNECTING...');
-      console.dir(data);
     });
 
     sails.addEventListener(SailsListener.RECONNECT, data => {
       console.log('RECONNECT...');
-      console.dir(data);
     });
 
     sails.addEventListener(SailsListener.DISCONNECT, data => {
       console.log('DISCONNECT...');
-      console.dir(data);
     });
 
     sails.addEventListener(SailsListener.CONNECT, data => {
       console.log('CONNECTED!!!');
-      console.dir(data);
-      this.apiService.getSocketInfo();
+      // this.apiService.getSocketInfo();
     });
     sails.connect();
+
+    this.apiService.authMe().subscribe(
+      (res) => {
+        console.log(res);
+        const token = res.getBody().token;
+        this.apiService.setToken(token);
+      },
+      (err) => {
+        console.log(err);
+        this.router.navigateByUrl('login');
+      }
+    );
 
   }
 

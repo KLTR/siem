@@ -1,6 +1,11 @@
 @import '../dialog-style/dialog-style.scss';
 .container{
-
+  .tab-content{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
   .nav{
 
   }

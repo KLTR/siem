@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-register',
@@ -15,12 +16,12 @@ export class RegisterComponent implements OnInit {
   error: string | null;
   // @Output() submitEM = new EventEmitter();
   formGroup: FormGroup;
-  titleAlert = 'This field is required';
+  requiredField = 'This field is required';
   post: any = '';
   mobile = false;
   hide = true;
   isError: Observable<boolean> = null;
-  errorSeparator = '```';
+  errorSeparator = environment.errorSeparator;
   color = 'white';
   mode = 'determinate';
   isRegistering = false;

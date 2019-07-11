@@ -49,6 +49,10 @@ body{
 //   width: 90%;
 //   height: 70%;
 // }
-// .backdrop-hide{
-//   background: 'white';
-// }
+.backdrop-hide{
+  background: white;
+  height: calc(100vh - 100px);
+  position: absolute;
+  top: 35px;
+  opacity: 0.95 !important;
+}

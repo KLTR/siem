@@ -1,4 +1,71 @@
 @import '../dialog-style/dialog-style.scss';
-.form-element {
- text-align: center
+@import '../../../../../styles/colors.scss';
+::ng-deep{
+  .mat-tab-body-content {
+    overflow: hidden !important;
+    height: 100%;
+  }
+}
+.container{
+
+  .form{
+    width: 100%;
+    .row{
+      width: 100%;
+      position: relative;
+      &.unsubscribe{
+        display: flex;
+        align-items: center;
+      }
+        .form-element{
+          width: 100%;
+          position: relative;
+          mat-label{
+            display: flex;
+            align-items: center;
+          }
+          input{
+            margin-top: 5px;
+          }
+        }
+        .button{
+          position: absolute;
+          right: 5px;
+          bottom: 5px;
+          width: 90px;
+          display: flex;
+          justify-content: center;
+      
+        }
+      }
+    }
+
+    footer{
+      .button{
+        width: 100px;
+      }
+ 
+      .row-list{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        .list-item{
+          opacity: 0.65;
+          &.selected{
+            color: $main;
+            opacity: 1;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .tab-content{
+        height: 100%;
+        display: flex;
+       flex-direction: column;
+      }
+      footer{
+        margin-top: auto;
+      }
+    }
 }

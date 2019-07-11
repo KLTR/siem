@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  webSocketUrl: 'https://backend-sandbox.copa.io:443'
-
+  webSocketUrl: 'https://backend-sandbox.copa.io:443',
+  errorSeparator: '```',
 };
 
 /*

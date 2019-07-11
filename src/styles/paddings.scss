@@ -1,27 +1,27 @@
 @mixin ca-paddings($min-padding, $max-padding, $measurement) {
   @for $size from $min-padding through $max-padding {
     .p-#{$size} {
-      padding: $size * $measurement;
+      padding: $size * $measurement !important;
     }
 
     .pt-#{$size},
     .py-#{$size} {
-      padding-top: $size * $measurement;
+      padding-top: $size * $measurement !important;
     }
 
     .pr-#{$size},
     .px-#{$size} {
-      padding-right: $size * $measurement;
+      padding-right: $size * $measurement !important;
     }
 
     .pb-#{$size},
     .py-#{$size} {
-      padding-bottom: $size * $measurement;
+      padding-bottom: $size * $measurement !important;
     }
 
     .pl-#{$size},
     .px-#{$size} {
-      padding-left: $size * $measurement;
+      padding-left: $size * $measurement !important;
     }
 
     .p-#{$size}i {
