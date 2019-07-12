@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
      this.dialogConfig.maxHeight = '100vh';
      this.dialogConfig.height = '70vh';
      this.dialogConfig.width = '90vw';
-     this.dialogConfig.autoFocus = true;
      this.dialogConfig.hasBackdrop = true;
      this.dialogConfig.autoFocus = false;
    }

@@ -6,7 +6,7 @@ import {
   animate,
   group,
   animateChild,
-  keyframes
+  keyframes,
 } from '@angular/animations';
 
 
@@ -32,13 +32,14 @@ export const fader =
 
 export const slider =
   trigger('routeAnimations', [
-    transition('* => isLeft', slideTo('left') ),
-    transition('* => isRight', slideTo('right') ),
-    transition('isRight => *', slideTo('left') ),
-    transition('isLeft => *', slideTo('right') )
+    transition('* => isLeft', slideTo('left')),
+    transition('* => isRight', slideTo('right')),
+    transition('isRight => *', slideTo('left')),
+    transition('isLeft => *', slideTo('right'))
   ]);
 
-function slideTo(direction) {
+
+export function slideTo(direction) {
   const optional = { optional: true };
   return [
     query(':enter, :leave', [
@@ -61,6 +62,33 @@ function slideTo(direction) {
       ])
     ]),
   ];
+}
+// export function slideTo(direction) {
+//   const optional = { optional: true };
+//   return [
+//     query(':enter, :leave', [
+//       style(dir(direction, 0)),
+//       style({
+//         position: 'absolute',
+//         top: 0,
+//         width: '100%'
+//       })
+//     ], optional),
+//     query(':enter', [
+//       style(dir(direction, '-100%'))
+//     ]),
+//     group([
+//       query(':leave', [
+//         animate('600ms ease', style(dir(direction, '100%')) )
+//       ], optional),
+//       query(':enter', [
+//         animate('600ms ease', style(dir(direction, '0%')) )
+//       ])
+//     ]),
+//   ];
+// }
+export function dir(direction: 'left' | 'right', value: number | string ) {
+    return direction === 'left' ? { left: value } : { right: value };
 }
 
 export const transformer =

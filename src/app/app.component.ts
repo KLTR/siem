@@ -6,13 +6,103 @@ import { fader, slider, stepper, transformer } from './animations/route-animatio
 import { Sails, SailsListener } from 'ngx-sails-socketio';
 import { ApiService, SocketService } from '@services';
 import {TranslateService} from '@ngx-translate/core';
+import { transition, trigger, query, style, group, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [slider]
+  animations: [
+    trigger('routeAnimations', [
+      transition('* => isLeft', [
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%'
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ left: '-100%'})
+        ]),
+        group([
+          query(':leave', [
+            animate('600ms ease', style({ left: '100%'}))
+          ], { optional: true }),
+          query(':enter', [
+            animate('600ms ease', style({ left: '0%'}))
+          ])
+        ]),
+      ]),
+      transition('* => isRight', [
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '100%'
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ right: '-100%'})
+        ]),
+        group([
+          query(':leave', [
+            animate('600ms ease', style({ right: '100%'}))
+          ], { optional: true }),
+          query(':enter', [
+            animate('600ms ease', style({ right: '0%'}))
+          ])
+        ]),
+      ]),
+      transition('isRight => *', [
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '100%'
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ left: '-100%'})
+        ]),
+        group([
+          query(':leave', [
+            animate('600ms ease', style({ left: '100%'}))
+          ], { optional: true }),
+          query(':enter', [
+            animate('600ms ease', style({ left: '0%'}))
+          ])
+        ]),
+      ]),
+      transition('isLeft => *', [
+        query(':enter, :leave', [
+          style({
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '100%'
+          })
+        ], { optional: true }),
+        query(':enter', [
+          style({ right: '-100%'})
+        ]),
+        group([
+          query(':leave', [
+            animate('600ms ease', style({ right: '100%'}))
+          ], { optional: true }),
+          query(':enter', [
+            animate('600ms ease', style({ right: '0%'}))
+          ])
+        ]),
+      ])
+    ],
+    )
+  ],
 })
+
 export class AppComponent {
   title = 'copa';
   path = '../assets/svg-icons';

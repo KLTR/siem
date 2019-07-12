@@ -1,6 +1,6 @@
 <div class="form-wrapper full-screen  p-50" fxfill fxLayout="column" fxLayoutAlign="start center">
 
-    <div  class="form-container" *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
+    <div  class="form-container" novalidate  fxLayout="column" fxLayoutAlign="center center">
       <img class="logo" src="../../../assets/copa/white_copa_black.png">
       <span class="mt-35">{{ 'send files' | translate }}</span>
       <span>{{ 'full privacy' | translate }}. {{ 'max security' | translate }}. {{ 'unlimited size' | translate }}</span>
@@ -35,9 +35,4 @@
       </div>
     </div>
 
-    <ng-template #forminfo>
-      <div class="p-10">
-        {{ post | json }}
-      </div>
-    </ng-template>
   </div>

@@ -5,7 +5,7 @@
   <button *ngIf="mobile" mat-mini-fab color="primary" class="back-btn" (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    <div class="form-container"  *ngIf="!post; else forminfo" novalidate  fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-container" novalidate  fxLayout="column" fxLayoutAlign="center center">
       <img class="logo" src="../../../assets/copa/white_copa_black.png">
       <span class="mt-35 title">SIGN UP</span>
       <form *ngIf="!isRegistrationComplete; else completed" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form mt-5">

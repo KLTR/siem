@@ -16,4 +16,8 @@ export class TransfersComponent implements OnInit {
     this.outgoing = [];
   }
 
+  clearAll() {
+    console.log('clearing');
+  }
+
 }

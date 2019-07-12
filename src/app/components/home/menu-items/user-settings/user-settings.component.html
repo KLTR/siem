@@ -13,7 +13,7 @@
                           <mat-form-field floatLabel='auto' class="form-element">
                               <mat-label><mat-icon>email</mat-icon>Email</mat-label>
                               <input matInput placeholder="Email" value="{{user?.email}}" disabled/>
-                              <button class="button" matTooltip="{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}} email notifications"
+                              <button class="button" matTooltip="{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}} to email notifications"
                                matTooltipPosition="below" mat-button color="accent" type="button"
                                (click)="updateEmailNotification()">{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}}
                               </button>
@@ -26,7 +26,7 @@
                               <mat-error *ngIf="!formGroup.controls['username'].valid && formGroup.controls['username'].touched">
                                {{ getUsernameError() }}
                               </mat-error>
-                              <button class="button" [disabled]="isSameUsername" type="button" mat-raised-button color="accent" (click)="saveUsername(username.value)">
+                              <button  class="button" [disabled]="isSameUsername" type="button" mat-raised-button color="accent" (click)="saveUsername(username.value)">
                                   Save
                               </button>
                             </mat-form-field>
@@ -36,7 +36,8 @@
                           <mat-form-field floatLabel='always' class="form-element" >
                               <mat-label><mat-icon>lock</mat-icon>Password</mat-label>
                               <input matInput disabled placeholder="password" value="********" />
-                              <button class="button" type="button" mat-raised-button color="accent" (click)="openResetPassword()">
+                              <button matTooltip="Reset your password"
+                              matTooltipPosition="below" class="button" type="button" mat-raised-button color="accent" (click)="openResetPassword()">
                                   Reset
                               </button>
                             </mat-form-field>

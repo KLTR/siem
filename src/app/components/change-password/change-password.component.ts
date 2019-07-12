@@ -43,4 +43,7 @@ export class ChangePasswordComponent implements OnInit {
 goBack() {
   this.router.navigateByUrl('login');
 }
+onSubmit(formValue) {
+  console.log(formValue);
+}
 }

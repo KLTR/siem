@@ -61,6 +61,8 @@ export class UserSettingsComponent implements OnInit {
     if (this.mobile) {
       this.dialogConfig.height = '100vh';
       this.dialogConfig.width = '100vw';
+      this.dialogConfig.maxWidth = '100vw';
+      this.dialogConfig.maxHeight = '100vh';
       this.dialogConfig.position = {
         top: '0',
         left: '0'

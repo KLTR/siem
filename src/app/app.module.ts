@@ -47,6 +47,7 @@ import {
 import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/home/menu-items/user-settings/reset-password/reset-password.component';
 
+
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
