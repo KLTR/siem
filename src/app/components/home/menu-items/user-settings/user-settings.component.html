@@ -26,11 +26,11 @@
                               <mat-error *ngIf="!formGroup.controls['username'].valid && formGroup.controls['username'].touched">
                                {{ getUsernameError() }}
                               </mat-error>
-                              <button  class="button" [disabled]="isSameUsername" type="button" mat-raised-button color="accent" (click)="saveUsername(username.value)">
+                              <button  class="button" [disabled]="isSameUsername || !formGroup.valid" type="button" mat-raised-button color="accent" (click)="saveUsername(username.value)">
                                   Save
                               </button>
                             </mat-form-field>
-              
+
                       </div>
                       <div class="row">
                           <mat-form-field floatLabel='always' class="form-element" >
@@ -55,8 +55,55 @@
               </div>
             </mat-tab>
             <mat-tab label="Advanced">
-                <div class="tab-content">
-                  
+                <div class="tab-content advanced">
+                  <div class="wrapper" fxFlexAlign="stretch" xFlexOffset="10" fxLayout="column" fxFlex="100" fxLayoutGap>
+                    <div class="connectionMethods" class="col" fxLayout="column" >
+                      <p>
+                        Choose your connection method:
+                        <mat-icon matTooltip="Ohter users will only be able to interact with you through the selected identifiers." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                      </p>
+                      <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-checkbox (change)="generateKey()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
+                          <mat-form-field  *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element" >
+                            <input matInput disabled value="{{user.password}}" />
+                          </mat-form-field>
+                          <mat-spinner
+                          *ngIf="user.contactByKey && !user.password"
+                          [diameter]="40"
+                          ></mat-spinner>
+                      </div>
+                      <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByEmail">Email</mat-checkbox>
+                      </div>
+                      <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contacyByUsername">Username</mat-checkbox>
+                      </div>
+                    </div>
+                    <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <p>
+                          2 Factor-Authentication:
+                          <mat-icon matTooltip="COPA users has the option of adding another layer of protection to transfers by adding a password" matTooltipPosition="above" matBadge="15">help</mat-icon>
+                        </p>
+                        <mat-slide-toggle
+                          class="example-margin"
+                          color="primary"
+                          [checked]="user.externalPassword"
+                          (change)="updateExternalPassword()"
+                          >
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <p>
+                          Auto Extract Received Folders:
+                        </p>
+                        <mat-slide-toggle
+                          class="example-margin"
+                          [color]="color"
+                          [checked]="checked"
+                          [disabled]="disabled">
+                        </mat-slide-toggle>
+                    </div>
+                  </div>
                 </div>
               </mat-tab>
             </mat-tab-group>

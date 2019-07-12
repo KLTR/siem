@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SailsModel, Sails, SailsQuery, RequestCriteria, SailsRequest, SailsResponse,
          SailsSubscription, SailsEvent } from 'ngx-sails-socketio';
 import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -11,8 +11,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class ApiService {
   request: SailsRequest;
   socket: SailsSubscription;
-  public user: any;
-
+  public user: BehaviorSubject<any>;
+  public userObject: any;
   serverUrls = {
     getSocketInfo: '/api/socketinfo',
     login: '/api/auth/login',
@@ -24,9 +24,17 @@ export class ApiService {
     updateEmailNotifications: '/api/peer/updateEmailNotifications',
     authPassword: '/api/auth/authPass',
     resetPassword: '/api/auth/reset_login_password',
+    updateContactMethod: '/api/peer/update_contact_method',
+    generateKey: '/api/peer/generate_key',
+    updateExternalPassword: '/api/peer/update/external_password',
+    updateProtectedLinkPassword: '/api/peer/update/protected_link_password',
+    updateOfflineMode: '/api/peer/update/offline_mode',
+    logout: '/api/peer/logout',
+
   };
 
   constructor(private sails: Sails) {
+    this.user = new BehaviorSubject({});
     this.request = new SailsRequest(this.sails);
     this.decodeToken();
   }
@@ -40,22 +48,43 @@ export class ApiService {
     localStorage.setItem(`COPA/JWT`, token);
     this.decodeToken();
   }
+  updateExternalPassword(externalPassword: boolean): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.updateExternalPassword}`, {externalPassword});
+  }
   updateEmailNotifications(subscribe: boolean): Observable<SailsResponse> {
     return this.request.post(`${this.serverUrls.updateEmailNotifications}`, {subscribe});
   }
 
+  updateContactMethod(methods: any) {
+    return this.request.post(`${this.serverUrls.updateContactMethod}`, methods);
+  }
+
+  generatKey(): Observable<SailsResponse> {
+    return this.request.get(`${this.serverUrls.generateKey}`);
+  }
+  logOut() {
+    localStorage.removeItem('COPA/JWT');
+    this.user.next(null);
+    // reroute to login screen.
+    return this.request.post(`${this.serverUrls.logout}`, null);
+  }
+
+  editUser(key: any, value: any ) {
+    this.userObject[key] = value;
+    this.user.next(this.userObject);
+  }
 
   decodeToken(): void {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(this.getToken());
-    this.user = decodedToken;
-    console.log(decodedToken);
+    this.user.next(decodedToken);
+    this.userObject = decodedToken;
+    console.log(this.userObject);
   }
 
-  getUser(): any {
+  getUser(): BehaviorSubject<any> {
     return this.user;
   }
-
 
   getSocketInfo() {
     this.request.get(`${this.serverUrls.getSocketInfo}`).subscribe((res) => {

@@ -8,5 +8,8 @@
   "sign up": "Sign up",
   "new to copa": "New to COPA?",
   "go anonymous": "GO ANONYMOUS",
-  "or": "OR"
+  "or": "OR",
+  "username": "Username",
+  "email": "Email",
+  "securityKey" : "security key"
 }

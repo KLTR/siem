@@ -21,18 +21,20 @@ export class UserSettingsComponent implements OnInit {
   dialogConfig: MatDialogConfig;
   mobile = false;
   constructor(
-    private apiSerivce: ApiService,
+    private apiService: ApiService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
    ) {
+    this.apiService.user.subscribe(user => {
+      this.user = user;
+    });
      }
 
   ngOnInit() {
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
     }
-    this.user = this.apiSerivce.getUser();
     this.createForm();
   }
   createForm() {
@@ -40,22 +42,7 @@ export class UserSettingsComponent implements OnInit {
       username: [this.user.username, [Validators.required, this.checkUsername.bind(this)]],
     });
   }
-  saveUsername(username) {
-    this.apiSerivce.saveUsername(username).subscribe(
-      (res) => {
-        const body = res.getBody();
-        this.apiSerivce.user.username = username;
-        this.user = this.apiSerivce.getUser();
-      },
-      (err) => {
-        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
-        console.log(err);
-        this.snackBar.open(`Ooops ... \n ${err}`, 'ok', {
-          duration: 3000
-        });
-      }
-    );
-  }
+
   openResetPassword() {
     this.dialogConfig = new MatDialogConfig();
     if (this.mobile) {
@@ -79,20 +66,78 @@ export class UserSettingsComponent implements OnInit {
   }
   updateEmailNotification() {
     // this.user.emailNotify
-    this.apiSerivce.updateEmailNotifications(!this.user.emailNotify).subscribe(
+    this.apiService.updateEmailNotifications(!this.user.emailNotify).subscribe(
       () => {
-        this.apiSerivce.user.emailNotify = !this.apiSerivce.user.emailNotify;
-        this.user = this.apiSerivce.getUser();
+        this.apiService.editUser('emailNotify', !this.user.emailNotify);
       },
       (err) => {
-        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
-        console.log(err);
-        this.snackBar.open(`Ooops ... \n ${err}`, 'ok', {
-          duration: 3000
-        });
+        this.logError(err);
       }
     );
   }
+
+  logError(err) {
+    err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
+    console.log(err);
+    this.snackBar.open(`Ooops ... \n ${err}`, 'ok', {
+      duration: 3000
+    });
+  }
+  saveUsername(username: string) {
+    this.apiService.saveUsername(username).subscribe(
+      () => {
+        this.apiService.editUser('username', username);
+      },
+      (err) => {
+        this.logError(err);
+      }
+    );
+  }
+  updateContactMethod() {
+    this.apiService.updateContactMethod({
+      contactByKey: this.user.contactByKey,
+      contactByEmail: this.user.contactByEmail,
+      contactByUsername: this.user.contactByUsername}
+    ).subscribe(
+      () => {
+        this.apiService.editUser('contactByKey', this.user.contactByKey);
+        this.apiService.editUser('contactByEmail', this.user.contactByEmail);
+        this.apiService.editUser('contactByUsername', this.user.contactByUsername);
+      },
+      (err) => {
+       this.logError(err);
+      }
+    );
+  }
+  updateExternalPassword() {
+    this.apiService.updateExternalPassword(!this.user.externalPassword).subscribe(
+      (res) => {
+        this.apiService.editUser('externalPassword', !this.user.externalPassword);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  generateKey() {
+    const oldPass = this.user.password;
+    if (!this.user.securityKey) {
+      this.user.password = null;
+      this.apiService.generatKey().subscribe(
+        (res) => {
+          this.apiService.editUser('password', res.getBody().password);
+          this.updateContactMethod();
+        },
+        (err) => {
+          // this.logError(err);
+          console.log(err);
+          this.user.password = oldPass;
+        }
+      );
+    } else {
+      this.updateContactMethod();
+    }
+}
   checkUsername(control: FormControl): {[s: string]: boolean} {
      if (control.value === this.user.username) {
        this.isSameUsername = true;

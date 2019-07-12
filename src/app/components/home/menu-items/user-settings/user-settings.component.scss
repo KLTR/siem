@@ -7,7 +7,11 @@
   }
 }
 .container{
-
+  .advanced{
+    .row{
+      height: 40px;
+    }
+  }
   .form{
     width: 100%;
     .row{
@@ -35,7 +39,7 @@
           width: 90px;
           display: flex;
           justify-content: center;
-      
+
         }
       }
     }
@@ -44,7 +48,7 @@
       .button{
         width: 100px;
       }
- 
+
       .row-list{
         margin: 0;
         padding: 0;
