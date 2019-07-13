@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
 import { environment } from '@env/environment';
 
@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
   isRegistering = false;
   value = 50;
   isRegistrationComplete = false;
+  dialogConfig = new MatDialogConfig();
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -40,7 +41,11 @@ export class RegisterComponent implements OnInit {
     this.createForm();
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
-    }  }
+    }
+    this.dialogConfig = new MatDialogConfig();
+    this.dialogConfig.closeOnNavigation = true;
+
+  }
 
   createForm() {
     // tslint:disable-next-line:max-line-length
@@ -141,14 +146,14 @@ checkConfirmPassword(control) {
   }
 
   openPrivacyPolicy() {
-    const dialogRef = this.dialog.open(PrivacyPolicyDialog);
+    const dialogRef = this.dialog.open(PrivacyPolicyDialog, this.dialogConfig);
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
   }
   openTermsOfUse() {
-    const dialogRef = this.dialog.open(TermsOfUseDialog);
+    const dialogRef = this.dialog.open(TermsOfUseDialog, this.dialogConfig);
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });

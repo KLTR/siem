@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit {
      this.dialogConfig.width = '90vw';
      this.dialogConfig.hasBackdrop = true;
      this.dialogConfig.autoFocus = false;
+     this.dialogConfig.closeOnNavigation  = true;
+
    }
 
   ngOnInit() {
@@ -41,6 +43,7 @@ export class HomeComponent implements OnInit {
     settingsConfig.autoFocus = false;
     settingsConfig.maxWidth = '100vw';
     settingsConfig.maxHeight = '100vh';
+    settingsConfig.closeOnNavigation = true;
     settingsConfig.backdropClass = 'backdrop-hide';
     if (this.mobile) {
       settingsConfig.height = '100vh';
@@ -53,18 +56,11 @@ export class HomeComponent implements OnInit {
       settingsConfig.height = 'fit-content';
       settingsConfig.width = '50vw';
       settingsConfig.position = {
-        top: '20vh',
+        top: '10vh',
         left: '25%'
       };
     }
     this.dialog.open(UserSettingsComponent, settingsConfig);
   }
-  // openPrivacyPolicy() {
-  //   const dialogRef = this.dialog.open(PrivacyPolicyDialog);
-
-  //   // dialogRef.afterClosed().subscribe(result => {
-  //   //   console.log(`Dialog result: ${result}`);
-  //   // });
-  // }
 
 }

@@ -30,7 +30,7 @@ const sailsOptions: SailsOptions = {
 import { DndDirective, UniqueEmailValidatorDirective } from '@directives';
 
 // Services
-import { ApiService, SocketService, INTERCEPTORS} from '@services';
+import { ApiService, SocketService, ErrorService, INTERCEPTORS} from '@services';
 
 // Components
 import {
@@ -46,7 +46,7 @@ import {
 } from '@components';
 import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/home/menu-items/user-settings/reset-password/reset-password.component';
-
+import { AuthGuard } from '@guards';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -96,7 +96,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
   })
   ],
-  providers: [ApiService, SocketService],
+  providers: [ApiService, SocketService, AuthGuard, ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

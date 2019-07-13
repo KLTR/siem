@@ -4,6 +4,8 @@ import { SailsModel, Sails, SailsQuery, RequestCriteria, SailsRequest, SailsResp
 import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class ApiService {
   socket: SailsSubscription;
   public user: BehaviorSubject<any>;
   public userObject: any;
+
   serverUrls = {
     getSocketInfo: '/api/socketinfo',
     login: '/api/auth/login',
@@ -29,11 +32,12 @@ export class ApiService {
     updateExternalPassword: '/api/peer/update/external_password',
     updateProtectedLinkPassword: '/api/peer/update/protected_link_password',
     updateOfflineMode: '/api/peer/update/offline_mode',
+    updateSelfEncryption: '/api/peer/update/self_encryption',
     logout: '/api/peer/logout',
 
   };
 
-  constructor(private sails: Sails) {
+  constructor(private sails: Sails, private router: Router, private dialog: MatDialog) {
     this.user = new BehaviorSubject({});
     this.request = new SailsRequest(this.sails);
     this.decodeToken();
@@ -55,18 +59,30 @@ export class ApiService {
     return this.request.post(`${this.serverUrls.updateEmailNotifications}`, {subscribe});
   }
 
-  updateContactMethod(methods: any) {
-    return this.request.post(`${this.serverUrls.updateContactMethod}`, methods);
+  updateProtectedLinkPassword(protectedLinkPass: boolean): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.updateProtectedLinkPassword}`, {protectedLinkPass});
   }
 
+  updateOfflineMode(offlineMode: 'ask' | 'upload' | 'wait'): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.updateOfflineMode}`, {offlineMode});
+  }
+
+  updateContactMethod(methods: any): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.updateContactMethod}`, methods);
+  }
+  updateSelfEncryption() {
+    console.log('need to write..');
+  }
   generatKey(): Observable<SailsResponse> {
     return this.request.get(`${this.serverUrls.generateKey}`);
   }
-  logOut() {
+  logout(): Observable<SailsResponse> {
+    this.dialog.closeAll();
     localStorage.removeItem('COPA/JWT');
-    this.user.next(null);
     // reroute to login screen.
-    return this.request.post(`${this.serverUrls.logout}`, null);
+    this.router.navigateByUrl('login');
+    this.user.next(null);
+    return this.request.post(`${this.serverUrls.logout}`, {});
   }
 
   editUser(key: any, value: any ) {

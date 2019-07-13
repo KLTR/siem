@@ -10,6 +10,16 @@
   .advanced{
     .row{
       height: 40px;
+      position: relative;
+      &.fit-content{
+        height: fit-content;
+      }
+      .new-key-btn{
+        position: absolute;
+        right: 0;
+        bottom: 5px;
+        padding: 0;
+      }
     }
   }
   .form{
@@ -39,7 +49,6 @@
           width: 90px;
           display: flex;
           justify-content: center;
-
         }
       }
     }

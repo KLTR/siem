@@ -61,6 +61,7 @@ export class UserSettingsComponent implements OnInit {
         top: '20vh',
         left: '25%'
       };
+      this.dialogConfig.closeOnNavigation = true;
     }
     this.dialog.open(ResetPasswordComponent, this.dialogConfig);
   }
@@ -119,24 +120,63 @@ export class UserSettingsComponent implements OnInit {
       }
     );
   }
+  updateProtectedLinkPasword() {
+    this.apiService.updateProtectedLinkPassword(!this.user.protectedLinkPass).subscribe(
+      (res) => {
+        this.apiService.editUser('protectedLinkPass', !this.user.protectedLinkPass);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  updateSelfEncryption() {
+    this.apiService.updateSelfEncryption();
+    // this.apiService.updateSelfEncryption(!this.user.selfEncryption).subscribe(
+    //   (res) => {
+    //     this.apiService.editUser('protectedLinkPass', !this.user.selfEncryption);
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //   }
+    // );
+  }
+  updateOfflineMode() {
+    this.apiService.updateOfflineMode(this.user.offlineMode).subscribe(
+      (res) => {
+        this.apiService.editUser('offlineMode', this.user.offlineMode);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  logout() {
+    this.apiService.logout().subscribe(
+      () => {
+        console.log('logged out');
+      },
+      (err) => {
+        this.logError(err);
+      }
+    );
+  }
+
   generateKey() {
     const oldPass = this.user.password;
-    if (!this.user.securityKey) {
-      this.user.password = null;
-      this.apiService.generatKey().subscribe(
+    this.user.password = null;
+    this.apiService.generatKey().subscribe(
         (res) => {
           this.apiService.editUser('password', res.getBody().password);
-          this.updateContactMethod();
         },
         (err) => {
           // this.logError(err);
           console.log(err);
+          this.logError(err);
           this.user.password = oldPass;
         }
       );
-    } else {
-      this.updateContactMethod();
-    }
 }
   checkUsername(control: FormControl): {[s: string]: boolean} {
      if (control.value === this.user.username) {

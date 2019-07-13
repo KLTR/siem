@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet, Router } from '@angular/router';
 import { fader, slider, stepper, transformer } from './animations/route-animations';
 import { Sails, SailsListener } from 'ngx-sails-socketio';
-import { ApiService, SocketService } from '@services';
+import { ApiService, SocketService, ErrorService } from '@services';
 import {TranslateService} from '@ngx-translate/core';
 import { transition, trigger, query, style, group, animate } from '@angular/animations';
 
@@ -113,7 +113,8 @@ export class AppComponent {
     private apiService: ApiService,
     public translate: TranslateService,
     public socketService: SocketService,
-    public router: Router
+    public router: Router,
+    public errorService: ErrorService
     ) {
     // this.matIconRegistry.addSvgIcon(`email`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/email.svg`));
     // this.matIconRegistry.addSvgIcon(`done`, this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.path}/done.svg`));
@@ -166,7 +167,7 @@ export class AppComponent {
         this.apiService.setToken(token);
       },
       (err) => {
-        console.log(err);
+        this.errorService.logError(err);
         this.router.navigateByUrl('login');
       }
     );

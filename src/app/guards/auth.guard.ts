@@ -1,19 +1,36 @@
+import { map } from 'rxjs/operators';
+import { ApiService } from '@app/services';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  user: any;
+  constructor(
+    private router: Router,
+    private apiSerivce: ApiService) {
+      this.apiSerivce.user.subscribe( user => {
+        this.user = user;
+      });
+    }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    if (localStorage.getItem('userToken')) {
-      // If User is logged return true
+    console.log(this.user);
+    if (this.user) {
       return true;
     } else {
-      console.log('redirecting ..');
-      this.router.navigate(['login']);
-      return false;
+      return this.apiSerivce.getUser().pipe(
+        map(user => {
+          console.log(user);
+          if (user) {
+            return true;
+          } else {
+            this.router.navigateByUrl('login');
+            return false;
+          }
+        })
+      );
     }
   }
 }

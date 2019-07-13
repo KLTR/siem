@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   titleAlert = 'This field is required';
   hide = true;
   errorSeparator = environment.errorSeparator;
+  isLoggingIn = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(credentials) {
+    this.isLoggingIn = true;
     this.apiService.login(credentials)
     .subscribe(
       (res) => {
@@ -68,11 +70,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('home');
       },
       (err) => {
-        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).err;
-        console.log(err);
-        this.snackBar.open(`Failed to Login ${err.message}`, 'ok', {
-          duration: 3000
-        });
+        this.isLoggingIn = false;
       }
       );
   }

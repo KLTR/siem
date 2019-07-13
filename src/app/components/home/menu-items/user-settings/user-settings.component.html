@@ -1,4 +1,4 @@
-<div class="container" >
+<div *ngIf="user" class="container" >
     <h2 mat-dialog-title >ACCOUNT SETTINGS
         <button mat-icon-button class="close-btn" aria-hidden="false" mat-dialog-close >
             <mat-icon>close</mat-icon>
@@ -63,10 +63,14 @@
                         <mat-icon matTooltip="Ohter users will only be able to interact with you through the selected identifiers." matTooltipPosition="above" matBadge="15">help</mat-icon>
                       </p>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox (change)="generateKey()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
-                          <mat-form-field  *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element" >
+                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
+                          <mat-form-field fxFlex *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element ml-25" >
                             <input matInput disabled value="{{user.password}}" />
                           </mat-form-field>
+                          <button  *ngIf="user.contactByKey && user.password" class="button new-key-btn" matTooltip="request a new security key"
+                               matTooltipPosition="below" mat-button color="accent" type="button"
+                               (click)="generateKey()">Reset
+                              </button>
                           <mat-spinner
                           *ngIf="user.contactByKey && !user.password"
                           [diameter]="40"
@@ -85,7 +89,6 @@
                           <mat-icon matTooltip="COPA users has the option of adding another layer of protection to transfers by adding a password" matTooltipPosition="above" matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          class="example-margin"
                           color="primary"
                           [checked]="user.externalPassword"
                           (change)="updateExternalPassword()"
@@ -94,15 +97,58 @@
                     </div>
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
-                          Auto Extract Received Folders:
+                          Protected Link Password
+                          <mat-icon matTooltip="Require password authentication on protected link transfer" matTooltipPosition="above" matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          class="example-margin"
-                          [color]="color"
-                          [checked]="checked"
-                          [disabled]="disabled">
+                          color="primary"
+                          [checked]="user.protectedLinkPass"
+                          (change)="updateProtectedLinkPasword()"
+                        >
                         </mat-slide-toggle>
                     </div>
+                    <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <p>
+                          Self Encryption
+                          <mat-icon matTooltip="COPA provides an extra safety layer by allowin users to set and define their personal encryption passwords.
+                          The self-encryption option, ensures that only the user can access his/her information" matTooltipPosition="above" matBadge="15">help</mat-icon>
+                        </p>
+                        <mat-slide-toggle
+                          color="primary"
+                          [checked]="user.selfEncryption"
+                          (change)="updateSelfEncryption()"
+                        >
+                        </mat-slide-toggle>
+                    </div>
+                    <label class="mt-15">Data Exchange Policy</label>
+                        <mat-radio-group
+                          aria-labelledby="example-radio-group-label"
+                          class="example-radio-group"
+                          [(ngModel)]="user.offlineMode"
+                          (change)="updateOfflineMode()">
+                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-radio-button class="example-radio-button" [value]="'ask'">
+                              Always ask me
+                            </mat-radio-button>
+                          </div>
+                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-radio-button class="example-radio-button" [value]="'upload'">
+                              Upload to COPA servers
+                              <mat-icon matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                            </mat-radio-button>
+                          </div>
+                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-radio-button class="example-radio-button" [value]="'wait'">
+                             Direct (P2P)
+                            <mat-icon matTooltip="Data will only be exchanged while both sides are connected." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                          </mat-radio-button>
+                        </div>
+                        </mat-radio-group>
+                        <div class="row" fxLayout="row" fxLayoutAlign="flex-end center">
+                            <button  class="button" type="button" mat-raised-button color="primary" (click)="logout()">
+                                LOGOUT
+                            </button>
+                        </div>
                   </div>
                 </div>
               </mat-tab>

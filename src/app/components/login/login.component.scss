@@ -53,6 +53,11 @@ span{
 .button {
   text-transform: uppercase;
   width: 100%;
+  .mat-spinner{
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 15px);
+  }
 }
 .password-error{
   width: 60%
