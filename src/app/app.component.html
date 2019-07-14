@@ -1,6 +1,6 @@
-<main [@routeAnimations]="prepareRoute(outlet)" class="content">
-    <button mat-icon-button class="menu-icon" [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
+<main [@routeAnimations]="prepareRoute(outlet)" class="content mat-typography">
+    <!-- <button mat-fab  mat-icon-button color="primary" class="menu-icon" [matMenuTriggerFor]="menu">
+        <mat-icon class="icon">more_vert</mat-icon>
       </button>
       <mat-menu class="menu" #menu="matMenu">
         <button mat-menu-item (click)="useLanguage('en')">
@@ -11,6 +11,6 @@
           <img class="flag-icon" src="../assets/flags/fr.png">
           <span>French</span>
         </button>
-      </mat-menu>
+      </mat-menu> -->
     <router-outlet #outlet="outlet"></router-outlet>
 </main>

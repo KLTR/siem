@@ -1,18 +1,133 @@
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
-
+@import './colors.scss';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+$custom-typography: mat-typography-config(
+  $font-family: '"Lato", sans-seif;',
+  $display-4:     mat-typography-level(112px, 112px, 400),
+  $display-3:     mat-typography-level(56px, 56px, 400),
+  $display-2:     mat-typography-level(45px, 48px, 400),
+  $display-1:     mat-typography-level(34px, 40px, 400),
+  $headline:      mat-typography-level(24px, 32px, 400),
+  $title:         mat-typography-level(20px, 32px, 700),
+  $subheading-2:  mat-typography-level(16px, 28px, 400),
+  $subheading-1:  mat-typography-level(15px, 24px, 400),
+  $body-2:        mat-typography-level(14px, 24px, 400),
+  $body-1:        mat-typography-level(14px, 20px, 400),
+  $caption:       mat-typography-level(12px, 20px, 400),
+  $button:        mat-typography-level(14px, 14px, 400),
+  // Line-height must be unit-less fraction of the font-size.
+  $input:         mat-typography-level(16px, 1.125, 400)
+);
+@include mat-core($custom-typography);
+// @include mat-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 // $candy-app-primary: mat-palette($mat-indigo);
 // $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
-$theme-primary: mat-palette();
-$theme-accent: mat-palette();
+$copa-primary: (
+    50 : #e3e5f5,
+    100 : #b8bee6,
+    200 : #8993d5,
+    300 : #5967c4,
+    400 : #3647b7,
+    500 : #1226aa, //primary color
+    600 : #1022a3,
+    700 : #0d1c99,
+    800 : #0a1790,
+    900 : #050d7f,
+    A100 : #aeb0ff,
+    A200 : #7b7fff,
+    A400 : #484eff,
+    A700 : #2e35ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+  )
+);
+$copa-accent : (
+  50 : #edecf8,
+  100 : #d1ceee,
+  200 : #b2aee3,
+  300 : #938ed7,
+  400 : #7c75cf,
+  500 : #655dc6,
+  600 : #5d55c0,
+  700 : #534bb9,
+  800 : #4941b1,
+  900 : #3730a4,
+  A100 : #ecebff,
+  A200 : #bcb8ff,
+  A400 : #8c85ff,
+  A700 : #746bff,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #ffffff,
+  )
+);
+// $copa-accent: (
+//   50 : #e2f9f9,
+//     100 : #b7f1ef,
+//     200 : #88e7e4,
+//     300 : #58ddd9,
+//     400 : #34d6d1,
+//     500 : #10cfc9, //accent color
+//     600 : #0ecac3,
+//     700 : #0cc3bc,
+//     800 : #09bdb5,
+//     900 : #05b2a9,
+//     A100 : #dcfffd,
+//     A200 : #a9fffa,
+//     A400 : #76fff7,
+//     A700 : #5dfff5,
+//     contrast: (
+//         50 : #000000,
+//         100 : #000000,
+//         200 : #000000,
+//         300 : #000000,
+//         400 : #000000,
+//         500 : #000000,
+//         600 : #000000,
+//         700 : #000000,
+//         800 : #000000,
+//         900 : #ffffff,
+//         A100 : #000000,
+//         A200 : #000000,
+//         A400 : #000000,
+//         A700 : #000000,
+//     )
+// );
+// $copa-accent: mat-palette($mat-pink, A200, A100, A400);
+$theme-primary: mat-palette($copa-primary);
+$theme-accent: mat-palette($copa-accent);
 $theme-warn: mat-palette($mat-red);
 // The warn palette is optional (defaults to red).
 // $candy-app-warn: mat-palette($mat-red);
@@ -23,4 +138,5 @@ $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+
 @include angular-material-theme($theme);

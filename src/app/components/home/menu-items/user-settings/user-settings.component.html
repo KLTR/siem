@@ -133,7 +133,7 @@
                           </div>
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                             <mat-radio-button class="example-radio-button" [value]="'upload'">
-                              Upload to COPA servers
+                              Upload to <span class="strong-text">COPA</span> servers
                               <mat-icon matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use." matTooltipPosition="above" matBadge="15">help</mat-icon>
                             </mat-radio-button>
                           </div>
@@ -145,7 +145,7 @@
                         </div>
                         </mat-radio-group>
                         <div class="row" fxLayout="row" fxLayoutAlign="flex-end center">
-                            <button  class="button" type="button" mat-raised-button color="primary" (click)="logout()">
+                            <button  class="button" type="button" mat-raised-button color="warn" (click)="logout()">
                                 LOGOUT
                             </button>
                         </div>
