@@ -89,7 +89,7 @@
                           <mat-icon matTooltip="COPA users has the option of adding another layer of protection to transfers by adding a password" matTooltipPosition="above" matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="primary"
+                          color="accent"
                           [checked]="user.externalPassword"
                           (change)="updateExternalPassword()"
                           >
@@ -101,7 +101,7 @@
                           <mat-icon matTooltip="Require password authentication on protected link transfer" matTooltipPosition="above" matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="primary"
+                          color="accent"
                           [checked]="user.protectedLinkPass"
                           (change)="updateProtectedLinkPasword()"
                         >
@@ -114,7 +114,7 @@
                           The self-encryption option, ensures that only the user can access his/her information" matTooltipPosition="above" matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="primary"
+                          color="accent"
                           [checked]="user.selfEncryption"
                           (change)="updateSelfEncryption()"
                         >
