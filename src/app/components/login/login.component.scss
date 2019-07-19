@@ -1,7 +1,7 @@
 @import '../../../styles/colors.scss';
 .form-wrapper {
   // background-color: #5669E0;
-  background: #1226aaf7;
+  background: $primary-bg;
     .form-container{
     width: 40%;
     height: 100%;
@@ -83,4 +83,8 @@ span{
 .mat-form-field.mat-focused .mat-form-field-ripple{
   background-color: white;
 }
+}
+
+.text-container{
+  min-height: 100px;
 }

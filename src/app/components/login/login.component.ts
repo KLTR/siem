@@ -79,6 +79,6 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl('register');
   }
   forgotPass() {
-    this.router.navigateByUrl('forgot-password');
+    this.router.navigate(['forgot-password', {email: this.formGroup.get('email').value}])
   }
 }

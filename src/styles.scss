@@ -61,3 +61,8 @@ body{
 .strong-text{
   color: $strong-text;
 }
+::ng-deep{
+  .tooltip{
+    font-size: 14px;
+  }
+}

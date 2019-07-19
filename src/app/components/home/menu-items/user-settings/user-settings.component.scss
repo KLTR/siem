@@ -83,3 +83,8 @@
       }
     }
 }
+::ng-deep{
+  .tooltip{
+    font-size: 12px;
+  }
+}

@@ -13,8 +13,12 @@
                           <mat-form-field floatLabel='auto' class="form-element">
                               <mat-label><mat-icon>email</mat-icon>Email</mat-label>
                               <input matInput placeholder="Email" value="{{user?.email}}" disabled/>
-                              <button class="button" matTooltip="{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}} to email notifications"
-                               matTooltipPosition="below" mat-button color="accent" type="button"
+                              <button class="button"
+                               matTooltip="{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}} to email notifications"
+                               matTooltipPosition="below"
+                               matTooltipClass="tooltip"
+                               mat-button color="accent"
+                               type="button"
                                (click)="updateEmailNotification()">{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}}
                               </button>
                           </mat-form-field>
@@ -36,8 +40,13 @@
                           <mat-form-field floatLabel='always' class="form-element" >
                               <mat-label><mat-icon>lock</mat-icon>Password</mat-label>
                               <input matInput disabled placeholder="password" value="********" />
-                              <button matTooltip="Reset your password"
-                              matTooltipPosition="below" class="button" type="button" mat-raised-button color="accent" (click)="openResetPassword()">
+                              <button
+                              matTooltip="Reset your password"
+                              matTooltipPosition="below"
+                              matTooltipClass="tooltip"
+                              class="button"
+                              type="button"
+                              mat-raised-button color="accent" (click)="openResetPassword()">
                                   Reset
                               </button>
                             </mat-form-field>
@@ -60,15 +69,23 @@
                     <div class="connectionMethods" class="col" fxLayout="column" >
                       <p>
                         Choose your connection method:
-                        <mat-icon matTooltip="Ohter users will only be able to interact with you through the selected identifiers." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                        <mat-icon
+                        matTooltip="Other users will only be able to interact with you through the selected identifiers."
+                        matTooltipPosition="above"
+                        matTooltipClass="tooltip"
+                        matBadge="15">help</mat-icon>
                       </p>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
                           <mat-form-field fxFlex *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element ml-25" >
                             <input matInput disabled value="{{user.password}}" />
                           </mat-form-field>
-                          <button  *ngIf="user.contactByKey && user.password" class="button new-key-btn" matTooltip="request a new security key"
-                               matTooltipPosition="below" mat-button color="accent" type="button"
+                          <button  *ngIf="user.contactByKey && user.password" class="button new-key-btn"
+                               matTooltip="request a new security key"
+                               matTooltipPosition="below"
+                               mat-button color="accent"
+                               matTooltipClass="tooltip"
+                               type="button"
                                (click)="generateKey()">Reset
                               </button>
                           <mat-spinner
@@ -86,7 +103,12 @@
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
                           2 Factor-Authentication:
-                          <mat-icon matTooltip="COPA users has the option of adding another layer of protection to transfers by adding a password" matTooltipPosition="above" matBadge="15">help</mat-icon>
+                          <mat-icon
+                          matTooltip="COPA users has the option of adding another layer of protection to transfers by adding a password"
+                          matTooltipPosition="above"
+                          matTooltipClass="tooltip"
+                          matBadge="15"
+                          >help</mat-icon>
                         </p>
                         <mat-slide-toggle
                           color="accent"
@@ -98,7 +120,11 @@
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
                           Protected Link Password
-                          <mat-icon matTooltip="Require password authentication on protected link transfer" matTooltipPosition="above" matBadge="15">help</mat-icon>
+                          <mat-icon
+                          matTooltip="Require password authentication on protected link transfer"
+                          matTooltipPosition="above"
+                          matTooltipClass="tooltip"
+                          matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
                           color="accent"
@@ -110,8 +136,12 @@
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
                           Self Encryption
-                          <mat-icon matTooltip="COPA provides an extra safety layer by allowin users to set and define their personal encryption passwords.
-                          The self-encryption option, ensures that only the user can access his/her information" matTooltipPosition="above" matBadge="15">help</mat-icon>
+                          <mat-icon
+                          matTooltip="COPA provides an extra safety layer by allowin users to set and define their personal encryption passwords.
+                          The self-encryption option, ensures that only the user can access his/her information"
+                          matTooltipPosition="above"
+                          matTooltipClass="tooltip"
+                          matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
                           color="accent"
@@ -134,13 +164,21 @@
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                             <mat-radio-button class="example-radio-button" [value]="'upload'">
                               Upload to <span class="strong-text">COPA</span> servers
-                              <mat-icon matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                              <mat-icon
+                              matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use."
+                              matTooltipPosition="above"
+                              matTooltipClass="tooltip"
+                              matBadge="15">help</mat-icon>
                             </mat-radio-button>
                           </div>
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                             <mat-radio-button class="example-radio-button" [value]="'wait'">
                              Direct (P2P)
-                            <mat-icon matTooltip="Data will only be exchanged while both sides are connected." matTooltipPosition="above" matBadge="15">help</mat-icon>
+                            <mat-icon
+                            matTooltip="Data will only be exchanged while both sides are connected."
+                            matTooltipPosition="above"
+                            matTooltipClass="tooltip"
+                            matBadge="15">help</mat-icon>
                           </mat-radio-button>
                         </div>
                         </mat-radio-group>

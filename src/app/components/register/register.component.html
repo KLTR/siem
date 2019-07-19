@@ -44,7 +44,21 @@
                 <span>By creating an account you agree to our <b class="underline pointer" (click)="openTermsOfUse()">Terms of Use</b> and <b class="underline pointer" (click)="openPrivacyPolicy()">Privacy Policy</b></span>
                 <span class="register" (click)="register()"></span>
             </p>
-          <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">Create Account
+            <!-- <button font mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isLoggingIn">
+              <mat-spinner
+              color="accent"
+              *ngIf="isLoggingIn"
+              [diameter]="30"
+              ></mat-spinner>
+            {{ 'login' | translate }}
+          </button> -->
+          <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">
+            Create Account
+            <mat-spinner
+            color="accent"
+            *ngIf="isRegistering"
+            [diameter]="30"
+            ></mat-spinner>
           </button>
           <span> Or </span>
           <button mat-raised-button type="button" color="accent" class="button">Go Anonymous</button>

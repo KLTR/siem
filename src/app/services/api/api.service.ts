@@ -52,6 +52,11 @@ export class ApiService {
     localStorage.setItem(`COPA/JWT`, token);
     this.decodeToken();
   }
+
+  forgotPassword(email: {email: string}): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.forgotPassword}`, email);
+  }
+
   updateExternalPassword(externalPassword: boolean): Observable<SailsResponse> {
     return this.request.post(`${this.serverUrls.updateExternalPassword}`, {externalPassword});
   }
