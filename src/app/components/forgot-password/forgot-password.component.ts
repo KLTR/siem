@@ -1,8 +1,10 @@
 import { ApiService } from './../../services/api/api.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-forgot-password',
@@ -35,7 +37,9 @@ export class ForgotPasswordComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [this.email, [Validators.required, Validators.pattern(emailregex)]],
+      email: [this.email,
+      [Validators.required, Validators.pattern(emailregex)],
+      [this.checkInUseEmail.bind(this)]],
     });
   }
   getErrorEmail() {
@@ -43,6 +47,8 @@ export class ForgotPasswordComponent implements OnInit {
       ? 'Field is required'
       : this.formGroup.get('email').hasError('pattern')
       ? 'Not a valid email address'
+      : this.formGroup.get('email').hasError('notExist')
+      ? 'This email address does not exist'
       : '';
   }
   onSubmit(email) {
@@ -65,4 +71,24 @@ export class ForgotPasswordComponent implements OnInit {
   goBack() {
     this.router.navigateByUrl('login');
   }
+
+  checkInUseEmail(control: FormControl) {
+    if(!control.errors){
+      console.log(control.errors);
+     return  this.apiService.isRegisteredEmail(control.value)
+      .pipe(
+        map(res => {
+          console.log(res);
+          if(!res.getBody().registered) {
+            return {notExist: true};
+          } else{
+            return null;
+          }
+        }),
+        catchError(error => null)
+      )
+  }else {
+    return of(null)
+  }
+}
 }

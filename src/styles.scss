@@ -57,7 +57,13 @@ body{
   top: 35px;
   opacity: 0.95 !important;
 }
-
+.button {
+ .mat-spinner{
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 15px);
+  }
+}
 .strong-text{
   color: $strong-text;
 }

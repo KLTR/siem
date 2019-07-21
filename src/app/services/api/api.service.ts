@@ -21,6 +21,7 @@ export class ApiService {
     login: '/api/auth/login',
     register: '/api/auth/register',
     isRegisteredEmail: '/api/auth/isregisterdemail', // email in body
+    isRegisteredUsername: '/api/auth/valid_username',
     forgotPassword: '/api/auth/forgot_password', // email in body
     saveUsername: '/api/peer/save_username',
     authMe: '/api/auth/me',
@@ -76,7 +77,7 @@ export class ApiService {
     return this.request.post(`${this.serverUrls.updateContactMethod}`, methods);
   }
   updateSelfEncryption() {
-    console.log('need to write..');
+    console.log('need to implement..');
   }
   generatKey(): Observable<SailsResponse> {
     return this.request.get(`${this.serverUrls.generateKey}`);
@@ -138,19 +139,13 @@ export class ApiService {
   resetPassword(pass: string, confirmed: string): Observable<SailsResponse> {
     return this.request.post(`${this.serverUrls.resetPassword}`, {pass, confirmed});
   }
-// searchEmail(terms: Observable<string>): any {
-//   return terms.pipe(
-//     debounceTime(400),
-//     distinctUntilChanged(),
-//     switchMap(term => this.isRegisteredEmail(term))
-//   );
-// }
-  isRegisteredEmail(email): Observable<SailsResponse> {
-    return this.request.get(`${this.serverUrls.isRegisteredEmail}`);
-      // .pipe(
-      // map( (res: any) => res.json()),
-      // map( emails => emails.filter(email => email === emailToCheck)),
-      // map( emails => !emails.length)
-    // );
+
+  isRegisteredEmail(email: string): Observable<SailsResponse> {
+    return this.request.get(`${this.serverUrls.isRegisteredEmail}`, {email});
+  }
+
+  isRegisteredUsername(username: string): Observable<SailsResponse> {
+    console.log(username);
+    return this.request.get(`${this.serverUrls.isRegisteredUsername}`, {username});
   }
 }

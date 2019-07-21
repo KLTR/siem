@@ -70,6 +70,9 @@ export class UserSettingsComponent implements OnInit {
     this.apiService.updateEmailNotifications(!this.user.emailNotify).subscribe(
       () => {
         this.apiService.editUser('emailNotify', !this.user.emailNotify);
+        this.snackBar.open(` ${!this.user.emailNotify ? 'Unsubscribed successfuly' : 'Subscribed successfuly'}`, 'ok', {
+          duration: 3000
+        })
       },
       (err) => {
         this.logError(err);

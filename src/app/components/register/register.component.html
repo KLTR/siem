@@ -19,7 +19,7 @@
         <mat-form-field class="form-element">
           <input matInput placeholder="Username*" formControlName="username" />
           <mat-error *ngIf="!username.valid && username.touched">
-            {{ requiredField }}
+            {{ getErrorUsername() }}
           </mat-error>
         </mat-form-field>
 

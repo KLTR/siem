@@ -1,7 +1,8 @@
+import { distinctUntilChanged, debounceTime, catchError, map, tap } from 'rxjs/operators';
 import { ApiService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
@@ -37,7 +38,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.apiService.isRegisteredEmail('levyroy1990@gmail.com').subscribe(res => console.log(res));
     this.createForm();
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
@@ -51,8 +51,12 @@ export class RegisterComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)]],
-      username: [null, Validators.required],
+      email: [null,
+      [Validators.required, Validators.pattern(emailregex)],
+      [this.checkInUseEmail.bind(this)]],
+      username: [null,
+      [Validators.required],
+      [this.checkInUseUsername.bind(this)]],
       loginPassword: [null, [Validators.required, this.checkPassword]],
       loginConfirmPassword: [null, [Validators.required, this.checkConfirmPassword]],
     });
@@ -81,17 +85,57 @@ checkConfirmPassword(control) {
     return '';
   }
 }
-  checkInUseEmail(control) {
-    // mimic http database access
-    const db = ['tony@gmail.com'];
-    return new Observable(observer => {
-      setTimeout(() => {
-        this.apiService.isRegisteredEmail(control.value).subscribe(res => console.log(res));
-        const result = db.indexOf(control.value) !== -1 ? { alreadyInUse: true } : null;
-        observer.next(result);
-        observer.complete();
-      }, 1000);
-    });
+
+  checkInUseUsername(control: FormControl) {
+    if(!control.errors){
+      console.log(control.value);
+     return  this.apiService.isRegisteredUsername(control.value)
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(3000),
+        map(res => {
+          console.log(res);
+          if(res.getBody().exist) {
+            return {alreadyInUse: true};
+          } else{
+            return null;
+          }
+        }),
+        catchError(error => {
+          return of(null)
+        })
+      )
+  }else {
+    return of(null)
+  }
+  }
+  checkInUseEmail(control: FormControl) {
+        if(!control.errors){
+          console.log(control.errors);
+         return  this.apiService.isRegisteredEmail(control.value)
+          .pipe(
+            map(res => {
+              console.log(res);
+              if(res.getBody().registered) {
+                return {alreadyInUse: true};
+              } else{
+                return null;
+              }
+            }),
+            catchError(error => of(null))
+          )
+      }else {
+        return of(null)
+      }
+  }
+
+
+  getErrorUsername(){
+    return this.formGroup.get('username').hasError('required')
+      ? 'Field is required'
+      : this.formGroup.get('username').hasError('alreadyInUse')
+      ? 'This username is already in use'
+      : '';
   }
 
   getErrorEmail() {
