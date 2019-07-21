@@ -47,6 +47,7 @@ import {
 import { PrivacyPolicyDialog, TermsOfUseDialog } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/home/menu-items/user-settings/reset-password/reset-password.component';
 import { AuthGuard } from '@guards';
+import { HistoryComponent } from './components/home/menu-items/history/history.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -70,13 +71,15 @@ export function createTranslateLoader(http: HttpClient) {
     TransfersComponent,
     UserSettingsComponent,
     ResetPasswordComponent,
+    HistoryComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
     TermsOfUseDialog,
     TransfersComponent,
     UserSettingsComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

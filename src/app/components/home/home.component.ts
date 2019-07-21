@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TransfersComponent } from './menu-items/transfers/transfers.component';
 import { UserSettingsComponent } from './menu-items/user-settings/user-settings.component';
+import { HistoryComponent } from './menu-items/history/history.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,7 +29,6 @@ export class HomeComponent implements OnInit {
      this.dialogConfig.hasBackdrop = true;
      this.dialogConfig.autoFocus = false;
      this.dialogConfig.closeOnNavigation  = true;
-
    }
 
   ngOnInit() {
@@ -40,31 +40,33 @@ export class HomeComponent implements OnInit {
     this.dialog.open(TransfersComponent, this.dialogConfig);
   }
   openSettings() {
-    // this.dialogConfig.backdropClass = 'backdrop-hide';
     const settingsConfig = new MatDialogConfig();
-    settingsConfig.autoFocus = true;
-    settingsConfig.hasBackdrop = true;
-    settingsConfig.autoFocus = false;
-    settingsConfig.maxWidth = '100vw';
-    settingsConfig.maxHeight = '100vh';
-    settingsConfig.closeOnNavigation = true;
-    settingsConfig.backdropClass = 'backdrop-hide';
+    settingsConfig.minWidth = '500px';
+    settingsConfig.maxWidth = '50vw';
     if (this.mobile) {
       settingsConfig.height = '100vh';
       settingsConfig.width = '100vw';
+      settingsConfig.maxWidth = '50vw';
       settingsConfig.position = {
         top: '0',
         left: '0'
-      };
-    } else {
-      settingsConfig.height = 'fit-content';
-      settingsConfig.width = '50vw';
-      settingsConfig.position = {
-        top: '10vh',
-        left: '25%'
       };
     }
     this.dialog.open(UserSettingsComponent, settingsConfig);
   }
 
+  openHistory() {
+    const historyConfig = new MatDialogConfig();
+    historyConfig.maxWidth = '100vw';
+    if (this.mobile) {
+      historyConfig.height = '100vh';
+      historyConfig.width = '100vw';
+      historyConfig.maxWidth = '50vw';
+      historyConfig.position = {
+        top: '0',
+        left: '0'
+      };
+    }
+    this.dialog.open(HistoryComponent, historyConfig);
+  }
 }

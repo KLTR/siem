@@ -1,0 +1,41 @@
+@import '../dialog-style/dialog-style.scss';
+@import '../../../../../styles/colors.scss';
+.container{
+  .tab-content{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .table{
+      width: 90vw;
+
+      .failed{
+        color: $red;
+      }
+      .completed{
+        color: $success;
+      }
+      .denied{
+        color: $accent;
+      }
+    }
+    }
+  .nav{
+  }
+}
+/* Column Widths */
+.mat-column-filename,
+.mat-column-sender {
+  max-width: 130px
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+.spinner-container{
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -25,6 +25,7 @@ export class ApiService {
     forgotPassword: '/api/auth/forgot_password', // email in body
     saveUsername: '/api/peer/save_username',
     authMe: '/api/auth/me',
+    getHistory: '/api/rest/history/get', // type incoming / outgoing
     updateEmailNotifications: '/api/peer/updateEmailNotifications',
     authPassword: '/api/auth/authPass',
     resetPassword: '/api/auth/reset_login_password',
@@ -147,5 +148,9 @@ export class ApiService {
   isRegisteredUsername(username: string): Observable<SailsResponse> {
     console.log(username);
     return this.request.get(`${this.serverUrls.isRegisteredUsername}`, {username});
+  }
+
+  getHistory(type: string): Observable<SailsResponse> {
+    return this.request.get(`${this.serverUrls.getHistory}`, {type});
   }
 }
