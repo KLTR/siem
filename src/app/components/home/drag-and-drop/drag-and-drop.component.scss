@@ -5,6 +5,9 @@
   width: 100%;
   border: dashed 4px $main;
 
+  .text{
+    font-size: 24px;
+  }
   .header{
     font-size: 36px;
     color: $main;
@@ -21,14 +24,3 @@
   }
 }
 
-.text-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.centered {
-  font-family: sans-serif;
-  font-size: 1.3em;
-  font-weight: bold;
-  text-align: center;
-}

@@ -11,7 +11,11 @@ import { UserSettingsComponent } from './menu-items/user-settings/user-settings.
 export class HomeComponent implements OnInit {
    dialogConfig: MatDialogConfig;
    mobile = false;
+   user: any;
   constructor(private dialog: MatDialog, private apiService: ApiService) {
+    this.apiService.user.subscribe(user => {
+      this.user = user;
+    });
      this.dialogConfig = new MatDialogConfig();
      this.dialogConfig.position = {
        top: '10vh',

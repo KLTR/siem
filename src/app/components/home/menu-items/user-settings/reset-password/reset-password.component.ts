@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
       (err) => {
         err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
         console.log(err);
-        this.snackBar.open(`Ooops ... \n ${err}`, 'ok', {
+        this.snackBar.open(`Ooops ... \n wrong password`, 'ok', {
           duration: 3000
         });
         this.isAuthenticating = false;
