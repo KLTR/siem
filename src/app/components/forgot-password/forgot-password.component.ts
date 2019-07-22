@@ -28,6 +28,9 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit() {
     // this.email = this.route.snapshot.params
    this.email = this.route.snapshot.paramMap.get('email')
+   if(this.email === 'null') {
+     this.email = '';
+   }
     this.createForm();
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
