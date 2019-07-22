@@ -10,12 +10,13 @@ import { AppRoutingModule, MaterialModule } from '@modules';
 import { SailsModule, SailsOptions, SailsEnvironment } from 'ngx-sails-socketio';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { environment } from './../environments/environment';
 
 // Sails Options
 const sailsOptions: SailsOptions = {
-  url: 'https://backend-sandbox.copa.io:443',
+  url: environment.webSocketUrl,
   prefix: '',
-  environment: SailsEnvironment.DEV,
+  environment: SailsEnvironment[environment.production ? 'PROD' : 'DEV'],
   query: '__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=windows&__sails_io_sdk_language=javascript',
   reconnection: true,
   autoConnect: false,
