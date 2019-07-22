@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  webSocketUrl: 'https://backend-sandbox.copa.io',
+  webSocketUrl: 'http://localhost:1337',
   errorSeparator: '```'
 };
