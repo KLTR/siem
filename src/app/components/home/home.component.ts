@@ -57,15 +57,14 @@ export class HomeComponent implements OnInit {
 
   openHistory() {
     const historyConfig = new MatDialogConfig();
-    historyConfig.maxWidth = '100vw';
-    if (this.mobile) {
       historyConfig.height = '100vh';
       historyConfig.width = '100vw';
       historyConfig.maxWidth = '50vw';
+      historyConfig.maxWidth = '100vw';
+      historyConfig.maxHeight = '100vh';
       historyConfig.position = {
         top: '0',
         left: '0'
-      };
     }
     this.dialog.open(HistoryComponent, historyConfig);
   }

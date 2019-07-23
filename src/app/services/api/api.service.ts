@@ -62,7 +62,7 @@ export class ApiService {
   }
 
   setDownloadLinkLimitDefault(downloadLinkLimitName: string): Observable<SailsResponse> {
-    return this.request.get(`${this.serverUrls.setDownloadLinkLimitDefault}`, {downloadLinkLimitName})
+    return this.request.post(`${this.serverUrls.setDownloadLinkLimitDefault}`, {downloadLinkLimitName})
   }
 
   updateExternalPassword(externalPassword: boolean): Observable<SailsResponse> {

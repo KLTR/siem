@@ -12,11 +12,9 @@ export class HistoryComponent implements OnInit {
 
   displayedColumns: string[] = ['createdAt', 'filename', 'sender', 'fileSize', 'status'];
   incoming: [] = [];
-  dataSource: MatTableDataSource<Incoming>;
   outgoing: [] = [];
   history:[] = [];
   isLoadingResults = true;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(
     private apiService: ApiService,
@@ -33,8 +31,6 @@ export class HistoryComponent implements OnInit {
     this.apiService.getHistory('incoming').subscribe(
       (res) => {
         this.incoming =(res.getBody().data.records)
-        this.dataSource = new MatTableDataSource(this.incoming);
-        this.dataSource.paginator = this.paginator;
         console.log(this.incoming)
         this.isLoadingResults = false;
       },

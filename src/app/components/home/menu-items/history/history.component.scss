@@ -1,37 +1,77 @@
 @import '../dialog-style/dialog-style.scss';
 @import '../../../../../styles/colors.scss';
-.container{
-  .tab-content{
+
+.mat-dialog-content {
+  max-height: 100%;
+
+}
+
+.container {
+  .tab-content {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    .wrapper{
-      .table-container{
-         min-height: 450px;
-         .table{
-          width: 90vw;
 
-          .failed{
+    .wrapper {
+      width: 100%;
+
+      .item {
+        margin-top: 10px;
+
+        &.completed {
+          box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+          span {
+            color: $green;
+            &.status{
+              background: rgb(187, 255, 216);
+            }
+          }
+          .mat-icon{
+            color: $green;
+          }
+        }
+        &.denied,
+        &.failed {
+          box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+          span {
+            color: $red;
+            &.status {
+              background: rgb(255, 198, 214);;
+            }
+          }
+          .mat-icon{
             color: $red;
           }
-          .completed{
-            color: $success;
+        }
+        .info {
+          width: 300px;
+          span {
+            width: 100%;
           }
-          .denied{
-            color: $accent;
+        }
+        div {
+          &.status {
+            width: 300px;
+            .status {
+              text-transform: uppercase;
+              width: 50%;
+              text-align: center;
+            }
           }
         }
       }
     }
   }
 }
-mat-dialog-actions{
-  .mat-paginator{
+
+mat-dialog-actions {
+  .mat-paginator {
     margin-left: auto;
   }
 }
+
 /* Column Widths */
 .mat-column-filename,
 .mat-column-sender {
@@ -41,7 +81,8 @@ mat-dialog-actions{
 .mat-column-created {
   max-width: 124px;
 }
-.spinner-container{
+
+.spinner-container {
   min-height: 130px;
   display: flex;
   align-items: center;

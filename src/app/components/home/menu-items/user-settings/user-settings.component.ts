@@ -258,9 +258,10 @@ export class UserSettingsComponent implements OnInit {
   }
   selectDownloadLinkLimit(event: MatSelectChange) {
     console.log(event);
+    console.log({...this.user.downloadLinkLimit});
     this.apiService.setDownloadLinkLimitDefault(event.value).subscribe(
       (res) => {
-        this.apiService.editUser('downloadLinkLimit', {...this.user.downLoadLinkLimit, name: event.value});
+        this.apiService.editUser('downloadLinkLimit', event.value);
         console.log(this.user);
       },
       (err) => {
