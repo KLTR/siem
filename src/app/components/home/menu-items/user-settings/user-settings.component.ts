@@ -1,10 +1,30 @@
-import { environment } from './../../../../../environments/environment.prod';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '@app/services';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ErrorService } from '@services';
+import {
+  environment
+} from './../../../../../environments/environment.prod';
+import {
+  MatDialog,
+  MatDialogConfig
+} from '@angular/material/dialog';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  ApiService
+} from '@app/services';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
+import {
+  MatSnackBar, MatSelectChange
+} from '@angular/material';
+import {
+  ResetPasswordComponent
+} from './reset-password/reset-password.component';
 
 @Component({
   selector: 'app-user-settings',
@@ -20,16 +40,23 @@ export class UserSettingsComponent implements OnInit {
   errorSeparator = environment.errorSeparator;
   dialogConfig: MatDialogConfig;
   mobile = false;
+  connectionMethods = [];
+  app: any;
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-   ) {
+    private errorService: ErrorService
+  ) {
     this.apiService.user.subscribe(user => {
       this.user = user;
     });
-     }
+    this.apiService.app.subscribe(app => {
+      this.app = app;
+      console.log(this.app);
+    })
+  }
 
   ngOnInit() {
     if (window.screen.width <= 480) { // 768px portrait
@@ -75,51 +102,67 @@ export class UserSettingsComponent implements OnInit {
         })
       },
       (err) => {
-        this.logError(err);
+        this.errorService.logError(err);
       }
     );
   }
 
-  logError(err) {
-    err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
-    console.log(err);
-    this.snackBar.open(`Ooops ... \n ${err}`, 'ok', {
-      duration: 3000
-    });
-  }
-  saveUsername(username: string) {
-    this.apiService.saveUsername(username).subscribe(
-      () => {
-        this.apiService.editUser('username', username);
-      },
-      (err) => {
-        this.logError(err);
-      }
-    );
-  }
   updateContactMethod() {
-    this.apiService.updateContactMethod({
-      contactByKey: this.user.contactByKey,
-      contactByEmail: this.user.contactByEmail,
-      contactByUsername: this.user.contactByUsername}
-    ).subscribe(
-      () => {
-        this.apiService.editUser('contactByKey', this.user.contactByKey);
-        this.apiService.editUser('contactByEmail', this.user.contactByEmail);
-        this.apiService.editUser('contactByUsername', this.user.contactByUsername);
-      },
-      (err) => {
-       this.logError(err);
-      }
-    );
+    console.log(this.user.contactByUsername)
+    if (!this.user.contactByKey && !this.user.contactByEmail && !this.user.contactByUsername) {
+      this.snackBar.open('you must select atleast one connection method. setting back to Email ..', 'Ok', {
+        duration: 3000
+      })
+      this.apiService.updateContactMethod({
+        contactByKey: false,
+        contactByEmail: true,
+        contactByUsername: false
+      }).subscribe(
+        () => {
+          this.apiService.editUser('contactByKey', false);
+          this.apiService.editUser('contactByEmail', true);
+          this.apiService.editUser('contactByUsername', false);
+          this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
+            duration: 3000
+          })
+          return;
+        },
+        (err) => {
+          this.errorService.logError(err);
+          return;
+        }
+      );
+      return;
+    } else {
+      this.apiService.updateContactMethod({
+        contactByKey: this.user.contactByKey,
+        contactByEmail: this.user.contactByEmail,
+        contactByUsername: this.user.contactByUsername
+      }).subscribe(
+        () => {
+          this.apiService.editUser('contactByKey', this.user.contactByKey);
+          this.apiService.editUser('contactByEmail', this.user.contactByEmail);
+          this.apiService.editUser('contactByUsername', this.user.contactByUsername);
+          this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
+            duration: 3000
+          })
+        },
+        (err) => {
+          this.errorService.logError(err);
+        }
+      );
+    }
   }
   updateExternalPassword() {
     this.apiService.updateExternalPassword(!this.user.externalPassword).subscribe(
       (res) => {
         this.apiService.editUser('externalPassword', !this.user.externalPassword);
+        this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
+          duration: 3000
+        })
       },
       (err) => {
-        console.log(err);
+          this.errorService.logError(err);
       }
     );
   }
@@ -127,9 +170,13 @@ export class UserSettingsComponent implements OnInit {
     this.apiService.updateProtectedLinkPassword(!this.user.protectedLinkPass).subscribe(
       (res) => {
         this.apiService.editUser('protectedLinkPass', !this.user.protectedLinkPass);
+        this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
+          duration: 3000
+        })
+
       },
       (err) => {
-        console.log(err);
+          this.errorService.logError(err);
       }
     );
   }
@@ -148,9 +195,13 @@ export class UserSettingsComponent implements OnInit {
     this.apiService.updateOfflineMode(this.user.offlineMode).subscribe(
       (res) => {
         this.apiService.editUser('offlineMode', this.user.offlineMode);
+        this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
+          duration: 3000
+        })
+
       },
       (err) => {
-        console.log(err);
+        this.errorService.logError(err);
       }
     );
   }
@@ -159,9 +210,13 @@ export class UserSettingsComponent implements OnInit {
     this.apiService.logout().subscribe(
       () => {
         console.log('logged out');
+        this.snackBar.open('You are now logged out.', 'Ok', {
+          duration: 3000
+        })
+
       },
       (err) => {
-        this.logError(err);
+        this.errorService.logError(err);
       }
     );
   }
@@ -170,30 +225,47 @@ export class UserSettingsComponent implements OnInit {
     const oldPass = this.user.password;
     this.user.password = null;
     this.apiService.generatKey().subscribe(
-        (res) => {
-          this.apiService.editUser('password', res.getBody().password);
-        },
-        (err) => {
-          // this.logError(err);
-          console.log(err);
-          this.logError(err);
-          this.user.password = oldPass;
-        }
-      );
-}
-  checkUsername(control: FormControl): {[s: string]: boolean} {
-     if (control.value === this.user.username) {
-       this.isSameUsername = true;
-     } else {
-       this.isSameUsername = false;
-     }
-     return control.value === this.user.username ? { sameUsername : true} : null;
+      (res) => {
+        this.apiService.editUser('password', res.getBody().password);
+        this.snackBar.open('Key was successfuly generated.', 'Ok', {
+          duration: 3000
+        })
+      },
+      (err) => {
+        this.errorService.logError(err);
+        this.user.password = oldPass;
+      }
+    );
+  }
+  checkUsername(control: FormControl): {
+    [s: string]: boolean
+  } {
+    if (control.value === this.user.username) {
+      this.isSameUsername = true;
+    } else {
+      this.isSameUsername = false;
+    }
+    return control.value === this.user.username ? {
+      sameUsername: true
+    } : null;
   }
   getUsernameError() {
-      return this.formGroup.get('username').hasError('required')
-        ? 'Field is required'
-        : this.formGroup.get('username').hasError('sameUsername')
-        ? 'Same username'
-        : '';
+    return this.formGroup.get('username').hasError('required') ?
+      'Field is required' :
+      this.formGroup.get('username').hasError('sameUsername') ?
+      'Same username' :
+      '';
+  }
+  selectDownloadLinkLimit(event: MatSelectChange) {
+    console.log(event);
+    this.apiService.setDownloadLinkLimitDefault(event.value).subscribe(
+      (res) => {
+        this.apiService.editUser('downloadLinkLimit', {...this.user.downLoadLinkLimit, name: event.value});
+        console.log(this.user);
+      },
+      (err) => {
+        this.errorService.logError(err);
+      }
+    )
   }
 }

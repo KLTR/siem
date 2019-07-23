@@ -1,4 +1,4 @@
-<div *ngIf="user" class="container" >
+<div *ngIf="user && app" class="container" >
     <h2 mat-dialog-title >ACCOUNT SETTINGS
         <button mat-icon-button class="close-btn" aria-hidden="false" mat-dialog-close >
             <mat-icon>close</mat-icon>
@@ -58,7 +58,7 @@
                       <li>MEMBERSHIP</li>
                       <li class="list-item" [ngClass]="user.free ? 'selected' : ''">Free</li>
                       <li class="list-item" [ngClass]="user.payg ? 'selected' : ''">PAYG</li>
-                      <li class="list-item" [ngClass]="user.business ? 'selected' : ''">Business</li>
+                      <li class="list-item" [ngClass]="user.business ? 'selected' : ''">Premium</li>
                     </ul>
                 </footer>
               </div>
@@ -70,6 +70,7 @@
                       <p>
                         Choose your connection method:
                         <mat-icon
+                        class='help-icon'
                         matTooltip="Other users will only be able to interact with you through the selected identifiers."
                         matTooltipPosition="above"
                         matTooltipClass="tooltip"
@@ -97,14 +98,15 @@
                         <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByEmail">Email</mat-checkbox>
                       </div>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contacyByUsername">Username</mat-checkbox>
+                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByUsername">Username</mat-checkbox>
                       </div>
                     </div>
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
                           2 Factor-Authentication:
                           <mat-icon
-                          matTooltip="COPA users have the option of adding another layer of protection to transfers, by adding a password"
+                          class='help-icon'
+                          matTooltip="COPA users have the option of adding another layer of protection, by adding a password"
                           matTooltipPosition="above"
                           matTooltipClass="tooltip"
                           matBadge="15"
@@ -121,7 +123,8 @@
                         <p>
                           Protected Link Password
                           <mat-icon
-                          matTooltip="Require password authentication on protected link transfer"
+                          class='help-icon'
+                          matTooltip="Require password authentication on protected link transfers"
                           matTooltipPosition="above"
                           matTooltipClass="tooltip"
                           matBadge="15">help</mat-icon>
@@ -135,8 +138,26 @@
                     </div>
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <p>
+                          Download Link Expiriation
+                          <mat-icon
+                          class='help-icon'
+                          matTooltip="Require password authentication on protected link transfers"
+                          matTooltipPosition="above"
+                          matTooltipClass="tooltip"
+                          matBadge="15">help</mat-icon>
+                        </p>
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [(value)]="user.downloadLinkLimit.name" (selectionChange)="selectDownloadLinkLimit($event)">
+                              <mat-option *ngFor="let option of app.downloadLinkLimits" [value]="option.name">{{option.description}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                        <p>
                           Self Encryption
                           <mat-icon
+                          class='help-icon'
                           matTooltip="COPA provides an extra safety layer by allowing users to set and define their personal encryption passwords.
                           The self-encryption option, ensures that only the user can access his or her information."
                           matTooltipPosition="above"
@@ -165,6 +186,7 @@
                             <mat-radio-button class="example-radio-button" [value]="'upload'">
                               Upload to <span class="strong-text">COPA</span> servers
                               <mat-icon
+                              class='help-icon'
                               matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use."
                               matTooltipPosition="above"
                               matTooltipClass="tooltip"
@@ -175,6 +197,7 @@
                             <mat-radio-button class="example-radio-button" [value]="'wait'">
                              Direct (P2P)
                             <mat-icon
+                            class='help-icon'
                             matTooltip="Data will only be exchanged while both sides are connected."
                             matTooltipPosition="above"
                             matTooltipClass="tooltip"

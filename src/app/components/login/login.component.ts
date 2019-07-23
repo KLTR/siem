@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
         this.error = null;
         this.apiService.decodeToken();
         this.router.navigateByUrl('home');
+        this.apiService.setApp(body);
       },
       (err) => {
         this.isLoggingIn = false;

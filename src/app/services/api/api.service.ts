@@ -15,13 +15,13 @@ export class ApiService {
   socket: SailsSubscription;
   public user: BehaviorSubject<any>;
   public userObject: any;
-
+  public app: BehaviorSubject<any>;
   serverUrls = {
     getSocketInfo: '/api/socketinfo',
     login: '/api/auth/login',
     register: '/api/auth/register',
     isRegisteredEmail: '/api/auth/isregisterdemail', // email in body
-    isRegisteredUsername: '/api/auth/valid_username',
+    isRegisteredUsername: '/api/peer/valid_username',
     forgotPassword: '/api/auth/forgot_password', // email in body
     saveUsername: '/api/peer/save_username',
     authMe: '/api/auth/me',
@@ -35,12 +35,14 @@ export class ApiService {
     updateProtectedLinkPassword: '/api/peer/update/protected_link_password',
     updateOfflineMode: '/api/peer/update/offline_mode',
     updateSelfEncryption: '/api/peer/update/self_encryption',
+    setDownloadLinkLimitDefault: '/api/peer/settings/set/download_link_limit',
     logout: '/api/peer/logout',
 
   };
 
   constructor(private sails: Sails, private router: Router, private dialog: MatDialog) {
     this.user = new BehaviorSubject({});
+    this.app = new BehaviorSubject({});
     this.request = new SailsRequest(this.sails);
     this.decodeToken();
   }
@@ -57,6 +59,10 @@ export class ApiService {
 
   forgotPassword(email: {email: string}): Observable<SailsResponse> {
     return this.request.post(`${this.serverUrls.forgotPassword}`, email);
+  }
+
+  setDownloadLinkLimitDefault(downloadLinkLimitName: string): Observable<SailsResponse> {
+    return this.request.get(`${this.serverUrls.setDownloadLinkLimitDefault}`, {downloadLinkLimitName})
   }
 
   updateExternalPassword(externalPassword: boolean): Observable<SailsResponse> {
@@ -105,6 +111,12 @@ export class ApiService {
     console.log(this.userObject);
   }
 
+  setApp(data): void{
+    this.app.next(data);
+  }
+
+
+
   getUser(): BehaviorSubject<any> {
     return this.user;
   }
@@ -137,8 +149,8 @@ export class ApiService {
   authPassword(password: string): Observable<SailsResponse> {
     return this.request.post(`${this.serverUrls.authPassword}`, {password});
   }
-  resetPassword(pass: string, confirmed: string): Observable<SailsResponse> {
-    return this.request.post(`${this.serverUrls.resetPassword}`, {pass, confirmed});
+  resetPassword(passwords): Observable<SailsResponse> {
+    return this.request.post(`${this.serverUrls.resetPassword}`, passwords);
   }
 
   isRegisteredEmail(email: string): Observable<SailsResponse> {

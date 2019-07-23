@@ -58,7 +58,7 @@ export class ResetPasswordComponent implements OnInit {
     this.isSaving = true;
     const password = this.formGroup.get('loginPassword').value;
     const confirmed = this.formGroup.get('loginConfirmPassword').value;
-    this.apiService.resetPassword(password, confirmed).subscribe(
+    this.apiService.resetPassword({password, confirmed}).subscribe(
       (res) => {
         console.log(res);
         this.snackBar.open(`New password was succesfully saved :)`, 'ok', {

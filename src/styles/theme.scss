@@ -127,7 +127,7 @@ $copa-accent : (
 // );
 // $copa-accent: mat-palette($mat-pink, A200, A100, A400);
 $theme-primary: mat-palette($copa-primary);
-$theme-accent: mat-palette($copa-accent);
+$theme-accent: mat-palette($copa-accent, 500, 50, 700);
 $theme-warn: mat-palette($mat-red);
 // The warn palette is optional (defaults to red).
 // $candy-app-warn: mat-palette($mat-red);

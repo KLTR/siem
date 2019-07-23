@@ -10,7 +10,7 @@
       <span class="mt-35 mat-title">SIGN UP</span>
       <form *ngIf="!isRegistrationComplete; else completed" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form mt-5">
         <mat-form-field class="form-element">
-          <input matInput placeholder="Email*" formControlName="email" />
+          <input autocomplete="true" matInput placeholder="Email*" formControlName="email" />
           <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
             {{ getErrorEmail() }}
           </mat-error>
@@ -53,9 +53,8 @@
             {{ 'login' | translate }}
           </button> -->
           <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">
-            Create Account
+            <span class="btn-text" *ngIf="!isRegistering">Create Account</span>
             <mat-spinner
-            color="accent"
             *ngIf="isRegistering"
             [diameter]="30"
             ></mat-spinner>

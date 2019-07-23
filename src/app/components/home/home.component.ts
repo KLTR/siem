@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   openSettings() {
     const settingsConfig = new MatDialogConfig();
     settingsConfig.minWidth = '500px';
-    settingsConfig.maxWidth = '50vw';
+    settingsConfig.maxWidth = '650px';
     if (this.mobile) {
       settingsConfig.height = '100vh';
       settingsConfig.width = '100vw';

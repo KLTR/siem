@@ -3,7 +3,7 @@
 .dropzone {
   height: 100%;
   width: 100%;
-  border: dashed 4px $main;
+  border: dashed 2px $main;
 
   .text{
     font-size: 24px;
@@ -13,8 +13,9 @@
     color: $main;
   }
   .img{
-    height: 350px;
-    width: 350px;
+    height: 50%;
+    width: 100%;
+    padding: 25px;
   }
   .buttons{
     padding: 10px 0;

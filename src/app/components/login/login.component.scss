@@ -51,15 +51,15 @@ span{
   width: 100%;
 }
 
-.button {
-  text-transform: uppercase;
-  width: 100%;
-  .mat-spinner{
-    position: absolute;
-    right: 10px;
-    top: calc(50% - 15px);
-  }
-}
+// .button {
+//   text-transform: uppercase;
+//   width: 100%;
+//   .mat-spinner{
+//     position: absolute;
+//     right: 10px;
+//     top: calc(50% - 15px);
+//   }
+// }
 .password-error{
   width: 60%
 }
@@ -107,4 +107,7 @@ mat-form-field{
 
 .text-container{
   min-height: 100px;
+}
+.mat-spinner::ng-deep circle {
+  stroke: #fff !important;
 }
