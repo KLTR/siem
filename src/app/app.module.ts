@@ -1,3 +1,4 @@
+import { ConfirmDialogComponent } from '@app/dialogs/confirm.dialog/confirm.dialog.component';
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     UserSettingsComponent,
     ResetPasswordComponent,
     HistoryComponent,
+    ConfirmDialogComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -80,7 +82,8 @@ export function createTranslateLoader(http: HttpClient) {
     TransfersComponent,
     UserSettingsComponent,
     ResetPasswordComponent,
-    HistoryComponent
+    HistoryComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { ErrorService } from '@services';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
 import { ApiService } from '@app/services';
@@ -21,7 +22,8 @@ export class ResetPasswordComponent implements OnInit {
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private errorService: ErrorService) { }
 
   ngOnInit() {
     this.createForm();
@@ -44,11 +46,7 @@ export class ResetPasswordComponent implements OnInit {
         this.hide = true;
       },
       (err) => {
-        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
-        console.log(err);
-        this.snackBar.open(`Ooops ... \n wrong password`, 'ok', {
-          duration: 3000
-        });
+        this.errorService.logError(err);
         this.isAuthenticating = false;
         this.authenticated = false;
       }
@@ -68,7 +66,7 @@ export class ResetPasswordComponent implements OnInit {
       },
       (err) => {
         this.isSaving = false;
-        console.log(err);
+        this.errorService.logError(err);
       }
      );
   }

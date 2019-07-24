@@ -8,7 +8,7 @@
         <mat-tab-group>
             <mat-tab label="General">
               <div class="tab-content">
-                  <form [formGroup]="formGroup" class="form" >
+                  <form [formGroup]="formGroup" class="form-full" >
                       <div class="row mt-10">
                           <mat-form-field floatLabel='auto' class="form-element">
                               <mat-label><mat-icon>email</mat-icon>Email</mat-label>
@@ -17,7 +17,7 @@
                                matTooltip="{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}} to email notifications"
                                matTooltipPosition="below"
                                matTooltipClass="tooltip"
-                               mat-button color="accent"
+                               mat-button color="primary"
                                type="button"
                                (click)="updateEmailNotification()">{{user.emailNotify ? 'Unsubscribe' : 'Subscribe'}}
                               </button>
@@ -30,7 +30,7 @@
                               <mat-error *ngIf="!formGroup.controls['username'].valid && formGroup.controls['username'].touched">
                                {{ getUsernameError() }}
                               </mat-error>
-                              <button  class="button" [disabled]="isSameUsername || !formGroup.valid" type="button" mat-raised-button color="accent" (click)="saveUsername(username.value)">
+                              <button  class="button" [disabled]="isSameUsername || !formGroup.valid" type="button" mat-raised-button color="primary" (click)="saveUsername(username.value)">
                                   Save
                               </button>
                             </mat-form-field>
@@ -46,7 +46,7 @@
                               matTooltipClass="tooltip"
                               class="button"
                               type="button"
-                              mat-raised-button color="accent" (click)="openResetPassword()">
+                              mat-raised-button color="primary" (click)="openResetPassword()">
                                   Reset
                               </button>
                             </mat-form-field>
@@ -77,14 +77,14 @@
                         matBadge="15">help</mat-icon>
                       </p>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
+                        <mat-checkbox color="primary" (change)="updateContactMethod()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
                           <mat-form-field fxFlex *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element ml-25" >
                             <input matInput disabled value="{{user.password}}" />
                           </mat-form-field>
                           <button  *ngIf="user.contactByKey && user.password" class="button new-key-btn"
                                matTooltip="request a new security key"
                                matTooltipPosition="below"
-                               mat-button color="accent"
+                               mat-button color="primary"
                                matTooltipClass="tooltip"
                                type="button"
                                (click)="generateKey()">Reset
@@ -95,10 +95,10 @@
                           ></mat-spinner>
                       </div>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByEmail">Email</mat-checkbox>
+                        <mat-checkbox color="primary" (change)="updateContactMethod()" [(ngModel)]="user.contactByEmail">Email</mat-checkbox>
                       </div>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox (change)="updateContactMethod()" [(ngModel)]="user.contactByUsername">Username</mat-checkbox>
+                        <mat-checkbox color="primary" (change)="updateContactMethod()" [(ngModel)]="user.contactByUsername">Username</mat-checkbox>
                       </div>
                     </div>
                     <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
@@ -113,7 +113,7 @@
                           >help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="accent"
+                          color="primary"
                           [checked]="user.externalPassword"
                           (change)="updateExternalPassword()"
                           >
@@ -130,7 +130,7 @@
                           matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="accent"
+                          color="primary"
                           [checked]="user.protectedLinkPass"
                           (change)="updateProtectedLinkPasword()"
                         >
@@ -165,7 +165,7 @@
                           matBadge="15">help</mat-icon>
                         </p>
                         <mat-slide-toggle
-                          color="accent"
+                          color="primary"
                           [checked]="user.selfEncryption"
                           (change)="updateSelfEncryption()"
                         >
@@ -173,17 +173,18 @@
                     </div>
                     <label class="mt-15">Data Exchange Policy</label>
                         <mat-radio-group
+                          color="primary"
                           aria-labelledby="example-radio-group-label"
                           class="example-radio-group"
                           [(ngModel)]="user.offlineMode"
                           (change)="updateOfflineMode()">
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                            <mat-radio-button class="example-radio-button" [value]="'ask'">
+                            <mat-radio-button color="primary" [value]="'ask'">
                               Always ask me
                             </mat-radio-button>
                           </div>
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                            <mat-radio-button class="example-radio-button" [value]="'upload'">
+                            <mat-radio-button color="primary" [value]="'upload'">
                               Upload to <span class="strong-text">COPA</span> servers
                               <mat-icon
                               class='help-icon'
@@ -194,7 +195,7 @@
                             </mat-radio-button>
                           </div>
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                            <mat-radio-button class="example-radio-button" [value]="'wait'">
+                            <mat-radio-button color="primary" color="primary" [value]="'wait'">
                              Direct (P2P)
                             <mat-icon
                             class='help-icon'

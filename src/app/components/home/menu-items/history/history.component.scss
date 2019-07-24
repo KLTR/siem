@@ -3,10 +3,35 @@
 
 .mat-dialog-content {
   max-height: 100%;
-
+  .mat-tab-body-wrapper{
+    height: 100%;
+  }
 }
 
 .container {
+  mat-sidenav-container{
+    min-height: 90vh;  
+    mat-sidenav{
+      width: 175px;
+    }
+    mat-sidenav-content{
+      overflow: hidden;
+    }
+  }
+
+  .sidenav-btn{
+    position: fixed;
+    top: 47%;
+    z-index: 10;
+    transition: all 1ms ease-in;
+    left: 10px;
+    &.closed{
+      left: 10px;
+    }
+    &.opened{
+      left: 110px
+    }
+  }
   .tab-content {
     height: 100%;
     display: flex;
@@ -20,45 +45,81 @@
       .item {
         margin-top: 10px;
 
-        &.completed {
-          box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-          span {
-            color: $green;
-            &.status{
-              background: rgb(187, 255, 216);
-            }
-          }
-          .mat-icon{
-            color: $green;
-          }
+        mat-menu {
+          position: absolute;
         }
-        &.denied,
-        &.failed {
-          box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-          span {
-            color: $red;
-            &.status {
-              background: rgb(255, 198, 214);;
-            }
-          }
-          .mat-icon{
-            color: $red;
-          }
-        }
+
         .info {
           width: 300px;
+
           span {
             width: 100%;
           }
         }
-        div {
-          &.status {
-            width: 300px;
-            .status {
-              text-transform: uppercase;
-              width: 50%;
-              text-align: center;
+        .menus{
+          width: 110px;
+          .menu-btn{
+            margin-left: auto;
+          }
+        }
+        &.completed {
+          box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+          span {
+            color: $green;
+
+            &.status {
+              background: #bbffd8;
             }
+          }
+
+          .mat-icon {
+            color: $green;
+          }
+        }
+
+        &.pending {
+          box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+          span {
+            color: $primary;
+
+            &.status {
+              background: #bbcaff;
+            }
+          }
+
+          .mat-icon {
+            color: $primary;
+          }
+        }
+
+        &.denied,
+        &.failed {
+          box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+          span {
+            color: $red;
+
+            &.status {
+              background: #ffc6d6;
+            }
+          }
+
+          .mat-icon {
+            color: $red;
+          }
+        }
+      }
+
+      div {
+        &.status {
+          width: 300px;
+
+          .status {
+            text-transform: uppercase;
+            width: 50%;
+            text-align: center;
           }
         }
       }
@@ -87,4 +148,13 @@ mat-dialog-actions {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 80vh;
+  width: 100%;
+}
+
+
+.full{
+  height: 80vh;
+  display: flex;
+  align-items: center;
 }

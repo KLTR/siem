@@ -1,47 +1,152 @@
 <div class="container">
-    <h2 mat-dialog-title>MY HISTORY
-        <button mat-icon-button  class="close-btn" aria-hidden="false" mat-dialog-close >
-            <mat-icon>close</mat-icon>
+  <h2 mat-dialog-title>
+    <span>MY HISTORY</span>
+      <button (click)="sidenav.toggle()" aria-hidden="false" mat-icon-button>
+          <mat-icon>menu</mat-icon>
         </button>
-    </h2>
-    <mat-dialog-content color="primary">
-    <mat-tab-group>
-      <mat-tab label="Incoming">
+    <button mat-icon-button class="close-btn" aria-hidden="false" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </h2>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="over" [(opened)]="sideNavOpened">
+        <mat-toolbar>
+            <mat-toolbar-row>
+              <h2>Menu</h2>
+            </mat-toolbar-row>
+          </mat-toolbar>
+      
+          <mat-nav-list>
+            <mat-list-item (click)="deleteAll()">
+                <button mat-icon-button >
+                    <mat-icon matListIcon> delete </mat-icon>
+                    Delete all
+                  </button>
+            </mat-list-item>
+            <mat-list-item>
+            <button mat-icon-button>
+                <mat-icon matListIcon> search </mat-icon>
+                Search
+              </button>
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+      
+      
+          </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+     
+  <mat-dialog-content color="primary">
+    <mat-tab-group [(selectedIndex)]="selectedIndexTab">
+      <mat-tab label="Incoming" >
         <div class="tab-content">
-            <div class="spinner-container" *ngIf="isLoadingResults;">
-             <mat-spinner [diameter]="60" ></mat-spinner>
-            </div>
-            <div *ngIf="!isLoadingResults" class="wrapper p-10" fxLayout="column" fxLayoutAlign="space-evenly stretch" >
-                <div [ngClass]="item.status" class="item px-15 py-5" *ngFor="let item of incoming" fxLayout="row" fxLayoutAlign="space-between center">
-                  <mat-icon class="icon">inbox</mat-icon>
-                  <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
-                    <span class="name truncate" >{{item.filename}}</span>
-                    <span class="size">{{item.fileSize}}</span>
-                    <span class="sender truncate">{{item.sender.email}}</span>
-                  </div>
-                  <div class="status" fxLayout="column" fxLayoutAlign="space-evenly center">
-                      <span class="status">{{item.status}}</span>
-                      <span class="createdAt">Received: {{item.createdAt | date:medium}}</span>
-                      <span class="updatedAt">Completed: {{item.updatedAt | date:medium}}</span>
+          <div class="spinner-container" *ngIf="isLoadingResults; else incomingItems">
+            <mat-spinner [diameter]="60"></mat-spinner>
+          </div>
+          <ng-template #incomingItems>
+              <div  *ngIf="incoming.length > 0; else noResults" class="wrapper p-10" fxLayout="column"
+                  fxLayoutAlign="space-evenly stretch">
+                  <div [ngClass]="item.status" class="item px-15 py-5" *ngFor="let item of incoming" fxLayout="row"
+                    fxLayoutAlign="space-between center">
+                    <mat-icon class="icon">inbox</mat-icon>
+                    <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+                      <span class="name truncate">{{item.filename}}</span>
+                      <span class="size">{{item.fileSize}}</span>
+                      <span class="sender truncate">{{item.sender.email}}</span>
                     </div>
-                    <mat-icon class="delete-icon">delete</mat-icon>
+                    <div class="status" fxLayout="column" fxLayoutAlign="space-evenly center">
+                      <span class="status">{{item.status}}</span>
+                      <span class="createdAt">Received: {{item.createdAt  | date:'medium'}}</span>
+                      <span class="updatedAt">Completed: {{item.updatedAt | date:'medium'}}</span>
+                    </div>
+                    <button mat-button [matMenuTriggerFor]="incomingHistoryMenu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #incomingHistoryMenu="matMenu" [hasBackdrop]="true">
+                      <button mat-menu-item (click)="delete(item.id, 'incoming', item.filename)">
+                        <mat-icon class="delete-icon">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </mat-menu>
+                  </div>
                 </div>
-            </div>
+          </ng-template>
         </div>
       </mat-tab>
       <mat-tab label="Outgoing">
-          <div class="tab-content">
-              <div class="spinner-container" *ngIf="isLoadingResults;">
-               <mat-spinner [diameter]="60" ></mat-spinner>
-              </div>
-              <div class="wrapper" fxLayout="column" fxLayoutAlign="space-evenly stretch" >
-
-              </div>
+        <div class="tab-content">
+          <div class="spinner-container" *ngIf="isLoadingResults; else outgoingItems">
+            <mat-spinner [diameter]="60"></mat-spinner>
           </div>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button class="mat-raised-button mat-primary">Delete All</button>
-    </mat-dialog-actions>
-  </div>
+          <ng-template #outgoingItems >
+              <div *ngIf="outgoing.length > 0; else noOutgoing" class="wrapper p-10" fxLayout="column"
+                  fxLayoutAlign="space-evenly stretch">
+                  <div [ngClass]="item.status" class="item px-15 py-5" *ngFor="let item of outgoing" fxLayout="row"
+                    fxLayoutAlign="space-between center">
+                    <mat-icon class="icon">inbox</mat-icon>
+                    <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+                      <span class="name truncate">{{item.filename}}</span>
+                      <span class="size">{{item.fileSize}}</span>
+                      <span class="sender truncate" *ngIf="item.receivers.length > 0">
+                        {{item.receivers[0].email}}
+                        <span *ngIf="item.receivers.length > 0">
+                          +{{item.receivers.length - 1}}
+                        </span>
+                      </span>
+                    </div>
+                    <div class="status" fxLayout="column" fxLayoutAlign="space-evenly center">
+                      <span class="status">{{item.status}}</span>
+                      <span class="createdAt">Received: {{item.createdAt  | date:'medium'}}</span>
+                      <span class="updatedAt">Completed: {{item.updatedAt | date:'medium'}}</span>
+                    </div>
+                    <div class="menus" fxLayout="row" fxLayoutAlign="space-between center">
+                      <button *ngIf="item.downloadLink" mat-icon-button [disabled]="item.downloadLinkExpired"
+                        [matMenuTriggerFor]="linkMenu">
+                        <mat-icon>{{item.downloadLinkExpired ? 'link_off' : 'link'}}</mat-icon>
+                      </button>
+                      <mat-menu #linkMenu>
+                        <button *ngIf="!item.protectedLink" mat-menu-item (click)="sendLink(item.approvalId)">
+                          <mat-icon>send</mat-icon>
+                          <span>send link</span>
+                        </button>
+                        <button mat-menu-item (click)="copyToClipboard(item.downloadLink)">
+                          <mat-icon>description</mat-icon>
+                          <span>copy to clipboard</span>
+                        </button>
+                      </mat-menu>
+                      <button class="menu-btn" mat-button [matMenuTriggerFor]="outgoingHistoryMenu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #outgoingHistoryMenu="matMenu" [hasBackdrop]="true">
+                        <button mat-menu-item (click)="delete(item.id, 'outgoin', item.filename)">
+                          <mat-icon class="delete-icon">delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </div>
+          </ng-template>
+          <ng-template #noOutgoing>
+              <div class="full">
+              No outgoing
+            </div>
+          </ng-template>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <mat-dialog-actions></mat-dialog-actions>
+
+
+</mat-sidenav-content>
+</mat-sidenav-container>
+</div>
+
+<ng-template #noResults>
+  <div class="full">
+  No incoming
+</div>
+</ng-template>

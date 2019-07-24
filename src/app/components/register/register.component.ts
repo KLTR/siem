@@ -1,5 +1,5 @@
 import { distinctUntilChanged, debounceTime, catchError, map, tap } from 'rxjs/operators';
-import { ApiService } from '@services';
+import { ApiService, ErrorService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -34,7 +34,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private apiService: ApiService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private errorService: ErrorService) {
   }
 
   ngOnInit() {
@@ -65,13 +66,6 @@ export class RegisterComponent implements OnInit {
   get username() {
     return this.formGroup.get('username') as FormControl;
   }
-  // validateEmailNotTaken(control: AbstractControl) {
-  //   console.log(control.value);
-  //   return this.apiService.searchEmail(control.value).map(res => {
-  //     console.log(res);
-  //     return res ? null : { emailTaken: true };
-  //   });
-  // }
   checkPassword(control) {
     const enteredPassword = control.value;
     const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
@@ -175,14 +169,9 @@ checkConfirmPassword(control) {
       (err) => {
         console.log(err);
         this.isRegistering = false;
-        err = JSON.parse(err.toString().split(this.errorSeparator)[1]).message;
-        console.log(err);
-        // this.snackBar.open(`Failed to Login ${err.message}`, 'ok', {
-        //   duration: 3000
-        // });
-        this.error = err;
+        this.errorService.logError(err);
       }
-      );
+    );
   }
 
   goBack() {
@@ -191,7 +180,6 @@ checkConfirmPassword(control) {
 
   openPrivacyPolicy() {
     const dialogRef = this.dialog.open(PrivacyPolicyDialog, this.dialogConfig);
-
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });

@@ -18,14 +18,16 @@ export class ApiService {
   public app: BehaviorSubject<any>;
   serverUrls = {
     getSocketInfo: '/api/socketinfo',
+    authMe: '/api/auth/me',
+    // Logins
     login: '/api/auth/login',
     register: '/api/auth/register',
     isRegisteredEmail: '/api/auth/isregisterdemail', // email in body
     isRegisteredUsername: '/api/peer/valid_username',
     forgotPassword: '/api/auth/forgot_password', // email in body
+    logout: '/api/peer/logout',
+    // User settings
     saveUsername: '/api/peer/save_username',
-    authMe: '/api/auth/me',
-    getHistory: '/api/rest/history/get', // type incoming / outgoing
     updateEmailNotifications: '/api/peer/updateEmailNotifications',
     authPassword: '/api/auth/authPass',
     resetPassword: '/api/auth/reset_login_password',
@@ -36,7 +38,12 @@ export class ApiService {
     updateOfflineMode: '/api/peer/update/offline_mode',
     updateSelfEncryption: '/api/peer/update/self_encryption',
     setDownloadLinkLimitDefault: '/api/peer/settings/set/download_link_limit',
-    logout: '/api/peer/logout',
+    // History
+    getHistory: '/api/rest/history/get',
+    deleteHistory: '/api/rest/history/delete',
+    deleteAllHistory: '/api/rest/history/delete/all',
+    sendLink: '/api/rest/transfer/send/link',
+
 
   };
 
@@ -162,7 +169,18 @@ export class ApiService {
     return this.request.get(`${this.serverUrls.isRegisteredUsername}`, {username});
   }
 
+  // History
   getHistory(type: string): Observable<SailsResponse> {
+    // type = incoming / outgoing
     return this.request.get(`${this.serverUrls.getHistory}`, {type});
+  }
+  deleteHistory(id: string, type: string){
+    return this.request.post(`${this.serverUrls.deleteHistory}`, {id, type});
+  }
+  deleteAllHistory(type: string) {
+    return this.request.post(`${this.serverUrls.deleteAllHistory}`, {type});
+  }
+  sendLink(approvalId: string) {
+    return this.request.post(`${this.serverUrls.sendLink}`, {approvalId});
   }
 }

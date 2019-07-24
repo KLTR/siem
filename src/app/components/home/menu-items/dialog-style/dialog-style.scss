@@ -1,12 +1,10 @@
 @import '../../../../../styles/colors.scss';
-::ng-deep{
   .mat-dialog-container{
     padding: 0;
   }
   .mat-tab-label{
     color: $main;
   }
-}
 .container{
   height: 100%;
   display: flex;
@@ -28,7 +26,6 @@
   .mat-dialog-content{
     padding: 0;
     margin: 0;
-    padding-bottom: 10px;
   }
   .mat-dialog-actions{
     margin-top: auto;
