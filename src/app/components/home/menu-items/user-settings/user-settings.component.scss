@@ -9,6 +9,11 @@
 .mat-dialog-content{
   width: 600px;
 }
+@media screen and(max-width: 480px){
+  .mat-dialog-content{
+    width: 90vw;
+  }
+}
 .container{
   .advanced{
     .row{

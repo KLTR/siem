@@ -29,5 +29,8 @@ export class SocketService {
       })
       this.router.navigate(['change-password', {peerId}])
     });
+    this.socket.on('alive').subscribe( (event: any) => {
+      console.log(event);
+    })
    }
 }

@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
     if (this.mobile) {
       settingsConfig.height = '100vh';
       settingsConfig.width = '100vw';
-      settingsConfig.maxWidth = '50vw';
       settingsConfig.position = {
         top: '0',
         left: '0'
