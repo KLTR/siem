@@ -115,7 +115,7 @@
             <div class="desktop-wrapper"  *ngIf="!isMobile; else mobileOutgoing">
               <div *ngIf="outgoing.length > 0; else noOutgoing" class="wrapper p-10" fxLayout="column"
                   fxLayoutAlign="space-evenly stretch">
-                  <div [ngClass]="item.status" class="item px-15 py-5" *ngFor="let item of outgoing" fxLayout="row"
+                  <div [ngClass]="item.status" class="item desktop px-15 py-5" *ngFor="let item of outgoing" fxLayout="row"
                     fxLayoutAlign="space-between center">
                     <mat-icon class="icon">inbox</mat-icon>
                     <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
