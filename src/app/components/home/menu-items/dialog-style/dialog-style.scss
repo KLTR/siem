@@ -32,4 +32,12 @@
     margin-bottom: 0;
     padding: 8px 8px;
   }
+  @media screen and(max-width: 480px){
+    .mat-dialog-content{
+      width: 90vw;
+    }
+    .mat-dialog-title{
+      width: 83vw;
+    }
+  }
 }

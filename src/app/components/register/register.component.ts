@@ -88,7 +88,6 @@ checkConfirmPassword(control) {
         distinctUntilChanged(),
         debounceTime(3000),
         map(res => {
-          console.log(res);
           if(res.getBody().exist) {
             return {alreadyInUse: true};
           } else{
@@ -109,7 +108,6 @@ checkConfirmPassword(control) {
          return  this.apiService.isRegisteredEmail(control.value)
           .pipe(
             map(res => {
-              console.log(res);
               if(res.getBody().registered) {
                 return {alreadyInUse: true};
               } else{
@@ -155,12 +153,10 @@ checkConfirmPassword(control) {
     : '';
   }
   onSubmit(registrationData) {
-    console.log(registrationData);
     this.isRegistering = true;
     this.apiService.register(registrationData)
     .subscribe(
       (res) => {
-        console.log(res);
         this.snackBar.open(`An email has been sent to ${registrationData.email}`, 'ok');
         this.error = null;
         this.isRegistering = false;
