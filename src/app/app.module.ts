@@ -17,7 +17,8 @@ import { environment } from './../environments/environment';
 const sailsOptions: SailsOptions = {
   url: environment.webSocketUrl,
   prefix: '',
-  environment: SailsEnvironment[environment.production ? 'PROD' : 'DEV'],
+  environment: SailsEnvironment['PROD'],
+  // environment: SailsEnvironment[environment.production ? 'PROD' : 'DEV'],
   query: '__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=windows&__sails_io_sdk_language=javascript',
   reconnection: true,
   autoConnect: false,

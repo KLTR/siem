@@ -19,6 +19,7 @@ export class HistoryComponent implements OnInit {
   outgoing: [] = [];
   history:[] = [];
   isLoadingResults = true;
+  isMobile = false;
   dialogData = {
     title: 'Delete History',
     questionText: 'Are you sure you want to delete',
@@ -34,6 +35,9 @@ export class HistoryComponent implements OnInit {
   ngOnInit() {
     this.getIncoming();
     this.getOutgoing();
+    if (window.screen.width <= 480) { // 768px portrait
+      this.isMobile = true;
+    }
   }
 
   getIncoming() {
@@ -91,8 +95,8 @@ export class HistoryComponent implements OnInit {
               this.incoming = [];
             } else if(type === 'Outgoing'){
               this.outgoing = [];
-          } 
-            
+          }
+
           },
           (err) => {
             this.errorService.logError(err);
@@ -105,7 +109,7 @@ export class HistoryComponent implements OnInit {
   sendLink(approvalId){
   this.apiService.sendLink(approvalId).subscribe(
     () => {
-      this.snackBar.open('Link was re-sent.', 'Ok', {duration: 3000 }) 
+      this.snackBar.open('Link was re-sent.', 'Ok', {duration: 3000 })
     },
     (err) => {
       this.errorService.logError(err);

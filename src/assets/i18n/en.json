@@ -11,5 +11,7 @@
   "or": "OR",
   "username": "Username",
   "email": "Email",
-  "securityKey" : "security key"
+  "securityKey" : "security key",
+  "authenticate": "Authenticate",
+  "save": "Save"
 }

@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DragAndDropComponent implements OnInit {
   uploadPaths = [];
+  isMobile = false;
   constructor() { }
 
   ngOnInit() {
+    if (window.screen.width <= 480) { // 768px portrait
+      this.isMobile = true;
+    }
   }
 
   uploadFile(files) {

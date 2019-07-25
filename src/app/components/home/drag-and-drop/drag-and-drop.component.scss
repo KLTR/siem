@@ -25,3 +25,20 @@
   }
 }
 
+.mobile-home{
+  .text{
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .img{
+    height: 25vh;
+    width: 100vw;
+    padding: 25px;
+  }
+  .buttons{
+    padding: 10px 0;
+    button{
+      margin: 0 0.5rem;
+    }
+  }
+}

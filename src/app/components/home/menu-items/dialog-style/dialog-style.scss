@@ -26,6 +26,7 @@
   .mat-dialog-content{
     padding: 0;
     margin: 0;
+    max-height: 100vh;
   }
   .mat-dialog-actions{
     margin-top: auto;
@@ -34,10 +35,7 @@
   }
   @media screen and(max-width: 480px){
     .mat-dialog-content{
-      width: 90vw;
-    }
-    .mat-dialog-title{
-      width: 83vw;
+      width: 95vw;
     }
   }
 }

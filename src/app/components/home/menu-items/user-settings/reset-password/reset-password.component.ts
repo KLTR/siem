@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ErrorService } from '@services';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
@@ -17,16 +18,21 @@ export class ResetPasswordComponent implements OnInit {
   authenticated = false;
   isAuthenticating = false;
   isSaving = false;
+  peerId: string;
   errorSeparator = environment.errorSeparator;
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private route: ActivatedRoute,
     private errorService: ErrorService) { }
 
   ngOnInit() {
     this.createForm();
+    this.peerId = this.route.snapshot.paramMap.get('peerId');
+    console.log(this.peerId);
+
   }
   createForm() {
     // tslint:disable-next-line:max-line-length
@@ -54,9 +60,12 @@ export class ResetPasswordComponent implements OnInit {
   }
   savePassword() {
     this.isSaving = true;
-    const password = this.formGroup.get('loginPassword').value;
+    const pass = this.formGroup.get('loginPassword').value;
     const confirmed = this.formGroup.get('loginConfirmPassword').value;
-    this.apiService.resetPassword({password, confirmed}).subscribe(
+    console.log(pass);
+    console.log(confirmed);
+
+    this.apiService.resetPasswordWithPeerId({pass, confirmed}).subscribe(
       (res) => {
         console.log(res);
         this.snackBar.open(`New password was succesfully saved :)`, 'ok', {

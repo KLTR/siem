@@ -157,7 +157,14 @@ export class ApiService {
     return this.request.post(`${this.serverUrls.authPassword}`, {password});
   }
   resetPassword(passwords): Observable<SailsResponse> {
-    return this.request.post(`${this.serverUrls.resetPassword}`, passwords);
+    console.log(passwords);
+    return this.request.post(`${this.serverUrls.resetPassword}`, {passwords});
+  }
+
+  resetPasswordWithPeerId(passwords): Observable<SailsResponse> {
+    console.log(this.userObject);
+    console.log({...passwords, peerId: this.userObject.id});
+    return this.request.post(`${this.serverUrls.resetPassword}`, {...passwords, peerId: this.userObject.id});
   }
 
   isRegisteredEmail(email: string): Observable<SailsResponse> {

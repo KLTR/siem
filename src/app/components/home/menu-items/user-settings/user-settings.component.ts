@@ -1,3 +1,4 @@
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { ErrorService } from '@services';
 import {
   environment
@@ -52,10 +53,11 @@ export class UserSettingsComponent implements OnInit {
     this.apiService.user.subscribe(user => {
       this.user = user;
     });
-    this.apiService.app.subscribe(app => {
-      this.app = app;
-      console.log(this.app);
-    })
+    this.apiService.app.pipe(
+      distinctUntilChanged())
+      .subscribe(app => {
+        this.app = app;
+      })
   }
 
   ngOnInit() {
