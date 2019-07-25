@@ -124,9 +124,6 @@ export class UserSettingsComponent implements OnInit {
           this.apiService.editUser('contactByKey', false);
           this.apiService.editUser('contactByEmail', true);
           this.apiService.editUser('contactByUsername', false);
-          this.snackBar.open('Changes have been successfuly saved.', 'Ok', {
-            duration: 3000
-          })
           return;
         },
         (err) => {

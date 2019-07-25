@@ -62,8 +62,6 @@ export class ResetPasswordComponent implements OnInit {
     this.isSaving = true;
     const pass = this.formGroup.get('loginPassword').value;
     const confirmed = this.formGroup.get('loginConfirmPassword').value;
-    console.log(pass);
-    console.log(confirmed);
 
     this.apiService.resetPasswordWithPeerId({pass, confirmed}).subscribe(
       (res) => {

@@ -29,6 +29,7 @@
     .wrapper {
       width: 100%;
       overflow: hidden;
+
       .item {
         margin-top: 10px;
 
@@ -157,4 +158,7 @@ mat-dialog-actions {
   height: 80vh;
   display: flex;
   align-items: center;
+}
+.desktop-wrapper{
+  width: 100%;
 }
