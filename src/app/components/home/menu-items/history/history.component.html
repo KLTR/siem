@@ -54,7 +54,7 @@
                       <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
                         <span class="name truncate">{{item.filename}}</span>
                         <span class="size">{{item.fileSize}}</span>
-                        <span class="sender truncate">{{item.sender.email}}</span>
+                        <span class="sender truncate">{{item?.sender?.email}}</span>
                       </div>
                       <div class="status" fxLayout="column" fxLayoutAlign="space-evenly center">
                         <span class="status">{{item.status}}</span>

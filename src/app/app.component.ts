@@ -82,7 +82,7 @@ export class AppComponent {
         this.apiService.setApp(res.getBody());
       },
       (err) => {
-        this.errorService.logError(err);
+        // this.errorService.logError(err);
         this.router.navigateByUrl('login');
       }
     );

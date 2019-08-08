@@ -115,7 +115,6 @@ export class ApiService {
     const decodedToken = helper.decodeToken(this.getToken());
     this.user.next(decodedToken);
     this.userObject = decodedToken;
-    console.log(this.userObject);
   }
 
   setApp(data): void{
@@ -172,7 +171,6 @@ export class ApiService {
   }
 
   isRegisteredUsername(username: string): Observable<SailsResponse> {
-    console.log(username);
     return this.request.get(`${this.serverUrls.isRegisteredUsername}`, {username});
   }
 

@@ -82,7 +82,6 @@ checkConfirmPassword(control) {
 
   checkInUseUsername(control: FormControl) {
     if(!control.errors){
-      console.log(control.value);
      return  this.apiService.isRegisteredUsername(control.value)
       .pipe(
         distinctUntilChanged(),
@@ -104,7 +103,6 @@ checkConfirmPassword(control) {
   }
   checkInUseEmail(control: FormControl) {
         if(!control.errors){
-          console.log(control.errors);
          return  this.apiService.isRegisteredEmail(control.value)
           .pipe(
             map(res => {
@@ -154,16 +152,18 @@ checkConfirmPassword(control) {
   }
   onSubmit(registrationData) {
     this.isRegistering = true;
+    console.log(registrationData)
     this.apiService.register(registrationData)
     .subscribe(
       (res) => {
-        this.snackBar.open(`An email has been sent to ${registrationData.email}`, 'ok');
+        this.snackBar.open(`An email has been sent to ${registrationData.email}`, 'ok', {
+          duration: 3000
+        });
         this.error = null;
         this.isRegistering = false;
         this.isRegistrationComplete = true;
       },
       (err) => {
-        console.log(err);
         this.isRegistering = false;
         this.errorService.logError(err);
       }
