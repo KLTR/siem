@@ -1,8 +1,7 @@
-import { ApiService } from '@services';
+import { ApiService, ErrorService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { environment } from '@env/environment';
 
 @Component({
@@ -21,7 +20,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private apiService: ApiService,
-    private snackBar: MatSnackBar,
+    private errorService: ErrorService
     ) {}
 
   ngOnInit() {
@@ -71,6 +70,7 @@ export class LoginComponent implements OnInit {
         this.apiService.setApp(body);
       },
       (err) => {
+        this.errorService.logError(err);
         this.isLoggingIn = false;
       }
       );

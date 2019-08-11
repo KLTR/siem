@@ -24,7 +24,7 @@
         <span class="forgot-pass underline" (click)="forgotPass()">{{ 'forgot password' | translate }}</span>
         </mat-form-field>
         <div class="form-element mt-25">
-          <button font mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isLoggingIn">
+          <button font mat-raised-button color="primary" type="submit" class="button white-bg" [disabled]="!formGroup.valid || isLoggingIn">
               <span class="btn-text" *ngIf="!isLoggingIn">{{ 'login' | translate }}</span>
               <mat-spinner
               *ngIf="isLoggingIn"

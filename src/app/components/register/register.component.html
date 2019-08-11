@@ -52,7 +52,7 @@
               ></mat-spinner>
             {{ 'login' | translate }}
           </button> -->
-          <button  mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || isRegistering">
+          <button  mat-raised-button color="primary" type="submit" class="button white-bg" [disabled]="!formGroup.valid || isRegistering">
             <span class="btn-text" *ngIf="!isRegistering">Create Account</span>
             <mat-spinner
             *ngIf="isRegistering"

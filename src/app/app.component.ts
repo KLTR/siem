@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet, Router } from '@angular/router';
-import { fader, slider, stepper, transformer } from './animations/route-animations';
+import { slider } from './animations/route-animations';
 import { Sails, SailsListener } from 'ngx-sails-socketio';
 import { ApiService, SocketService, ErrorService } from '@services';
 import {TranslateService} from '@ngx-translate/core';
-import { transition, trigger, query, style, group, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-root',

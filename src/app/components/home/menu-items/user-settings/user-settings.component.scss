@@ -8,10 +8,14 @@
 }
 .mat-dialog-content{
   width: 600px;
+  height: 100vh;
+
 }
 @media screen and(max-width: 480px){
   .mat-dialog-content{
     width: 95vw;
+    overflow-y: scroll;
+
   }
 }
 .container{
@@ -98,4 +102,10 @@
   .tooltip{
     font-size: 12px;
   }
+}
+
+.logout-btn{
+  position: absolute;
+  bottom: 25px;
+  right: 15px;
 }

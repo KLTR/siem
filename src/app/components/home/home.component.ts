@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
   }
   openSettings() {
     const settingsConfig = new MatDialogConfig();
-
+    settingsConfig.autoFocus = false;
     if (this.mobile) {
       settingsConfig.height = '100vh';
       settingsConfig.width = '100vw';

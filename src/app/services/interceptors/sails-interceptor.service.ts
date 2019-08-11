@@ -18,7 +18,7 @@ export class SailsInterceptorService implements SailsInterceptorInterface {
       response.subscribe(
         () => { },
         (err) => {
-          this.errorService.logError(err);
+          // this.errorService.logError(err);
         }
         );
       return response.pipe(map((res: SailsResponse) => {
