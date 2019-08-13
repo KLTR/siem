@@ -1,4 +1,13 @@
-<div *ngIf='!isMobile; else mobile' class="dropzone" fxLayout="column" fxLayoutAlign="center center" appDnd>
+<div class="wrapper" *ngIf='!isFilesSelected; else transfer'>
+  <div
+  *ngIf='!isMobile; else mobile'
+  class="dropzone"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  appDnd
+  (fileUploadedEmiter)="uploadFile($event)"
+  (folderUploadedEmiter)="uploadFolder($event, true)"
+  >
     <span class="header bold">DROP FILES HERE</span>
     <img class="img" src="../../../../assets/copa/transfer2.png">
     <span>-Or-</span>
@@ -9,17 +18,27 @@
       <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
     </div>
     <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
-</div>
+  </div>
 
-<ng-template #mobile>
-  <div class="mobile-home"  fxLayout="column" fxLayoutAlign="center center">
+  <ng-template #mobile>
+    <div class="mobile-home" fxLayout="column" fxLayoutAlign="center center">
       <img class="img" src="../../../../assets/copa/transfer2.png">
       <div class="buttons" fxLayout="row">
-          <button mat-raised-button color="primary" (click)="fileInput.click()">Choose files</button>
-          <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
-          <button mat-raised-button color="primary" (click)="folderInput.click()">Choose folder</button>
-          <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
-        </div>
-        <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
+        <button mat-raised-button color="primary" (click)="fileInput.click()">Choose files</button>
+        <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+        <button mat-raised-button color="primary" (click)="folderInput.click()">Choose folder</button>
+        <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
+      </div>
+      <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
+    </div>
+  </ng-template>
+
+</div>
+
+<ng-template #transfer>
+  <div class="wrapper">
+    <div class="container">
+      <app-send-page [selectedFiles]="selectedFiles" (cancel)="cancel($event)"></app-send-page>
+     </div>
   </div>
 </ng-template>

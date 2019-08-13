@@ -1,5 +1,11 @@
 @import 'styles/colors.scss';
-
+.wrapper{
+  height: 100%;
+  width: 100%;
+  .container{
+    height: 100%;
+  }
+}
 .dropzone {
   height: 100%;
   width: 100%;

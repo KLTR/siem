@@ -1,0 +1,109 @@
+<div class="main-row" fxLayout="row" fxLayoutAlign="space-between center">
+
+  <div class="col-1" fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex="75">
+
+
+    <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch" appDnd>
+      <div class="files" fxLayout="column" fxLayoutAlign="space-between stretch">
+        <span class="header-underline">
+          <span class="header">
+            Your Files
+          </span>
+        </span>
+        <ul class="files-list">
+          <li *ngFor="let file of selectedFiles;">
+            <span class="li-underline">
+              <span class="file-details" fxLayout="column" fxLayoutAlign="end stretch">
+                  <span class="file-name truncate">{{file.name}}</span>
+                  <span class="file-size">{{file.size | fileSize}}</span>
+              </span>
+              <span class="delete">
+                <mat-icon class="delete-icon pointer" (click)="delete(file.name)">close</mat-icon>
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="buttons" fxLayout="column" fxLayoutAlign="center stretch">
+          <button mat-icon-button color="accent" (click)="fileInput.click()">
+              <mat-icon class="add-icon">add_circle</mat-icon>
+              <span class="btn-text">Add more files</span>
+              <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+            </button>
+        <button mat-icon-button color="accent" (click)="folderInput.click()">
+            <mat-icon class="add-icon">add_circle</mat-icon>
+            <span class="btn-text">Add more folders</span>
+            <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
+          </button>
+      </div>
+    </div>
+    <div class="details box" fxLayout="row" fxLayoutAlign="space-between stretch">
+
+      <div class="transfer" fxLayout="column" fxLayoutAlign="space-between stretch">
+        <span class="header-underline">
+          <span class="header">Transfer Method</span>
+        </span>
+        <div class="radio-group">
+          <mat-radio-group color="primary" [(ngModel)]="selectedTransferMethod">
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" [value]="'classic'">
+                classic security
+              </mat-radio-button>
+              <mat-icon class='help-icon' matTooltip="Safe end-to-end private file transfer with no size-limitations"
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" [value]="'advanced'">
+                advanced security
+              </mat-radio-button>
+              <mat-icon class='help-icon'
+                matTooltip="Self-destruct timer, files would be available exclusively within COPA (view-only), recipients cannot copy or duplicate files, including saving copies, forwarding, or screen printing."
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" color="primary" [value]="'link'">
+                protected link
+              </mat-radio-button>
+              <mat-icon class='help-icon' matTooltip="End-to-end encrypted link can be share externally."
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="recipient">
+        <span class="header-underline">
+          <span class="header">{{selectedTransferMethod === 'link' ? 'Protected Link' : 'Recipient Details' }}</span>
+          <div class="form">
+              <!-- <form [formGroup]="formGroup">
+              <mat-form-field floatLabel='always' class="form-element" >
+                  <mat-label><mat-icon>face</mat-icon>Username</mat-label>
+                  <input #username formControlName="username"  name="username" matInput placeholder="Username" />
+                  <mat-error *ngIf="!formGroup.controls['username'].valid && formGroup.controls['username'].touched">
+                   {{ getUsernameError() }}
+                  </mat-error>
+                  <button  class="button" [disabled]="!formGroup.valid" type="button" mat-raised-button color="primary">
+                      Save
+                  </button>
+                </mat-form-field>
+              </form> -->
+          </div>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-2" fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex="25">
+    <div class="total box">
+      <span class="header-underline">
+        <span class="header">Total files: {{selectedFiles.length}}</span>
+      </span>
+      <div class="buttons">
+        <button>{{selectedTransferMethod === 'link' ? 'Create' : 'Transfer' }}</button>
+        <button (click)="cancel.emit(false)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>

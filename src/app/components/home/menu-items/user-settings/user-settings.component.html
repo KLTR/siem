@@ -79,8 +79,8 @@
                       </p>
                       <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                         <mat-checkbox color="primary" (change)="updateContactMethod()" [(ngModel)]="user.contactByKey">Security Key</mat-checkbox>
-                          <mat-form-field fxFlex *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element ml-25" >
-                            <input matInput disabled value="{{user.password}}" />
+                          <mat-form-field (click)="copyToClipboard(user.password)" fxFlex *ngIf="user.contactByKey && user.password" floatLabel='always' class="form-element ml-25 pointer" >
+                            <input  matInput disabled value="{{user.password}}" />
                           </mat-form-field>
                           <button  *ngIf="user.contactByKey && user.password" class="button new-key-btn"
                                matTooltip="request a new security key"
@@ -193,7 +193,7 @@
                               matTooltipPosition="above"
                               matTooltipClass="tooltip"
                               matBadge="15">help</mat-icon>
-                            </mat-radio-button>
+                          </mat-radio-button>
                           </div>
                           <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
                             <mat-radio-button color="primary" color="primary" [value]="'wait'">

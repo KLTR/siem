@@ -1,0 +1,121 @@
+@import '../../home/menu-items/dialog-style/dialog-style.scss';
+@import '../../../../styles/colors.scss';
+.main-row{
+  height: 100%;
+
+  .header{
+    margin: 5px;
+    font-size: 18px;
+    font-weight: 400;
+
+  }
+  .header-underline{
+    border-bottom: 1px solid $primary-text;
+    width: fit-content;
+  }
+  .box{
+    padding: 10px;
+    margin: 5px;
+    box-shadow: 1px 2px 5px #0000003b;
+  }
+  .col-1{
+    ::-webkit-scrollbar {
+      width: 0px;  /* Remove scrollbar space */
+      background: transparent;  /* Optional: just make scrollbar invisible */
+  }
+
+    height: 420px;
+    .box{
+      height: 200px;
+    }
+    .files-wrapper{
+      .files{
+        .files-list{
+          list-style: none;
+          height: 115px;
+          width: 200px;
+          overflow-y: auto;
+          padding: 0;
+          margin-bottom: auto;
+          li{
+            display: flex;
+            align-self: center;
+            height: 55px;
+            padding: 0 5px;
+            .li-underline{
+              border-bottom: 1px solid rgba(0,0,0,0.05);
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .file-name{
+                width: 160px;
+              }
+              .file-size{
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+      .buttons{
+        button{
+          margin: 10px;
+          width: 150px;
+          display: flex;
+          font-size: 16px;
+          .btn-txt{
+            color: rgba(0, 0, 0, 0.4);
+          }
+          .add-icon{
+            font-size: 22px;
+            color: $primary-text;
+          }
+        }
+      }
+    }
+
+    .details{
+      .radio-group{
+        margin-bottom: auto;
+        margin-top: auto;
+      }
+      .transfer{
+        width: 50%;
+        border-right: 1px solid $primary-bg;
+        .row{
+          height: 40px;
+        }
+
+      }
+      .recipient{
+        margin-left: 10px;
+        width: 50%;
+      }
+    }
+  }
+  .col-2{
+    height: 420px;
+    .box{
+      height: 100%;
+    }
+  }
+}
+.help-icon{
+  font-size: 16px;
+  color: $primary-text;
+}
+::ng-deep{
+  .tooltip{
+    font-size: 12px;
+  }
+}
+
+.delete-icon{
+  font-size: 18px;
+  font-weight: bold;
+  color: $primary-text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
