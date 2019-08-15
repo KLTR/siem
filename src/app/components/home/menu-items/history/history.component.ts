@@ -23,7 +23,8 @@ export class HistoryComponent implements OnInit {
   dialogData = {
     title: 'Delete History',
     questionText: 'Are you sure you want to delete',
-    btn: 'Delete'
+    btn: 'Delete',
+    btnColor: 'warn'
   }
   constructor(
     private apiService: ApiService,
@@ -68,7 +69,7 @@ export class HistoryComponent implements OnInit {
 
   delete(itemId: string, type: string, fileName?: string){
     this.dialog.open(ConfirmDialogComponent, {
-    data: {...this.dialogData, name: fileName}
+    data: {...this.dialogData, name: `"${fileName}"`}
     }).afterClosed().subscribe( dialogRes => {
       if(dialogRes){
         this.apiService.deleteHistory(itemId, type).subscribe(
@@ -86,7 +87,7 @@ export class HistoryComponent implements OnInit {
   deleteAll() {
     const type = this.tabs[this.selectedIndexTab];
     this.dialog.open(ConfirmDialogComponent, {
-      data: {...this.dialogData, name: type}
+      data: {...this.dialogData, name: `"${type}"`}
       }).afterClosed().subscribe( dialogRes => {
         if(dialogRes){
           this.apiService.deleteAllHistory(type).subscribe(

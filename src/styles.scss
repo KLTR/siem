@@ -46,6 +46,13 @@ body {
     cursor: pointer;
   }
 }
+.default{
+  cursor: default;
+
+  &:hover{
+    cursor: default;
+  }
+}
 
 .back-btn {
   position: absolute;

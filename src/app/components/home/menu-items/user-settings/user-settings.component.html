@@ -147,7 +147,7 @@
                           matTooltipClass="tooltip"
                           matBadge="15">help</mat-icon>
                         </p>
-                        <mat-form-field>
+                        <mat-form-field class="link-expiriation-field">
                             <mat-label>Select an option</mat-label>
                             <mat-select [(value)]="user.downloadLinkLimit.name" (selectionChange)="selectDownloadLinkLimit($event)">
                               <mat-option *ngFor="let option of app.downloadLinkLimits" [value]="option.name">{{option.description}}</mat-option>
@@ -179,32 +179,32 @@
                           class="example-radio-group"
                           [(ngModel)]="user.offlineMode"
                           (change)="updateOfflineMode()">
-                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                          <div class="row" fxLayout="row" fxLayoutAlign="start center">
                             <mat-radio-button color="primary" [value]="'ask'">
                               Always ask me
                             </mat-radio-button>
                           </div>
-                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                          <div class="row" fxLayout="row" fxLayoutAlign="start center">
                             <mat-radio-button color="primary" [value]="'upload'">
                               Upload to <span class="strong-text">COPA</span> servers
-                              <mat-icon
-                              class='help-icon'
-                              matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use."
-                              matTooltipPosition="above"
-                              matTooltipClass="tooltip"
-                              matBadge="15">help</mat-icon>
                           </mat-radio-button>
+                          <mat-icon
+                          class='help-icon'
+                          matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use."
+                          matTooltipPosition="above"
+                          matTooltipClass="tooltip"
+                          matBadge="15">help</mat-icon>
                           </div>
-                          <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+                          <div class="row" fxLayout="row" fxLayoutAlign="start center">
                             <mat-radio-button color="primary" color="primary" [value]="'wait'">
                              Direct (P2P)
-                            <mat-icon
+                          </mat-radio-button>
+                          <mat-icon
                             class='help-icon'
                             matTooltip="Data will only be exchanged while both sides are connected."
                             matTooltipPosition="above"
                             matTooltipClass="tooltip"
                             matBadge="15">help</mat-icon>
-                          </mat-radio-button>
                         </div>
                         <button  class="button logout-btn" type="button" mat-raised-button color="warn" (click)="logout()">
                           LOGOUT

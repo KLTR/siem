@@ -17,6 +17,9 @@
     overflow-y: scroll;
 
   }
+  .link-expiriation-field{
+    font-size: 12px;
+  }
 }
 .container{
   .advanced{
@@ -62,6 +65,7 @@
           display: flex;
           justify-content: center;
         }
+
       }
     }
 
@@ -108,4 +112,7 @@
   position: absolute;
   bottom: 25px;
   right: 15px;
+}
+.link-expiriation-field{
+  width: 255px;
 }

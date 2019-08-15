@@ -1,0 +1,14 @@
+@import '../../../styles/colors.scss';
+.mat-dialog-title{
+  text-align: center;
+  border-bottom: 1px solid $primary-text;
+  color: $primary-text;
+}
+.mat-dialog-content{
+  font-size: 18px;
+  line-height: 28px;
+  max-width: 30vw;
+}
+.mat-dialog-container{
+  border: $primary-text;
+}

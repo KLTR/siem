@@ -35,20 +35,14 @@ export class DragAndDropComponent implements OnInit {
   }
 
   uploadFile(file) {
-    this.isFilesSelected = true;
     this.selectedFiles = Array.from(file);
+    this.isFilesSelected = true;
 
   }
 
-  uploadFolder(files, isDragged?) {
-      Array.prototype.forEach.call(files, file => {
-        console.log(file);
-        console.log(files);
-        this.uploadPaths.push(file.webkitRelativePath);
-      });
-      console.log(this.uploadPaths);
-      this.selectedFiles = Array.from(files);
-      this.isFilesSelected = true;
+  uploadFolder(files) {
+    this.selectedFiles = Array.from(files);
+    this.isFilesSelected = true;
 
   }
   cancel(e) {

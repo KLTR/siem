@@ -1,11 +1,17 @@
-import { Directive, HostBinding, HostListener, Output, EventEmitter } from '@angular/core';
+import {
+  Directive,
+  HostBinding,
+  HostListener,
+  Output,
+  EventEmitter
+} from '@angular/core';
 
 @Directive({
   selector: '[appDnd]'
 })
 export class DndDirective {
-  @Output() private fileUploadedEmiter: EventEmitter<File[]> = new EventEmitter();
-  @Output() private folderUploadedEmiter: EventEmitter<File[]> = new EventEmitter();
+  @Output() private fileUploadedEmiter: EventEmitter < File[] > = new EventEmitter();
+  @Output() private folderUploadedEmiter: EventEmitter < File[] > = new EventEmitter();
 
   @HostBinding('style.background') private background = '#ffffff';
 
@@ -19,27 +25,33 @@ export class DndDirective {
   @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    this.background = '#eee';
+    this.background = '#ffffff';
   }
-  @HostListener('drop', ['$event']) public async onDrop(evt): Promise<any> {
+  @HostListener('drop', ['$event']) public onDrop(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     this.background = '#ffffff';
 
 
     const items = evt.dataTransfer.items;
-    for (const item of items)  {
+    for (const item of items) {
+      console.log(item)
       if (item.kind === 'file') {
         const entry = item.webkitGetAsEntry();
         if (entry.isFile) {
-          return this.parseFileEntry(entry);
+          this.parseFileEntry(entry);
         } else if (entry.isDirectory) {
-          return this.parseDirectoryEntry(entry);
+          this.parseDirectoryEntry(entry).then((entries: any[]) => {
+            this.addMetaData(entries).then( res => {
+              console.log(res)
+              this.folderUploadedEmiter.emit(res);
+            })
+          });
         }
       }
     }
   }
-  parseFileEntry(fileEntry) {
+  async parseFileEntry(fileEntry) {
     return new Promise((resolve, reject) => {
       fileEntry.file(
         file => {
@@ -53,23 +65,36 @@ export class DndDirective {
     });
   }
 
-   parseDirectoryEntry(directoryEntry) {
+  addMetaData(entries): Promise<any>{
+    return new Promise((resolve, reject) => {
+     entries.forEach(entry => {
+      entry.getMetadata(res => {
+        entry.size = res.size;
+      },
+      err => {
+        reject(err);
+      });
+    });
+    resolve(entries);
+    })
+  }
+
+
+  parseDirectoryEntry(directoryEntry) {
     const directoryReader = directoryEntry.createReader();
     return new Promise((resolve, reject) => {
       directoryReader.readEntries(
-        entries => {
+         entries => {
           entries.forEach(entry => {
             if (entry.isDirectory) {
               this.parseDirectoryEntry(entry);
             }
-            // else{
-            //   entry.file( file => {
-            //     entry = file
-            //   });
-            //   console.log(entry);
+            // else {
+            //   entry.getMetadata(res => {
+            //     entry.size = res.size
+            //   })
             // }
           });
-          this.folderUploadedEmiter.emit(entries)
           resolve(entries);
         },
         err => {

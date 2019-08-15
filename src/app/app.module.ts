@@ -30,7 +30,7 @@ const sailsOptions: SailsOptions = {
   // timeout: 3000,
 };
 // Directives
-import { DndDirective, UniqueEmailValidatorDirective } from '@directives';
+import { DndDirective, DisableControlDirective } from '@directives';
 
 // Services
 import { ApiService, SocketService, ErrorService, INTERCEPTORS} from '@services';
@@ -53,6 +53,7 @@ import { AuthGuard } from '@guards';
 import { HistoryComponent } from './components/home/menu-items/history/history.component';
 import { SendPageComponent } from './components/home/send-page/send-page.component';
 import { FileSizePipe } from './pipes/file-size.pipe';
+import { ContactsDialogComponent } from './components/home/send-page/contacts-dialog/contacts-dialog/contacts-dialog.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -63,7 +64,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     DndDirective,
-    UniqueEmailValidatorDirective,
+    DisableControlDirective,
     WelcomeComponent,
     LoginComponent,
     RegisterComponent,
@@ -80,6 +81,7 @@ export function createTranslateLoader(http: HttpClient) {
     ConfirmDialogComponent,
     SendPageComponent,
     FileSizePipe,
+    ContactsDialogComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -89,7 +91,7 @@ export function createTranslateLoader(http: HttpClient) {
     ResetPasswordComponent,
     HistoryComponent,
     ConfirmDialogComponent,
-    SendPageComponent
+    ContactsDialogComponent
   ],
   imports: [
     BrowserModule,

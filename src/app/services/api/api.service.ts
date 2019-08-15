@@ -43,7 +43,8 @@ export class ApiService {
     deleteHistory: '/api/rest/history/delete',
     deleteAllHistory: '/api/rest/history/delete/all',
     sendLink: '/api/rest/transfer/send/link',
-
+    // Send Page
+    emailExist: '/api/rest/email_exist'
 
   };
 
@@ -187,5 +188,11 @@ export class ApiService {
   }
   sendLink(approvalId: string) {
     return this.request.post(`${this.serverUrls.sendLink}`, {approvalId});
+  }
+
+  // Send Page
+  emailExist(recipientData: any): Observable<SailsResponse> {
+    console.log(recipientData);
+    return this.request.post(`${this.serverUrls.emailExist}`,  recipientData);
   }
 }
