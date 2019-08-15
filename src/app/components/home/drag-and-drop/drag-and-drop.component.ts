@@ -1,3 +1,4 @@
+import { FileService } from './../../../services/file/file.service';
 import {
   MatDialogConfig
 } from '@angular/material/dialog';
@@ -20,7 +21,7 @@ export class DragAndDropComponent implements OnInit {
   dialogConfig: MatDialogConfig;
   isFilesSelected = false;
   selectedFiles;
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private fileService: FileService) {
   }
 
   ngOnInit() {
@@ -47,6 +48,16 @@ export class DragAndDropComponent implements OnInit {
   }
   cancel(e) {
     this.isFilesSelected = false;
+  }
+
+  dropped($event){
+    this.fileService.dropped($event);
+  }
+  fileOver($event){
+    this.fileService.fileOver($event);
+  }
+  fileLeave($event){
+    this.fileService.fileLeave($event);
   }
 
 }

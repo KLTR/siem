@@ -79,7 +79,12 @@ export class SendPageComponent implements OnInit {
   uploadFolder(files) {
     this.selectedFiles.push(...files);
     console.log(files);
+  }
 
+  updateFolderSize(size){
+    size += this.selectedFiles[this.selectedFiles.length].size
+    this.selectedFiles[this.selectedFiles.length] = {...this.selectedFiles[this.selectedFiles.length], size: size};
+    console.log(this.selectedFiles);
   }
   setDownloadLinkLimit(limit: string) {
     this.downloadLinkLimitString = limit;

@@ -4,7 +4,7 @@
 
 
     <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch" appDnd
-      (fileUploadedEmiter)="uploadFile($event)" (folderUploadedEmiter)="uploadFolder($event)">
+      (fileUploadedEmitter)="uploadFile($event)" (folderUploadedEmitter)="uploadFolder($event)" (updateFolderSizeEmitter)="updateFolderSize($event)">
 
       <div class="files" fxLayout="column" fxLayoutAlign="space-between stretch">
         <span class="header-underline">

@@ -10,8 +10,9 @@ import {
   selector: '[appDnd]'
 })
 export class DndDirective {
-  @Output() private fileUploadedEmiter: EventEmitter < File[] > = new EventEmitter();
-  @Output() private folderUploadedEmiter: EventEmitter < File[] > = new EventEmitter();
+  @Output() private fileUploadedEmitter: EventEmitter < File[] > = new EventEmitter();
+  @Output() private folderUploadedEmitter: EventEmitter < File[] > = new EventEmitter();
+  @Output() private updateFolderSizeEmitter: EventEmitter < number > = new EventEmitter();
 
   @HostBinding('style.background') private background = '#ffffff';
 
@@ -34,18 +35,29 @@ export class DndDirective {
 
 
     const items = evt.dataTransfer.items;
+    console.log(evt.dataTransfer.files);
     for (const item of items) {
-      console.log(item)
       if (item.kind === 'file') {
+        console.log(item);
         const entry = item.webkitGetAsEntry();
         if (entry.isFile) {
-          this.parseFileEntry(entry);
+          const fileList = evt.dataTransfer.files;
+          this.fileUploadedEmitter.emit(fileList);
+          return
+          // return this.parseFileEntry(entry);
         } else if (entry.isDirectory) {
+          console.log(item.getAsFile());
+          this.folderUploadedEmitter.emit([item.getAsFile()])
           this.parseDirectoryEntry(entry).then((entries: any[]) => {
-            this.addMetaData(entries).then( res => {
-              console.log(res)
-              this.folderUploadedEmiter.emit(res);
+            let size = 0;
+            entries.forEach(entry => {
+              entry.getMetadata( metaData => {
+                size += metaData.size;
+                console.log(size);
+                this.updateFolderSizeEmitter.emit(size);
+              })
             })
+            console.log(size);
           });
         }
       }
@@ -55,7 +67,7 @@ export class DndDirective {
     return new Promise((resolve, reject) => {
       fileEntry.file(
         file => {
-          this.fileUploadedEmiter.emit([file]);
+          this.fileUploadedEmitter.emit([file]);
           resolve(file);
         },
         err => {
@@ -85,21 +97,18 @@ export class DndDirective {
     return new Promise((resolve, reject) => {
       directoryReader.readEntries(
          entries => {
-          entries.forEach(entry => {
+          for(let entry of entries) {
             if (entry.isDirectory) {
-              this.parseDirectoryEntry(entry);
+               this.parseDirectoryEntry(entry);
             }
-            // else {
-            //   entry.getMetadata(res => {
-            //     entry.size = res.size
-            //   })
-            // }
-          });
+            else {
+               entry.getMetadata(res => {
+                entry.size = res.size
+              })
+            }
+          }
           resolve(entries);
         },
-        err => {
-          reject(err);
-        }
       );
     });
   }

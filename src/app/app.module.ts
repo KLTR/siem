@@ -13,6 +13,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from './../environments/environment';
 
+import {NgxFileDropModule} from 'ngx-file-drop';
 // Sails Options
 const sailsOptions: SailsOptions = {
   url: environment.webSocketUrl,
@@ -33,7 +34,7 @@ const sailsOptions: SailsOptions = {
 import { DndDirective, DisableControlDirective } from '@directives';
 
 // Services
-import { ApiService, SocketService, ErrorService, INTERCEPTORS} from '@services';
+import { ApiService, SocketService, ErrorService, FileService,INTERCEPTORS} from '@services';
 
 // Components
 import {
@@ -102,6 +103,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
+    NgxFileDropModule,
     SailsModule.forRoot(sailsOptions, INTERCEPTORS),
     TranslateModule.forRoot({
       loader: {
@@ -111,7 +113,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
   })
   ],
-  providers: [ApiService, SocketService, AuthGuard, ErrorService],
+  providers: [ApiService, FileService, SocketService, AuthGuard, ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

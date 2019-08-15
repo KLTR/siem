@@ -2,15 +2,22 @@
 .wrapper{
   height: 100%;
   width: 100%;
+  position: relative;
   .container{
     height: 100%;
   }
 }
+
 .dropzone {
   height: 100%;
   width: 100%;
   border: dashed 2px $main;
-
+  position: absolute;
+  .ngx-file-drop__drop-zone{
+    border: none;
+    height: 100%;
+    width: 100%;
+  }
   .text{
     font-size: 24px;
   }
@@ -25,12 +32,19 @@
   }
   .buttons{
     padding: 10px 0;
+    z-index: 2;
     button{
       margin: 0 0.5rem;
     }
   }
 }
+ngx-file-drop{
+  &.dropzone{
+    border: none;
+    z-index: 1;
 
+  }
+}
 .mobile-home{
   .text{
     font-size: 18px;
@@ -47,4 +61,9 @@
       margin: 0 0.5rem;
     }
   }
+}
+.drop-zone{
+  height: 100%;
+  width: 100%;
+  border: none;
 }

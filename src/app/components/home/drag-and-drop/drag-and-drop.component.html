@@ -1,13 +1,20 @@
 <div class="wrapper" *ngIf='!isFilesSelected; else transfer'>
-  <div
+  <ngx-file-drop
   *ngIf='!isMobile; else mobile'
   class="dropzone"
   fxLayout="column"
   fxLayoutAlign="center center"
-  appDnd
-  (fileUploadedEmiter)="uploadFile($event)"
-  (folderUploadedEmiter)="uploadFolder($event)"
+  (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)"
+  (onFileLeave)="fileLeave($event)"
+  dropZoneClassName="drop-zone"
   >
+</ngx-file-drop>
+  <div
+  *ngIf='!isMobile; else mobile'
+  class="dropzone"
+  fxLayout="column"
+  fxLayoutAlign="center center">
     <span class="header bold">DROP FILES HERE</span>
     <img class="img" src="../../../../assets/copa/transfer2.png">
     <span>-Or-</span>
@@ -19,7 +26,6 @@
     </div>
     <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
   </div>
-
   <ng-template #mobile>
     <div class="mobile-home" fxLayout="column" fxLayoutAlign="center center">
       <img class="img" src="../../../../assets/copa/transfer2.png">
