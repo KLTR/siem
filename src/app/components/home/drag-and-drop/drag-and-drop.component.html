@@ -1,6 +1,6 @@
 <div class="wrapper" *ngIf='!isFilesSelected; else transfer'>
   <ngx-file-drop
-  *ngIf='!isMobile; else mobile'
+  *ngIf="!isMobile"
   class="dropzone"
   fxLayout="column"
   fxLayoutAlign="center center"
@@ -20,9 +20,9 @@
     <span>-Or-</span>
     <div class="buttons" fxLayout="row">
       <button mat-raised-button color="primary" (click)="fileInput.click()">Choose files</button>
-      <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+      <input hidden type="file" #fileInput multiple (change)="uploadFile(fileInput.files)">
       <button mat-raised-button color="primary" (click)="folderInput.click()">Choose folder</button>
-      <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
+      <input hidden type="file" multiple webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
     </div>
     <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
   </div>
@@ -31,9 +31,9 @@
       <img class="img" src="../../../../assets/copa/transfer2.png">
       <div class="buttons" fxLayout="row">
         <button mat-raised-button color="primary" (click)="fileInput.click()">Choose files</button>
-        <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+        <input hidden type="file" #fileInput multiple (change)="uploadFile(fileInput.files)">
         <button mat-raised-button color="primary" (click)="folderInput.click()">Choose folder</button>
-        <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
+        <input hidden type="file" webkitDirectory multiple #folderInput (change)="uploadFolder(folderInput.files)">
       </div>
       <span class="text mt-10">Direct, private, any size, encrypted transfer. </span>
     </div>

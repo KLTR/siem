@@ -5,7 +5,7 @@
 
     <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch">
      <ngx-file-drop
-     *ngIf='!isMobile; else mobile'
+     *ngIf='!mobile'
      class="dropzone"
      fxLayout="column"
      fxLayoutAlign="center center"
@@ -39,12 +39,12 @@
         <button mat-icon-button color="accent" (click)="fileInput.click()">
           <mat-icon class="add-icon">add_circle</mat-icon>
           <span class="btn-text">Add more files</span>
-          <input hidden type="file" #fileInput (change)="uploadFile(fileInput.files)">
+          <input hidden type="file" multiple #fileInput (change)="uploadFile(fileInput.files)">
         </button>
         <button mat-icon-button color="accent" (click)="folderInput.click()">
           <mat-icon class="add-icon">add_circle</mat-icon>
           <span class="btn-text">Add more folders</span>
-          <input hidden type="file" webkitDirectory #folderInput (change)="uploadFolder(folderInput.files)">
+          <input hidden type="file" webkitDirectory multiple #folderInput (change)="uploadFolder(folderInput.files)">
         </button>
       </div>
     </div>

@@ -12,3 +12,10 @@
 .mat-dialog-container{
   border: $primary-text;
 }
+@media screen and (max-width: 480px) {
+  .mat-dialog-content{
+    font-size: 16px;
+    line-height: 28px;
+    max-width: 80vw;
+  }
+}

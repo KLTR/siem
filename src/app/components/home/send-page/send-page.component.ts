@@ -29,6 +29,7 @@ export class SendPageComponent implements OnInit {
   @Output() cancel = new EventEmitter();
   @Input() selectedFiles: any[];
   @ViewChild('contactIcon', {static: false}) contactIcon: ElementRef;
+  mobile = false;
   selectedTransferMethod = 'classic'
   formGroup: FormGroup;
   linkFormGroup: FormGroup;
@@ -52,9 +53,10 @@ export class SendPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.selectedFiles);
     this.createForm()
-
+    if (window.screen.width <= 480) { // 768px portrait
+      this.mobile = true;
+    }
   }
   createForm() {
     this.formGroup = this.formBuilder.group({
@@ -68,26 +70,18 @@ export class SendPageComponent implements OnInit {
   }
   delete(name: string) {
     this.selectedFiles = this.selectedFiles.filter((f: File) => f.name !== name);
-    // this.fileService.setSubject(this.selectedFiles);
     if (this.selectedFiles.length === 0) {
       this.fileService.resetSubject();
     }
   }
   uploadFile(file) {
     this.selectedFiles.push(...file);
-    console.log(this.selectedFiles);
   }
 
   uploadFolder(files) {
     this.selectedFiles.push(...files);
-    console.log(files);
   }
 
-  updateFolderSize(size){
-    size += this.selectedFiles[this.selectedFiles.length].size
-    this.selectedFiles[this.selectedFiles.length] = {...this.selectedFiles[this.selectedFiles.length], size: size};
-    console.log(this.selectedFiles);
-  }
   setDownloadLinkLimit(limit: string) {
     this.downloadLinkLimitString = limit;
   }
@@ -114,8 +108,14 @@ export class SendPageComponent implements OnInit {
     event.stopPropagation();
     const settingsConfig = new MatDialogConfig();
     settingsConfig.autoFocus = false;
-    settingsConfig.minHeight = '500px';
-    settingsConfig.minWidth = '650px';
+    if(!this.mobile){
+      settingsConfig.minHeight = '500px';
+      settingsConfig.minWidth = '650px';
+    } else {
+      settingsConfig.width = '90vw';
+      settingsConfig.height = '70vh';
+    }
+
 
     this.dialog.open(ContactsDialogComponent, settingsConfig).afterClosed().subscribe( selectedContacts => {
       this.selectedContacts = _.union(this.selectedContacts, selectedContacts);
@@ -163,6 +163,8 @@ export class SendPageComponent implements OnInit {
         }).afterClosed().subscribe( dialogRes => {
           if(dialogRes){
             this.selectedContacts = [];
+          } else {
+            this.selectedTransferMethod = 'classic';
           }
       });
     }

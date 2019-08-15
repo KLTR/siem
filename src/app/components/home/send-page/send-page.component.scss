@@ -19,11 +19,14 @@
   .box {
     padding: 10px;
     margin: 5px;
-    box-shadow: 6px 8px 10px #0000003b;
-
+    box-shadow: 6px 8px 10px rgba(0, 0, 0, 0.231);
+    -webkit-box-shadow: 6px 8px 10px rgba(0, 0, 0, 0.231);
+    -ms-box-shadow: 6px 8px 10px rgba(0, 0, 0, 0.231);
   }
 
   .col-1 {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+
     ::-webkit-scrollbar {
       width: 0px;
       /* Remove scrollbar space */
@@ -93,7 +96,7 @@
           width: 150px;
           display: flex;
           font-size: 16px;
-
+          z-index: 1;
           .btn-txt {
             color: rgba(0, 0, 0, 0.4);
             z-index: 2;
@@ -167,7 +170,7 @@
 
   .col-2 {
     height: 420px;
-
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     ::-webkit-scrollbar {
       width: 0px;
       /* Remove scrollbar space */
@@ -251,4 +254,29 @@
 }
 .button{
   z-index: 2;
+}
+@media screen and (max-width: 480px) {
+.main-row{
+  flex-direction: column !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  .col-1{
+    height: 100% !important;
+    max-width: 100% !important;
+    .box{
+      width: 100% !important;
+    }
+  }
+  .col-2{
+    flex: 0 !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    .box{
+      width: 100% !important;
+      height: 240px;
+    }
+  }
+}
 }

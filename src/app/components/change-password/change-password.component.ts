@@ -30,7 +30,8 @@ export class ChangePasswordComponent implements OnInit {
     this.createForm();
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
-    }  }
+    }
+  }
 
   createForm() {
     // tslint:disable-next-line:max-line-length

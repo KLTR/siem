@@ -17,6 +17,7 @@ export class FileService {
     for (const droppedFile of files) {
 
       // Is it a file?
+      console.log(droppedFile.fileEntry);
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
