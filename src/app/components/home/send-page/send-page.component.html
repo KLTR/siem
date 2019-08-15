@@ -3,9 +3,18 @@
   <div class="col-1" fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex="70">
 
 
-    <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch" appDnd
-      (fileUploadedEmitter)="uploadFile($event)" (folderUploadedEmitter)="uploadFolder($event)" (updateFolderSizeEmitter)="updateFolderSize($event)">
-
+    <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch">
+     <ngx-file-drop
+     *ngIf='!isMobile; else mobile'
+     class="dropzone"
+     fxLayout="column"
+     fxLayoutAlign="center center"
+     (onFileDrop)="fileService.dropped($event)"
+     (onFileOver)="fileService.fileOver($event);"
+     (onFileLeave)="fileService.fileLeave($event)"
+     dropZoneClassName="drop-zone"
+     >
+   </ngx-file-drop>
       <div class="files" fxLayout="column" fxLayoutAlign="space-between stretch">
         <span class="header-underline">
           <span class="header">
@@ -150,7 +159,7 @@
       <div class="buttons" fxLayout="column">
         <button mat-raised-button color="primary" class="action-btn" [disabled]="!linkFormGroup.valid"  *ngIf="selectedTransferMethod === 'link'">Create</button>
         <button mat-raised-button color="primary" class="action-btn" (click)="transfer()" [disabled]="selectedContacts.length === 0" *ngIf="selectedTransferMethod !== 'link'" >Transfer</button>
-        <button mat-button (click)="cancel.emit(false)" class="cancel-btn">Cancel</button>
+        <button mat-button (click)="fileService.resetSubject()" class="cancel-btn">Cancel</button>
       </div>
     </div>
   </div>

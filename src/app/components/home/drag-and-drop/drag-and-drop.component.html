@@ -4,9 +4,9 @@
   class="dropzone"
   fxLayout="column"
   fxLayoutAlign="center center"
-  (onFileDrop)="dropped($event)"
-  (onFileOver)="fileOver($event)"
-  (onFileLeave)="fileLeave($event)"
+  (onFileDrop)="fileService.dropped($event)"
+  (onFileOver)="fileService.fileOver($event);"
+  (onFileLeave)="fileService.fileLeave($event)"
   dropZoneClassName="drop-zone"
   >
 </ngx-file-drop>

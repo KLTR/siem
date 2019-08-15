@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileService {
   public files: NgxFileDropEntry[] = [];
-  constructor() { }
+  public filesSubject: BehaviorSubject<any>;
+  constructor() {
+    this.filesSubject = new BehaviorSubject(null);
+
+  }
   public dropped(files: NgxFileDropEntry[]) {
     this.files = files;
     for (const droppedFile of files) {
@@ -17,8 +22,9 @@ export class FileService {
         fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
-
+          // console.log(droppedFile.relativePath, file);
+          this.filesSubject.next(file);
+          return file;
           /**
           // You could upload it like this:
           const formData = new FormData()
@@ -40,15 +46,22 @@ export class FileService {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
         console.log(droppedFile.relativePath, fileEntry);
+        return fileEntry
       }
     }
   }
 
   public fileOver(event){
-    console.log(event);
   }
 
   public fileLeave(event){
-    console.log(event);
+  }
+
+  resetSubject(){
+    this.filesSubject.next(null);
+  }
+
+  setSubject(files){
+    this.filesSubject.next(files);
   }
 }

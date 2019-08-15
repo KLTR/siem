@@ -1,4 +1,4 @@
-import { ErrorService } from '@services';
+import { ErrorService, FileService } from '@services';
 import { ApiService } from '@app/services';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {
@@ -47,7 +47,8 @@ export class SendPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private apiService: ApiService,
-    private errorService: ErrorService) {
+    private errorService: ErrorService,
+    public fileService: FileService) {
   }
 
   ngOnInit() {
@@ -67,8 +68,9 @@ export class SendPageComponent implements OnInit {
   }
   delete(name: string) {
     this.selectedFiles = this.selectedFiles.filter((f: File) => f.name !== name);
+    // this.fileService.setSubject(this.selectedFiles);
     if (this.selectedFiles.length === 0) {
-      this.cancel.emit(true);
+      this.fileService.resetSubject();
     }
   }
   uploadFile(file) {

@@ -36,14 +36,29 @@
     .box {
       height: 200px;
     }
+    .dropzone {
+      height: 100%;
+      width: 100%;
+      border: dashed 2px $main;
+      position: absolute;
+    }
+    ngx-file-drop{
+      &.dropzone{
+        border: none;
+        z-index: 1;
 
+      }
+    }
     .files-wrapper {
+      position: relative;
       .files {
         .files-list {
           list-style: none;
           height: 115px;
           width: 200px;
-          overflow-y: auto;
+          // overflow-y: auto;
+          overflow-y: scroll;
+          z-index: 10;
           padding: 0;
           margin-bottom: auto;
 
@@ -81,6 +96,7 @@
 
           .btn-txt {
             color: rgba(0, 0, 0, 0.4);
+            z-index: 2;
           }
 
           .add-icon {
@@ -131,6 +147,7 @@
               position: absolute;
               right: 5px;
               color: $primary-text;
+              z-index: 2;
 
             }
           }
@@ -183,6 +200,7 @@
             bottom: 20%;
             font-weight: 300;
             font-size: 14px;
+            z-index: 2;
           }
         }
       }
@@ -223,8 +241,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
-
+.delete{
+  z-index: 2;
+}
 #menu {
   position: absolute;
+}
+.button{
+  z-index: 2;
 }

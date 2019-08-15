@@ -20,8 +20,22 @@ export class DragAndDropComponent implements OnInit {
   isMobile = false;
   dialogConfig: MatDialogConfig;
   isFilesSelected = false;
-  selectedFiles;
-  constructor(private dialog: MatDialog, private fileService: FileService) {
+  selectedFiles = [];
+  constructor(private dialog: MatDialog, public fileService: FileService) {
+    this.fileService.filesSubject.subscribe(files => {
+      console.log(files);
+      if(files) {
+        this.selectedFiles.push(files);
+        if(this.selectedFiles.length > 0) {
+          this.isFilesSelected = true;
+        } else {
+          this.isFilesSelected = false;
+        }
+      }else {
+        this.isFilesSelected = false;
+        this.selectedFiles = [];
+      }
+    });
   }
 
   ngOnInit() {
@@ -36,6 +50,9 @@ export class DragAndDropComponent implements OnInit {
   }
 
   uploadFile(file) {
+    // this.selectedFiles = Array.from(file);
+    console.log(file);
+    // this.fileService.setSubject(file);
     this.selectedFiles = Array.from(file);
     this.isFilesSelected = true;
 
@@ -50,14 +67,5 @@ export class DragAndDropComponent implements OnInit {
     this.isFilesSelected = false;
   }
 
-  dropped($event){
-    this.fileService.dropped($event);
-  }
-  fileOver($event){
-    this.fileService.fileOver($event);
-  }
-  fileLeave($event){
-    this.fileService.fileLeave($event);
-  }
 
 }
