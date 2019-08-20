@@ -143,10 +143,10 @@ export class SendPageComponent implements OnInit {
 // username: req.inWhitelist ? req.username : undefined,
     this.selectedContacts.forEach(contact => {
       delete contact.isSelected;
-      contact = {...contact, isMirage: false, duration: {}, inWhitelist: false, }
+      console.log(contact);
+      contact = {...contact, isMirage: false, duration: {days: 0, hours: 0, minutes: 0}, inWhitelist: true, property: undefined }
       contacts.unshift(contact);
     });
-
     this.apiService.emailExist(contacts).subscribe(
     (res) => {
       console.log(res);
