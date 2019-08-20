@@ -55,6 +55,8 @@ import { HistoryComponent } from './components/home/menu-items/history/history.c
 import { SendPageComponent } from './components/home/send-page/send-page.component';
 import { FileSizePipe } from './pipes/file-size.pipe';
 import { ContactsDialogComponent } from './components/home/send-page/contacts-dialog/contacts-dialog/contacts-dialog.component';
+import { NonCopaUsersDialogComponent } from './components/home/send-page/non-copa-users-dialog/non-copa-users-dialog.component';
+import { MultiFactorAuthenticationDialogComponent } from './components/home/send-page/multi-factor-authentication-dialog/multi-factor-authentication-dialog.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -83,6 +85,8 @@ export function createTranslateLoader(http: HttpClient) {
     SendPageComponent,
     FileSizePipe,
     ContactsDialogComponent,
+    NonCopaUsersDialogComponent,
+    MultiFactorAuthenticationDialogComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -92,7 +96,9 @@ export function createTranslateLoader(http: HttpClient) {
     ResetPasswordComponent,
     HistoryComponent,
     ConfirmDialogComponent,
-    ContactsDialogComponent
+    ContactsDialogComponent,
+    NonCopaUsersDialogComponent,
+    MultiFactorAuthenticationDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -19,6 +19,7 @@ import { ContactsDialogComponent } from './contacts-dialog/contacts-dialog/conta
 import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '@app/dialogs/confirm.dialog/confirm.dialog.component';
 import { MatIcon } from '@angular/material';
+import { NonCopaUsersDialogComponent } from './non-copa-users-dialog/non-copa-users-dialog.component';
 
 @Component({
   selector: 'app-send-page',
@@ -129,32 +130,53 @@ export class SendPageComponent implements OnInit {
     this.selectedContacts.splice(this.selectedContacts.findIndex(c => c.id === contact.id), 1);
   }
   transfer(){
-    const contacts = [];
-//     property: req.inWhitelist ? undefined : req.property
-// id: req.inWhitelist ? req.id : undefined,
-// 				email: req.inWhitelist ? req.email : undefined,,
-// 				isMirage:<boolean>(isAdvanced method),
-// 				duration: {
-// 					days
-// 					hours
-// 					minutes
-// 				} || {},
-// 				inWhitelist: <boolean>(req.inWhitelist),
-// username: req.inWhitelist ? req.username : undefined,
-    this.selectedContacts.forEach(contact => {
-      delete contact.isSelected;
-      console.log(contact);
-      contact = {...contact, isMirage: false, duration: {days: 0, hours: 0, minutes: 0}, inWhitelist: true, property: undefined }
-      contacts.unshift(contact);
-    });
-    this.apiService.emailExist(contacts).subscribe(
-    (res) => {
-      console.log(res);
-    },
-    (err) => {
-      this.errorService.logError(err)
+    // const contacts = [];
+    // this.selectedContacts.forEach(contact => {
+    //   delete contact.isSelected;
+    //   console.log(contact);
+    //   contact = {...contact, isMirage: false, duration: {days: 0, hours: 0, minutes: 0}, inWhitelist: true, property: undefined }
+    //   contacts.unshift(contact);
+    // });
+    // this.apiService.emailExist(contacts).subscribe(
+    // (res) => {
+    //   console.log(res);
+    // },
+    // (err) => {
+    //   this.errorService.logError(err)
+    // }
+    // )
+
+    // this sould be after api response - if the array of non-registered recipients is not empty ->
+    const serverResponse = [
+      {
+      email: 'asanska@hotmail.com',
+      id: '5d2b5069a13614e1237ff5a8',
+      inWhitelist: false,
+      isMirage: false,
+      property: 'email',
+      username: 'asanskaHotmail',
+      duration: {
+        days: 0, hours: 0, minutes: 0
+      }
+     },
+    ]
+    if(serverResponse.length > 0) {
+      const settingsConfig = new MatDialogConfig();
+      settingsConfig.autoFocus = false;
+      if(!this.mobile){
+        settingsConfig.minHeight = '500px';
+        settingsConfig.minWidth = '650px';
+      } else {
+        settingsConfig.width = '90vw';
+        settingsConfig.height = '70vh';
+      }
+      settingsConfig.data = serverResponse;
+
+
+      this.dialog.open(NonCopaUsersDialogComponent, settingsConfig).afterClosed().subscribe( res => {
+        console.log(res);
+      })
     }
-    )
   }
   clearRecipients(){
     if(this.selectedTransferMethod === 'link' && this.selectedContacts.length > 0) {
