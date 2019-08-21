@@ -1,3 +1,4 @@
+import { MultiFactorAuthenticationDialogComponent } from './multi-factor-authentication-dialog/multi-factor-authentication-dialog.component';
 import { ErrorService, FileService } from '@services';
 import { ApiService } from '@app/services';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -164,8 +165,8 @@ export class SendPageComponent implements OnInit {
       const settingsConfig = new MatDialogConfig();
       settingsConfig.autoFocus = false;
       if(!this.mobile){
-        settingsConfig.minHeight = '500px';
-        settingsConfig.minWidth = '650px';
+        settingsConfig.minHeight = '700px';
+        settingsConfig.minWidth = '900px';
       } else {
         settingsConfig.width = '90vw';
         settingsConfig.height = '70vh';
@@ -175,6 +176,11 @@ export class SendPageComponent implements OnInit {
 
       this.dialog.open(NonCopaUsersDialogComponent, settingsConfig).afterClosed().subscribe( res => {
         console.log(res);
+        if(res){
+          this.dialog.open(MultiFactorAuthenticationDialogComponent, settingsConfig).afterClosed().subscribe( res => {
+            console.log(res);
+          })
+        }
       })
     }
   }

@@ -1,37 +1,49 @@
 @import '../../../../../styles/colors.scss';
 
-.container{
-  height: 100%;
-  padding: 25px;
+.mat-dialog-container{
+  position: relative;
+}
   .title{
     color: $primary-text;
-    position: relative;
     text-align: center;
-  .title-text{
     border-bottom: 1px solid $primary-text;
+  .title-text{
     width: fit-content;
   }
     .close-btn{
       position: absolute;
       right: 5px;
+      top: 0;
     }
   }
+  .text-wrapper{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
     .contacts{
+    border: 1px solid #064eff24;
+    min-height: 300px;
+    margin: 5px;
+    padding: 2px;
+    overflow-y: auto;
       .contacts-list{
         list-style: none;
         padding: 0;
         margin: 0;
         margin-top: 5px;
         width: 100%;
-        max-height: 230px;
+        max-height: 300px;
         overflow-y: auto;
         .mat-list-item-content{
           padding: 0;
         }
         .contact-item{
+          height: 70px;
+
           .contact-icon{
             font-size: 12px;
-            color: $primary-text;
           }
           .contact-email{
             margin-left: 5px;
@@ -46,15 +58,15 @@
         }
       }
     }
-}
-
-.no-contacts{
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  width: 500px;
-  font-size: 18px;
-  color: rgba(0,0,0,0.55)
+    .download-limit {
+      border-bottom: 1px solid $primary-text;
+      padding: 0;
+      width: 35px;
+      min-width: 20px;
+    }
+    #menu {
+      position: absolute;
+    }
+mat-icon{
+  color: $primary-text;
 }

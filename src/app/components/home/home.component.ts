@@ -18,8 +18,6 @@ export class HomeComponent implements OnInit {
     this.apiService.user.subscribe(user => {
       this.user = user;
     });
-
-
    }
 
   ngOnInit() {
