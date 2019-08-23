@@ -38,8 +38,7 @@ export class LoginComponent implements OnInit {
 
   checkPassword(control) {
     const enteredPassword = control.value;
-    const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    return !passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
+    return !environment.passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
   }
 
   getErrorEmail() {
