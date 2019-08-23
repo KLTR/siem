@@ -1,3 +1,4 @@
+import { environment } from '@env/environment';
 import { MultiFactorAuthenticationDialogComponent } from './multi-factor-authentication-dialog/multi-factor-authentication-dialog.component';
 import { ErrorService, FileService } from '@services';
 import { ApiService } from '@app/services';
@@ -94,8 +95,7 @@ export class SendPageComponent implements OnInit {
   }
   checkPassword(control) {
     const enteredPassword = control.value;
-    const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    return !passwordCheck.test(enteredPassword) && enteredPassword ? {
+    return !environment.passwordCheck.test(enteredPassword) && enteredPassword ? {
       requirements: true
     } : null;
   }

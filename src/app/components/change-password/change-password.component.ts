@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { ErrorService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from './../../services/api/api.service';
@@ -42,8 +43,7 @@ export class ChangePasswordComponent implements OnInit {
   }
   checkPassword(control) {
     const enteredPassword = control.value;
-    const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    return !passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
+    return !environment.passwordCheck.test(enteredPassword) && enteredPassword ? { requirements: true } : null;
   }
   checkConfirmPassword(control) {
   const confirmPass = control.value;
