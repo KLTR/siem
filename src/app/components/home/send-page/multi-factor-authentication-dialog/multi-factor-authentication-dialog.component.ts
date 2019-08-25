@@ -1,3 +1,5 @@
+import { MatDialogConfig } from '@angular/material/dialog';
+import { CreateLinkDialogComponent } from './../create-link-dialog/create-link-dialog.component';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { ApiService } from '@app/services';
@@ -9,8 +11,10 @@ import { ApiService } from '@app/services';
 })
 export class MultiFactorAuthenticationDialogComponent implements OnInit {
   user: any;
+  settingsConfig = new MatDialogConfig();
+  mobile = false;
   downloadLinkLimitString = '5 downloads';
-  isContactsReady = false;
+  note: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialog: MatDialog,
@@ -22,6 +26,15 @@ export class MultiFactorAuthenticationDialogComponent implements OnInit {
    }
 
   ngOnInit() {
+    if (window.screen.width <= 480) { // 768px portrait
+      this.mobile = true;
+    }
+        this.settingsConfig.autoFocus = false;
+        if(!this.mobile){
+          this.settingsConfig.width = '30vw';
+        } else {
+          this.settingsConfig.width = '40vw';
+        }
     this.setContacts();
   }
   setDownloadLinkLimit(contact: any, limit: string) {
@@ -29,14 +42,24 @@ export class MultiFactorAuthenticationDialogComponent implements OnInit {
   }
 
   toggleLink(contact: any){
-   contact.isLinkOnly = !contact.isLinkOnly;
+    if(!contact.isLinkOnly){
+      this.dialog.open(CreateLinkDialogComponent, this.settingsConfig).afterClosed().subscribe( res => {
+        if(res){
+          contact.isLinkOnly = true;
+          contact.password = res;
+        }
+      })
+    } else {
+      contact.isLinkOnly = false;
+      contact.password = '';
+    }
   }
+
 
   setContacts(){
     this.data.forEach(contact => {
-      contact = {...contact, isLinkOnly : false, downloadLinkLimit: 'Unlimited downloads (for 7 days)'}
+      contact = {...contact, isLinkOnly : false, downloadLinkLimit: 'Unlimited downloads (for 7 days)', note: '', password: ''}
       console.log(contact);
     });
-    this.isContactsReady = true;
   }
 }

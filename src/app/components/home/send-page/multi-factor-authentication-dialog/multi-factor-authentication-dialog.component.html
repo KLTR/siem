@@ -1,31 +1,37 @@
 <h2 mat-dialog-title class="title">
-  <span class="title-text">NON REGISTERED RECIPIENTS</span>
+  <span class="title-text">CHOOSE TRANSFER METHOD</span>
   <button mat-icon-button class="close-btn" aria-hidden="false" [mat-dialog-close]="false">
     <mat-icon>close</mat-icon>
   </button>
 </h2>
 <div class="text-wrapper">
-  <span class="text">To secure the files you send via email COPA uses two factor authentication.</span>
-  <span class="text">Please enter the recipient's phone number</span>
+  <span class="text">Please choose a transfer method</span>
 </div>
 <mat-dialog-content color="primary">
   <div class="contacts" fxLayout="column" fxLayoutAlign="start start">
 
-    <mat-list class="contacts-list" *ngIf = "isContactsReady">
+    <mat-list class="contacts-list" >
       <ng-container *ngFor="let contact of data">
         <mat-list-item class="contact-item">
           <span class="contact-icon">
             <mat-icon>
               contacts_outline
             </mat-icon>
+            <span class="contact-email">{{contact.email}}</span>
           </span>
-          <span class="contact-email">{{contact.email}}</span>
-          <button *ngIf="user.offlineMode === 'upload'" class="download-limit" mat-button
+          <div class="icons">
+            <button *ngIf="user.offlineMode === 'upload'" class="download-limit" mat-button
             [matMenuTriggerFor]="downloadLinkLimit">
             <mat-icon matTooltip="{{contact.downloadLinkLimit ? contact.downloadLinkLimit : 'Unlimited downloads (for 7 days)'}}" matTooltipPosition="above" matTooltipClass="tooltip">
               arrow_downward
             </mat-icon>
           </button>
+          <button mat-icon-button class="link" (click)="toggleLink(contact)">
+            <mat-icon matTooltip="{{contact.isLinkOnly ? 'disable link only' : 'create link only'}}" matTooltipPosition="above" matTooltipClass="tooltip">
+              {{contact.isLinkOnly ? 'link_off' : 'link'}}
+            </mat-icon>
+          </button>
+          </div>
           <mat-menu id="menu" class="download-link-menu" #downloadLinkLimit="matMenu" [hasBackdrop]="true">
             <button mat-menu-item (click)="setDownloadLinkLimit(contact,'1 download')">
               <span>1 download</span>
@@ -37,11 +43,6 @@
               <span>Unlimited downloads (for 7 days)</span>
             </button>
           </mat-menu>
-          <button mat-icon-button (click)="toggleLink(contact)">
-            <mat-icon matTooltip="{{contact.isLinkOnly ? 'disable link only' : 'create link only'}}" matTooltipPosition="above" matTooltipClass="tooltip">
-              {{contact.isLinkOnly ? 'link_off' : 'link'}}
-            </mat-icon>
-          </button>
           <mat-form-field class="note">
               <textarea
               matInput
@@ -51,8 +52,8 @@
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
               cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="5">
-            </textarea>
+              cdkAutosizeMaxRows="5"
+              [(ngModel)]="contact.note"></textarea>
               <mat-hint align="end">{{note.value.length}} / 250</mat-hint>
             </mat-form-field>
         </mat-list-item>
@@ -82,5 +83,5 @@
         matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help</mat-icon>
     </div>
   </mat-radio-group>
-  <button mat-raised-button [mat-dialog-close]="true">OK</button>
+  <button mat-raised-button [mat-dialog-close]="data">OK</button>
 </mat-dialog-actions>

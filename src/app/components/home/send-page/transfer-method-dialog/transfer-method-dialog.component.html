@@ -1,0 +1,35 @@
+<div class="container">
+<h2 mat-dialog-title class="title">
+  <span class="title-text">CHOOSE TRANSFER METHOD</span>
+  <button mat-icon-button class="close-btn" aria-hidden="false" [mat-dialog-close]="false">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<div class="text-wrapper">
+</div>
+<mat-dialog-content color="primary">
+  <mat-radio-group color="primary" aria-labelledby="example-radio-group-label"
+    class="example-radio-group" [(ngModel)]="selectedMethod">
+    <div class="row" fxLayout="row" fxLayoutAlign="start center">
+    </div>
+    <div class="row" fxLayout="row" fxLayoutAlign="start center">
+      <mat-radio-button color="primary" [value]="'upload'">
+        Upload to <span class="strong-text">COPA</span> servers
+      </mat-radio-button>
+      <mat-icon class='help-icon' matTooltip="Send and Receive End-to-End encrypted data, with maximal Ease-of-use."
+        matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help</mat-icon>
+    </div>
+    <div class="row" fxLayout="row" fxLayoutAlign="start center">
+      <mat-radio-button color="primary" color="primary" [value]="'wait'">
+        Direct (P2P)
+      </mat-radio-button>
+      <mat-icon class='help-icon' matTooltip="Data will only be exchanged while both sides are connected."
+        matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help</mat-icon>
+    </div>
+  </mat-radio-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" [mat-dialog-close]="selectedMethod">OK</button>
+</mat-dialog-actions>
+</div>

@@ -15,8 +15,10 @@ export class ContactsDialogComponent implements OnInit {
   constructor(private apiService: ApiService) {
     this.apiService.user.subscribe(user => {
       this.contacts = user.whitelists[0].peers;
-      this.filteredContacts = this.contacts;
-      console.log(this.contacts);
+      this.contacts.forEach(contact => {
+        contact = { ...contact, inWhitelist: true };
+        this.filteredContacts.push(contact);
+      });
     });
    }
 

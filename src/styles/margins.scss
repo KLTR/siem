@@ -7,7 +7,6 @@
     .my-#{$size} {
       margin-top: $size * $measurement;
     }
-
     .mr-#{$size},
     .mx-#{$size} {
       margin-right: $size * $measurement;

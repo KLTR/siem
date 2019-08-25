@@ -1,0 +1,37 @@
+<h2 mat-dialog-title class="title">
+  <span class="title-text">CREATE A LINK</span>
+  <button mat-icon-button class="close-btn" aria-hidden="false" [mat-dialog-close]="false">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<div class="text-wrapper">
+    <span class="text">Create a password protected link</span>
+    <span class="text mt-15">Please remember: share your password with the recipient/s. This link won't be shared by COPA. You can send it by using your own email</span>
+</div>
+<mat-dialog-content color="primary">
+  <div class="password" fxLayout="column" fxLayoutAlign="start start">
+    <form [formGroup]="formGroup" class="form">
+      <div class="form-content" fxLayout="column">
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Password*" autocomplete="true" formControlName="password" [type]='password' />
+          <mat-hint>Authenticate your password so we'll know this is you.</mat-hint>
+          <mat-error *ngIf="!formGroup.controls['password'].valid && formGroup.controls['password'].touched">
+            {{ getErrorPassword() }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button 
+    [mat-dialog-close]="formGroup.controls['password'].value" 
+    class="button mt-20" 
+    [disabled]="!formGroup.controls['password'].valid"
+    type="button" 
+    color="primary"
+    mat-raised-button>SET</button>
+  </mat-dialog-actions>
+
+

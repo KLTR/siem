@@ -57,6 +57,8 @@ import { FileSizePipe } from './pipes/file-size.pipe';
 import { ContactsDialogComponent } from './components/home/send-page/contacts-dialog/contacts-dialog/contacts-dialog.component';
 import { NonCopaUsersDialogComponent } from './components/home/send-page/non-copa-users-dialog/non-copa-users-dialog.component';
 import { MultiFactorAuthenticationDialogComponent } from './components/home/send-page/multi-factor-authentication-dialog/multi-factor-authentication-dialog.component';
+import { CreateLinkDialogComponent } from './components/home/send-page/create-link-dialog/create-link-dialog.component';
+import { TransferMethodDialogComponent } from './components/home/send-page/transfer-method-dialog/transfer-method-dialog.component';
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
@@ -87,6 +89,8 @@ export function createTranslateLoader(http: HttpClient) {
     ContactsDialogComponent,
     NonCopaUsersDialogComponent,
     MultiFactorAuthenticationDialogComponent,
+    CreateLinkDialogComponent,
+    TransferMethodDialogComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -98,7 +102,9 @@ export function createTranslateLoader(http: HttpClient) {
     ConfirmDialogComponent,
     ContactsDialogComponent,
     NonCopaUsersDialogComponent,
-    MultiFactorAuthenticationDialogComponent
+    MultiFactorAuthenticationDialogComponent,
+    CreateLinkDialogComponent,
+    TransferMethodDialogComponent
   ],
   imports: [
     BrowserModule,
