@@ -25,6 +25,7 @@
     "@auth0/angular-jwt": "^2.1.1",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "cryappter": "file:libs/cryappter-0.0.2.tgz",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.15",
     "ngx-file-drop": "^8.0.7",
