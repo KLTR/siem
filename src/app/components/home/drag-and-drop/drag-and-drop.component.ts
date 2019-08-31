@@ -5,6 +5,7 @@ import {
 import {
   Component,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   MatDialog
@@ -15,14 +16,14 @@ import {
   templateUrl: './drag-and-drop.component.html',
   styleUrls: ['./drag-and-drop.component.scss']
 })
-export class DragAndDropComponent implements OnInit {
+export class DragAndDropComponent implements OnInit, OnDestroy {
   uploadPaths = [];
   isMobile = false;
   dialogConfig: MatDialogConfig;
   isFilesSelected = false;
   selectedFiles = [];
   constructor(private dialog: MatDialog, public fileService: FileService) {
-    this.fileService.filesSubject.subscribe(files => {
+    this.fileService.filesSubject$.subscribe(files => {
       console.log(files);
       if(files) {
         this.selectedFiles.push(files);
@@ -37,7 +38,11 @@ export class DragAndDropComponent implements OnInit {
       }
     });
   }
-
+ngOnDestroy(): void {
+  //Called once, before the instance is destroyed.
+  //Add 'implements OnDestroy' to the class.
+  console.log('destroy');
+}
   ngOnInit() {
     if (window.screen.width <= 480) { // 768px portrait
       this.isMobile = true;

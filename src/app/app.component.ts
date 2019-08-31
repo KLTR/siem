@@ -79,6 +79,7 @@ export class AppComponent {
         const token = res.getBody().token;
         this.apiService.setToken(token);
         this.apiService.setApp(res.getBody());
+        this.router.navigateByUrl('home');
       },
       (err) => {
         // this.errorService.logError(err);

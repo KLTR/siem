@@ -44,8 +44,8 @@ export class ApiService {
     deleteAllHistory: '/api/rest/history/delete/all',
     sendLink: '/api/rest/transfer/send/link',
     // Send Page
-    emailExist: '/api/rest/email_exist'
-
+    emailExist: '/api/rest/email_exist',
+    requestP2P: '/api/rest/request_p2p'
   };
 
   constructor(private sails: Sails, private router: Router, private dialog: MatDialog) {
@@ -194,5 +194,10 @@ export class ApiService {
   emailExist(recipientData: any): Observable<SailsResponse> {
     console.log(recipientData);
     return this.request.post(`${this.serverUrls.emailExist}`,  recipientData);
+  }
+
+  requestP2P(recipientsData: any): Observable<SailsResponse> {
+      console.log(recipientsData);
+      return this.request.post(`${this.serverUrls.requestP2P}`, recipientsData);
   }
 }

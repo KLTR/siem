@@ -15,6 +15,7 @@ export class MultiFactorAuthenticationDialogComponent implements OnInit {
   mobile = false;
   downloadLinkLimitString = '5 downloads';
   note: string;
+  selectedMethod: 'upload';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialog: MatDialog,

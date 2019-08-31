@@ -9,7 +9,8 @@ import {
 } from '@angular/material/dialog';
 import {
   Component,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import {
   ApiService
@@ -26,14 +27,17 @@ import {
 import {
   ResetPasswordComponent
 } from './reset-password/reset-password.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss']
 })
-export class UserSettingsComponent implements OnInit {
+export class UserSettingsComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
+  userSubscription: any
+  appSubscription: any;
   user: any;
   username: string;
   requiredField = 'This field is required';
@@ -49,18 +53,22 @@ export class UserSettingsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private errorService: ErrorService
-  ) {
-    this.apiService.user.subscribe(user => {
-      this.user = user;
+  ) {}
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+    this.appSubscription.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.userSubscription = this.apiService.user.asObservable().subscribe(user => {
+      this.user = user
     });
-    this.apiService.app.pipe(
+    this.appSubscription = this.apiService.app.asObservable().pipe(
       distinctUntilChanged())
       .subscribe(app => {
         this.app = app;
       })
-  }
-
-  ngOnInit() {
     if (window.screen.width <= 480) { // 768px portrait
       this.mobile = true;
     }

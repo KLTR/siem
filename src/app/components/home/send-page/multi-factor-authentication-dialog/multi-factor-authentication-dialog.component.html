@@ -65,7 +65,7 @@
 
 <mat-dialog-actions>
   <mat-radio-group *ngIf="user.offlineMode === 'ask'" color="primary" aria-labelledby="example-radio-group-label"
-    class="example-radio-group" [(ngModel)]="user.offlineMode" (change)="updateOfflineMode()">
+    class="example-radio-group" [(ngModel)]="selectedMethod">
     <div class="row" fxLayout="row" fxLayoutAlign="start center">
     </div>
     <div class="row" fxLayout="row" fxLayoutAlign="start center">
@@ -83,5 +83,5 @@
         matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help</mat-icon>
     </div>
   </mat-radio-group>
-  <button mat-raised-button [mat-dialog-close]="data">OK</button>
+  <button mat-raised-button [mat-dialog-close]="{data: data, selectedMethod: selectedMethod}">OK</button>
 </mat-dialog-actions>

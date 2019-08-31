@@ -226,6 +226,8 @@ export class SendPageComponent implements OnInit {
             this.dialog.open(TransferMethodDialogComponent, settingsConfig).afterClosed().subscribe(res => {
               console.log(res);
             })
+          } else {
+            this.apiService.requestP2P(contacts);
           }
         }
       },

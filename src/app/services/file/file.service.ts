@@ -8,9 +8,10 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class FileService {
   public files: NgxFileDropEntry[] = [];
   public filesSubject: BehaviorSubject<any>;
+  public filesSubject$: Observable<any>;
   constructor() {
     this.filesSubject = new BehaviorSubject(null);
-
+    this.filesSubject$ = this.filesSubject.asObservable();
   }
   public dropped(files: NgxFileDropEntry[]) {
     this.files = files;
@@ -23,7 +24,7 @@ export class FileService {
         fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          // console.log(droppedFile.relativePath, file);
+          console.log(droppedFile.relativePath, file);
           this.filesSubject.next(file);
           return file;
           /**
