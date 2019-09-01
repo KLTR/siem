@@ -56,6 +56,7 @@ ngOnDestroy(): void {
 
   uploadFile(file) {
     // this.selectedFiles = Array.from(file);
+    
     console.log(file);
     // this.fileService.setSubject(file);
     this.selectedFiles = Array.from(file);

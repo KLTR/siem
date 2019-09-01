@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SailsModel, Sails, SailsQuery, RequestCriteria, SailsRequest, SailsResponse,
-         SailsSubscription, SailsEvent } from 'ngx-sails-socketio';
-import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Sails,  SailsRequest, SailsResponse,
+         SailsSubscription,  } from 'ngx-sails-socketio';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
@@ -16,6 +15,7 @@ export class ApiService {
   public user: BehaviorSubject<any>;
   public userObject: any;
   public app: BehaviorSubject<any>;
+  public incomingRequests: [];
   serverUrls = {
     getSocketInfo: '/api/socketinfo',
     authMe: '/api/auth/me',
@@ -45,7 +45,8 @@ export class ApiService {
     sendLink: '/api/rest/transfer/send/link',
     // Send Page
     emailExist: '/api/rest/email_exist',
-    requestP2P: '/api/rest/request_p2p'
+    requestP2P: '/api/rest/request_p2p',
+    confirmP2P: '/api/rest/confirm_p2p'
   };
 
   constructor(private sails: Sails, private router: Router, private dialog: MatDialog) {
@@ -116,6 +117,7 @@ export class ApiService {
     const decodedToken = helper.decodeToken(this.getToken());
     this.user.next(decodedToken);
     this.userObject = decodedToken;
+    console.log(this.userObject);
   }
 
   setApp(data): void{
@@ -200,4 +202,26 @@ export class ApiService {
       console.log(recipientsData);
       return this.request.post(`${this.serverUrls.requestP2P}`, recipientsData);
   }
+  confirmP2P(body: confirmP2P): Observable<SailsResponse> {
+    console.log(body);
+    return this.request.post(`${this.serverUrls.confirmP2P}`, body);
+  }
+}
+
+interface confirmP2P {
+  approvalId: string;
+  key: string;
+  password: string | undefined;
+  ip: string;
+  localIp: string;
+  netmask: string;
+  port: string;
+  toPortOpen: boolean;
+  jwt: string;
+  isDirect: boolean;
+  toBusiness: boolean;
+  toPublicKey: string;
+  inWhiteList: boolean;
+  autoDownload: boolean;
+  version: string;
 }

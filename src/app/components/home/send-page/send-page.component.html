@@ -4,24 +4,17 @@
 
 
     <div class="files-wrapper box" fxLayout="row" fxLayoutAlign="start stretch">
-     <ngx-file-drop
-     *ngIf='!mobile'
-     class="dropzone"
-     fxLayout="column"
-     fxLayoutAlign="center center"
-     (onFileDrop)="fileService.dropped($event)"
-     (onFileOver)="fileService.fileOver($event);"
-     (onFileLeave)="fileService.fileLeave($event)"
-     dropZoneClassName="drop-zone"
-     >
-   </ngx-file-drop>
+      <ngx-file-drop *ngIf='!mobile' class="dropzone" fxLayout="column" fxLayoutAlign="center center"
+        (onFileDrop)="fileService.dropped($event)" (onFileOver)="fileService.fileOver($event);"
+        (onFileLeave)="fileService.fileLeave($event)" dropZoneClassName="drop-zone">
+      </ngx-file-drop>
       <div class="files" fxLayout="column" fxLayoutAlign="space-between stretch">
         <span class="header-underline">
           <span class="header">
             Your Files
           </span>
         </span>
-        <ul class="files-list" >
+        <ul class="files-list">
           <li *ngFor="let file of selectedFiles;">
             <span class="li-underline">
               <span class="file-details" fxLayout="column" fxLayoutAlign="end stretch">
@@ -55,30 +48,32 @@
           <span class="header">Transfer Method</span>
         </span>
         <div class="radio-group">
-            <mat-radio-group color="primary" (change)="clearRecipients()" [(ngModel)]="selectedTransferMethod">
-              <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-radio-button color="primary" [value]="'classic'">
-                  classic security
-                </mat-radio-button>
-                <mat-icon class='help-icon' matTooltip="Safe end-to-end private file transfer with no size-limitations"
-                  matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
-              </div>
-              <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-radio-button color="primary" [value]="'advanced'">
-                  advanced security
-                </mat-radio-button>
-                <mat-icon class='help-icon'
-                  matTooltip="Self-destruct timer, files would be available exclusively within COPA (view-only), recipients cannot copy or duplicate files, including saving copies, forwarding, or screen printing."
-                  matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
-              </div>
-              <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-radio-button color="primary" color="primary" [value]="'link'">
-                  protected link
-                </mat-radio-button>
-                <mat-icon class='help-icon' matTooltip="End-to-end encrypted link can be share externally."
-                  matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
-              </div>
-            </mat-radio-group>
+          <mat-radio-group color="primary" (change)="clearRecipients()" [(ngModel)]="selectedTransferMethod">
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" [value]="'classic'">
+                classic security
+              </mat-radio-button>
+              <mat-icon class='help-icon' matTooltip="Safe end-to-end private file transfer with no size-limitations"
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" [value]="'advanced'">
+                advanced security
+              </mat-radio-button>
+              <mat-icon class='help-icon'
+                matTooltip="Self-destruct timer, files would be available exclusively within COPA (view-only), recipients cannot copy or duplicate files, including saving copies, forwarding, or screen printing."
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+            <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-radio-button color="primary" color="primary" [value]="'link'">
+                protected link
+              </mat-radio-button>
+              <mat-icon class='help-icon' matTooltip="End-to-end encrypted link can be share externally."
+                matTooltipPosition="above" matTooltipClass="tooltip" matBadge="15">help_outline</mat-icon>
+            </div>
+          </mat-radio-group>
+
+
         </div>
       </div>
 
@@ -94,9 +89,37 @@
                 </mat-error>
                 <mat-icon class="add-icon pointer" #contactIcon (click)="openContacts($event)">person_add</mat-icon>
               </mat-form-field>
-              <button class="button" (click)="addRecipient(formGroup.controls['username'].value)" [disabled]="!formGroup.valid" type="button" mat-raised-button color="primary">
+              <button class="button" (click)="addRecipient(formGroup.controls['username'].value)"
+                [disabled]="!formGroup.valid" type="button" mat-raised-button color="primary">
                 ADD
               </button>
+              <ng-container *ngIf="user.externalPassword">
+                  <div class="two-factor" fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field class="example-full-width">
+                      <span matPrefix>
+                        <mat-label>Country code</mat-label>
+                        <mat-select>
+                          <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
+                            {{food.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </span>
+                      <input type="tel" matInput placeholder="Telephone">
+                      <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-form-field>
+                    <!-- <mat-form-field>
+                      <mat-label>Country code</mat-label>
+                      <mat-select>
+                        <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
+                          {{food.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="tel" placeholder="Phone" value="">
+                    </mat-form-field> -->
+                  </div>
+                </ng-container>
             </form>
           </ng-container>
           <ng-container *ngIf="selectedTransferMethod === 'link'">
@@ -104,8 +127,8 @@
               <mat-form-field floatLabel='auto' class="form-element my-5">
                 <input autocomplete="true" matInput placeholder="Password" color="accent"
                   [required]="linkFormGroup.controls['isPasswordProtected'].value"
-                  [disableControl]="!linkFormGroup.controls['isPasswordProtected'].value"
-                  formControlName="password" type="password" />
+                  [disableControl]="!linkFormGroup.controls['isPasswordProtected'].value" formControlName="password"
+                  type="password" />
                 <!-- <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button> -->
@@ -131,8 +154,36 @@
                   <span>Unlimited downloads (for 7 days)</span>
                 </button>
               </mat-menu>
+              <ng-container *ngIf="user.externalPassword">
+                <div class="two-factor" fxLayout="row" fxLayoutAlign="space-between center">
+                  <mat-form-field class="example-full-width">
+                    <span matPrefix>
+                      <mat-label>Country code</mat-label>
+                      <mat-select>
+                        <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
+                          {{food.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </span>
+                    <input type="tel" matInput placeholder="Telephone">
+                    <mat-icon matSuffix>mode_edit</mat-icon>
+                  </mat-form-field>
+                  <!-- <mat-form-field>
+                    <mat-label>Country code</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="tel" placeholder="Phone" value="">
+                  </mat-form-field> -->
+                </div>
+              </ng-container>
             </form>
           </ng-container>
+
         </span>
       </div>
 
@@ -145,20 +196,22 @@
         <span class="header">Total files: {{selectedFiles.length}}</span>
       </span>
       <mat-list class="contacts-list">
-          <ng-container *ngFor="let contact of selectedContacts">
-              <mat-list-item  class="contact-item">
-                  <span *ngIf="contact.username" class="contact-email truncate">{{contact.username}}</span>
-                  <span *ngIf="contact.property" class="contact-email truncate">{{contact.property}}</span>
-                  <span class="delete">
-                      <mat-icon class="delete-icon pointer" (click)="removeContact(contact)">close</mat-icon>
-                    </span>
-                    <mat-divider></mat-divider>
-              </mat-list-item>
-          </ng-container>
-          </mat-list>
+        <ng-container *ngFor="let contact of selectedContacts">
+          <mat-list-item class="contact-item">
+            <span *ngIf="contact.username" class="contact-email truncate">{{contact.username}}</span>
+            <span *ngIf="contact.property" class="contact-email truncate">{{contact.property}}</span>
+            <span class="delete">
+              <mat-icon class="delete-icon pointer" (click)="removeContact(contact)">close</mat-icon>
+            </span>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
       <div class="buttons" fxLayout="column">
-        <button mat-raised-button color="primary" class="action-btn" [disabled]="!linkFormGroup.valid"  *ngIf="selectedTransferMethod === 'link'">Create</button>
-        <button mat-raised-button color="primary" class="action-btn" (click)="transfer()" [disabled]="selectedContacts.length === 0" *ngIf="selectedTransferMethod !== 'link'" >Transfer</button>
+        <button mat-raised-button color="primary" class="action-btn" [disabled]="!linkFormGroup.valid"
+          *ngIf="selectedTransferMethod === 'link'">Create</button>
+        <button mat-raised-button color="primary" class="action-btn" (click)="transfer()"
+          [disabled]="selectedContacts.length === 0" *ngIf="selectedTransferMethod !== 'link'">Transfer</button>
         <button mat-button (click)="fileService.resetSubject()" class="cancel-btn">Cancel</button>
       </div>
     </div>

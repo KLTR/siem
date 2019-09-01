@@ -48,6 +48,7 @@ import {
 import {
   NonCopaUsersDialogComponent
 } from './non-copa-users-dialog/non-copa-users-dialog.component';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-send-page',
@@ -77,6 +78,8 @@ export class SendPageComponent implements OnInit {
   }
   user: any;
   contactBy: string;
+  dbFiles = [];
+  blockedFiles = [];
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
@@ -159,7 +162,6 @@ export class SendPageComponent implements OnInit {
     });
   }
   addRecipient(recipientData) {
-    console.log(recipientData);
     this.selectedContacts.unshift({
       property: recipientData
     })
@@ -184,13 +186,19 @@ export class SendPageComponent implements OnInit {
         inWhitelist: contact.inWhitelist ? true : false,
         property: contact.inWhitelist ? undefined : contact.property
       }
-      console.log(contact);
       contacts.unshift(contact);
+      let files = [];
+      this.selectedFiles.forEach(file => {
+        file = { fileId: uuid.v4(), name: file.name, size: file.size, type: file.type,  checksum: 'checksum', archived: false }
+        files.unshift(file);
+      })
+      this.selectedFiles = files;
+      console.log(this.selectedFiles);
     });
     this.apiService.emailExist(contacts).subscribe(
       (res: SailsResponse) => {
-        console.log(res.getBody());
         const body = res.getBody();
+        // If non exists
         if (body.nonExistEmails.length > 0) {
           const settingsConfig = new MatDialogConfig();
           settingsConfig.autoFocus = false;
@@ -212,7 +220,10 @@ export class SendPageComponent implements OnInit {
               })
             }
           })
-        } else {
+        }
+        // If all are contacts
+        else {
+          const existEmails = res.getBody().existEmails;
           if (this.user.offlineMode === 'ask') {
             const settingsConfig = new MatDialogConfig();
             settingsConfig.autoFocus = false;
@@ -225,9 +236,31 @@ export class SendPageComponent implements OnInit {
             }
             this.dialog.open(TransferMethodDialogComponent, settingsConfig).afterClosed().subscribe(res => {
               console.log(res);
+              const arrToSend = [];
+              const arr = _.values(existEmails);
+              arr.forEach(contact => {
+                contact = {
+                  ...contact,
+                  duration: contact.mirageTime,
+                  isDirect: true,
+                  fromBusiness: this.user.business,
+                  fromPublicKey: 'FAKE',
+                  from: this.user.email,
+                  isPAYG: this.user.payg,
+                  version: '1.14.4',
+                  files: this.selectedFiles
+                }
+                delete contact.property;
+                delete contact.email;
+                delete contact.mirageTime;
+                delete contact.username;
+                arrToSend.unshift(contact);
+              });
+              this.sendP2P(arrToSend, body);
             })
           } else {
-            this.apiService.requestP2P(contacts);
+            // this.sendP2P([...contacts, this.selectedFiles]);
+            // this.apiService.requestP2P(contacts);
           }
         }
       },
@@ -236,6 +269,49 @@ export class SendPageComponent implements OnInit {
       }
     )
 
+  }
+  sendP2P(p2pArr, body) {
+    console.log(p2pArr);
+    this.apiService.requestP2P(p2pArr).subscribe( res => {
+      console.log(res);
+      const approvals = _.values(res.getBody().approvals);
+      const notApproved = _.values(res.getBody().notApproved);
+      const reqId = res.getBody().reqID;
+      const balance = res.getBody().balance;
+      this.dbFiles = res.getBody().dbFiles;
+      this.blockedFiles = res.getBody().blockedFiles;
+      const req = res.getBody();
+      let totalSize = 0;
+      p2pArr[0].files.forEach(file => {
+        totalSize += file.size;
+      });
+      const newReq = {
+        id: req.id,
+        to: req.to,
+        status: 'pending',
+        isMirage: req.isMirage,
+        duration: req.duration,
+        isDirect: p2pArr[0].isDirect,
+        files: p2pArr[0].files,
+        filesNumber: p2pArr[0].files.length,
+        filesListOpen: false,
+        totalSize: totalSize,
+        progress: -1,
+        inProcess: false,
+        username: req.to.username,
+        email: req.to.email,
+        needKey: req.needKey,
+        isPAYG: req.isPAYG,
+        webTransfer: false,
+        downloadLink: req.downloadLink,
+        trackId: req.id,
+        created: new Date()
+      }
+      console.log(newReq);
+      if(notApproved.length > 0) {
+        // Pop Failed Modal
+      }
+    })
   }
   clearRecipients() {
     if (this.selectedTransferMethod === 'link' && this.selectedContacts.length > 0) {

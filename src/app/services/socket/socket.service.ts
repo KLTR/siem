@@ -37,5 +37,15 @@ export class SocketService {
         });
       }
     });
+    this.socket.on('confirm_approval').subscribe((event: any) => {
+      // its even okey to fire acknowledge without "if (event.hasAck())" it is only a option i have added for future usage
+      if (event.hasAck()) {
+        event.acknowledge({
+          alive: true
+        });
+        console.log(event);
+      }
+      console.log(event);
+    });
   }
 }
