@@ -85,6 +85,7 @@ export class SendPageComponent implements OnInit {
   user: any;
   contactBy: string;
   dbFiles = [];
+  blockedFiles = [];
    _element: ElementRef;
   IL_PREFIX = '+972';
   constructor(
