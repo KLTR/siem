@@ -82,7 +82,6 @@ onSubmit(formValue) {
       this.errorService.logError(err);
       this.isResetting = false;
     }
-  )
-  console.log(formValue);
+  );
 }
 }

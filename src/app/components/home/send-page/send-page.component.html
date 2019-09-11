@@ -80,8 +80,7 @@
       <div class="recipient">
         <span class="header-underline">
           <span class="header">{{selectedTransferMethod === 'link' ? 'Protected Link' : 'Recipient Details' }}</span>
-          <ng-container>
-            <form [formGroup]="formGroup" class="form" *ngIf="selectedTransferMethod !== 'link'">
+            <form [formGroup]="formGroup" class="form" *ngIf="selectedTransferMethod !== 'link'; else link">
               <mat-form-field floatLabel='auto' class="form-element my-5">
                 <input #username formControlName="username" matInput name="username" placeholder="Email/Username/Key" />
                 <mat-error *ngIf="!formGroup.controls['username'].valid && formGroup.controls['username'].touched">
@@ -93,45 +92,14 @@
                 [disabled]="!formGroup.valid" type="button" mat-raised-button color="primary">
                 ADD
               </button>
-              <ng-container *ngIf="user.externalPassword">
-                  <div class="two-factor" fxLayout="row" fxLayoutAlign="space-between center">
-                    <mat-form-field class="example-full-width">
-                      <span matPrefix>
-                        <mat-label>Country code</mat-label>
-                        <mat-select>
-                          <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
-                            {{food.viewValue}}
-                          </mat-option>
-                        </mat-select>
-                      </span>
-                      <input type="tel" matInput placeholder="Telephone">
-                      <mat-icon matSuffix>mode_edit</mat-icon>
-                    </mat-form-field>
-                    <!-- <mat-form-field>
-                      <mat-label>Country code</mat-label>
-                      <mat-select>
-                        <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
-                          {{food.viewValue}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <input matInput type="tel" placeholder="Phone" value="">
-                    </mat-form-field> -->
-                  </div>
-                </ng-container>
             </form>
-          </ng-container>
-          <ng-container *ngIf="selectedTransferMethod === 'link'">
+          <ng-template #link>
             <form [formGroup]="linkFormGroup" class="form">
               <mat-form-field floatLabel='auto' class="form-element my-5">
                 <input autocomplete="true" matInput placeholder="Password" color="accent"
                   [required]="linkFormGroup.controls['isPasswordProtected'].value"
                   [disableControl]="!linkFormGroup.controls['isPasswordProtected'].value" formControlName="password"
                   type="password" />
-                <!-- <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button> -->
                 <mat-error class="password-error"
                   *ngIf="!linkFormGroup.controls['password'].valid && linkFormGroup.controls['password'].touched">
                   {{ getErrorPassword() }}
@@ -156,33 +124,20 @@
               </mat-menu>
               <ng-container *ngIf="user.externalPassword">
                 <div class="two-factor" fxLayout="row" fxLayoutAlign="space-between center">
-                  <mat-form-field class="example-full-width">
-                    <span matPrefix>
-                      <mat-label>Country code</mat-label>
-                      <mat-select>
-                        <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
-                          {{food.viewValue}}
-                        </mat-option>
-                      </mat-select>
-                    </span>
-                    <input type="tel" matInput placeholder="Telephone">
-                    <mat-icon matSuffix>mode_edit</mat-icon>
-                  </mat-form-field>
-                  <!-- <mat-form-field>
-                    <mat-label>Country code</mat-label>
-                    <mat-select>
-                      <mat-option *ngFor="let food of [0,1,2,3]" [value]="food.value">
-                        {{food.viewValue}}
+                  <mat-form-field class="country-code">
+                    <mat-select  formControlName="prefix" >
+                      <mat-option *ngFor="let prefix of countries" [value]="prefix.dial_code">
+                        {{prefix.code}} - {{prefix.dial_code}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <mat-form-field class="example-full-width">
-                    <input matInput type="tel" placeholder="Phone" value="">
-                  </mat-form-field> -->
+                  <mat-form-field class="phone-number">
+                    <input  matInput placeholder="Phone number" formControlName="phone">
+                  </mat-form-field>
                 </div>
               </ng-container>
             </form>
-          </ng-container>
+          </ng-template>
 
         </span>
       </div>

@@ -27,6 +27,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "cryappter": "file:private_packages/cryappter-0.0.2.tgz",
     "hammerjs": "^2.0.8",
+    "libphonenumber-js": "^1.7.23",
     "lodash": "^4.17.15",
     "ngx-file-drop": "^8.0.7",
     "ngx-sails-socketio": "github:emps/ngx-sails-socketio#semver:0.1.7",

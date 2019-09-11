@@ -60,7 +60,6 @@ export class MultiFactorAuthenticationDialogComponent implements OnInit {
   setContacts(){
     this.data.forEach(contact => {
       contact = {...contact, isLinkOnly : false, downloadLinkLimit: 'Unlimited downloads (for 7 days)', note: '', password: ''}
-      console.log(contact);
     });
   }
 }

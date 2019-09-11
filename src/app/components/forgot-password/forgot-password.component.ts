@@ -56,11 +56,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
   onSubmit(email) {
     this.isResetting = true;
-    console.log(email);
     this.apiService.forgotPassword(email)
     .subscribe(
       (res) => {
-        console.log(res);
         this.snackBar.open('Reset confirmation was sent to your email.', 'ok', {
           duration: 3000
         });
@@ -77,11 +75,9 @@ export class ForgotPasswordComponent implements OnInit {
 
   checkInUseEmail(control: FormControl) {
     if(!control.errors){
-      console.log(control.errors);
      return  this.apiService.isRegisteredEmail(control.value)
       .pipe(
         map(res => {
-          console.log(res);
           if(!res.getBody().registered) {
             return {notExist: true};
           } else{

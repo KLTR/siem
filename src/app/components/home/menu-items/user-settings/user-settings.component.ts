@@ -216,7 +216,6 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
   logout() {
     this.apiService.logout().subscribe(
       () => {
-        console.log('logged out');
         this.snackBar.open('You are now logged out.', 'Ok', {
           duration: 3000
         })
@@ -264,8 +263,6 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
       '';
   }
   selectDownloadLinkLimit(event: MatSelectChange) {
-    console.log(event);
-    console.log({...this.user.downloadLinkLimit});
     this.apiService.setDownloadLinkLimitDefault(event.value).subscribe(
       (res) => {
         // this.apiService.editUser('downloadLinkLimit', event.value);

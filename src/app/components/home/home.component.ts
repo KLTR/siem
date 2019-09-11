@@ -30,7 +30,17 @@ export class HomeComponent implements OnInit {
     if(this.mobile){
       this.dialog.open(TransfersComponent, this.mobileDialogConfig);
     } else {
-    this.dialog.open(TransfersComponent, this.dialogConfig);
+      // width: 90vw;
+      // height: 70vh;
+      // position: static;
+      // /* position: absolute; */
+      // margin-bottom: 65px;
+     const config = {
+        ...this.dialogConfig,
+        width: '90vw',
+        height: '70vh',
+      }
+    this.dialog.open(TransfersComponent, config);
     }
   }
   openSettings() {

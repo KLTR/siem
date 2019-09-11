@@ -24,24 +24,20 @@ export class DragAndDropComponent implements OnInit, OnDestroy {
   selectedFiles = [];
   constructor(private dialog: MatDialog, public fileService: FileService) {
     this.fileService.filesSubject$.subscribe(files => {
-      console.log(files);
-      if(files) {
+      if (files) {
         this.selectedFiles.push(files);
-        if(this.selectedFiles.length > 0) {
+        if (this.selectedFiles.length > 0) {
           this.isFilesSelected = true;
         } else {
           this.isFilesSelected = false;
         }
-      }else {
+      } else {
         this.isFilesSelected = false;
         this.selectedFiles = [];
       }
     });
   }
 ngOnDestroy(): void {
-  //Called once, before the instance is destroyed.
-  //Add 'implements OnDestroy' to the class.
-  console.log('destroy');
 }
   ngOnInit() {
     if (window.screen.width <= 480) { // 768px portrait
@@ -57,7 +53,6 @@ ngOnDestroy(): void {
   uploadFile(file) {
     // this.selectedFiles = Array.from(file);
     
-    console.log(file);
     // this.fileService.setSubject(file);
     this.selectedFiles = Array.from(file);
     this.isFilesSelected = true;

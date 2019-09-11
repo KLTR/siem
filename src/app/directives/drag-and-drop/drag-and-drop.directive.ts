@@ -35,10 +35,8 @@ export class DndDirective {
 
 
     const items = evt.dataTransfer.items;
-    console.log(evt.dataTransfer.files);
     for (const item of items) {
       if (item.kind === 'file') {
-        console.log(item);
         const entry = item.webkitGetAsEntry();
         if (entry.isFile) {
           const fileList = evt.dataTransfer.files;
@@ -46,18 +44,15 @@ export class DndDirective {
           return
           // return this.parseFileEntry(entry);
         } else if (entry.isDirectory) {
-          console.log(item.getAsFile());
           this.folderUploadedEmitter.emit([item.getAsFile()])
           this.parseDirectoryEntry(entry).then((entries: any[]) => {
             let size = 0;
             entries.forEach(entry => {
               entry.getMetadata( metaData => {
                 size += metaData.size;
-                console.log(size);
                 this.updateFolderSizeEmitter.emit(size);
               })
             })
-            console.log(size);
           });
         }
       }

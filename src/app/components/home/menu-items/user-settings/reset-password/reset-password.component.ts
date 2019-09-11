@@ -31,7 +31,6 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.peerId = this.route.snapshot.paramMap.get('peerId');
-    console.log(this.peerId);
 
   }
   createForm() {
@@ -46,7 +45,6 @@ export class ResetPasswordComponent implements OnInit {
     this.isAuthenticating = true;
     this.apiService.authPassword(this.formGroup.get('loginPassword').value).subscribe(
       (res) => {
-        console.log(res);
         this.authenticated = true;
         this.formGroup.get('loginPassword').reset();
         this.hide = true;
@@ -65,7 +63,6 @@ export class ResetPasswordComponent implements OnInit {
 
     this.apiService.resetPasswordWithPeerId({pass, confirmed}).subscribe(
       (res) => {
-        console.log(res);
         this.snackBar.open(`New password was succesfully saved :)`, 'ok', {
           duration: 3000
         });

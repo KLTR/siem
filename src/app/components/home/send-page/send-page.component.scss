@@ -140,8 +140,15 @@
           .two-factor{
             position: absolute;
             bottom: 0;
-            mat-form-field{
-            }
+            width: 100%;
+           mat-form-field{
+             &.country-code{
+               width: 25%;
+             }
+             &.phone-number{
+               width: 75%;
+             }
+           }
           }
           .form-element {
             width: 50%;

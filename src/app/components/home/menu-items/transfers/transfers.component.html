@@ -11,8 +11,23 @@
       <div class="tab-content">
         <div *ngIf="incoming.length > 0; else noIncoming" class="list-container">
           <ul>
-            <li *ngFor="let item of incoming">
-
+            <li class="box" [ngClass]="item.status" *ngFor="let item of incoming" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <mat-icon class="icon">insert_drive_file</mat-icon>
+            <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+              <span class="name truncate">{{item.fileName}}</span>
+              <ng-container *ngIf="!['denied', 'aborted', 'failed'].includes(item.status); else failed">
+              <span class="size">{{item.size}}</span>
+              <span class="sender truncate">{{item.from}}</span>
+            </ng-container>
+            <ng-template #failed>
+              <span class="size">{{item.message}}</span>
+            </ng-template>
+            </div>
+            <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+            <span class="status">{{item.status}}</span>
+            <span class="date">{{item.date | date:'shortTime'}}</span>
+            </div>
             </li>
           </ul>
         </div>
