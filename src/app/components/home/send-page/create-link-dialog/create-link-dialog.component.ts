@@ -9,6 +9,7 @@ import { environment } from '@env/environment';
 })
 export class CreateLinkDialogComponent implements OnInit {
   formGroup: FormGroup;
+  password: any;
   constructor(
     private formBuilder: FormBuilder,
 
