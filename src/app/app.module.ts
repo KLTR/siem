@@ -130,6 +130,8 @@ import {
 } from './components/home/send-page/transfer-method-dialog/transfer-method-dialog.component';
 import { FailedDialogComponent } from './components/home/send-page/failed-dialog/failed-dialog.component';
 
+import { ContactsComponent } from './components/home/menu-items/contacts/contacts.component';
+
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -162,6 +164,7 @@ export function createTranslateLoader(http: HttpClient) {
     CreateLinkDialogComponent,
     TransferMethodDialogComponent,
     FailedDialogComponent,
+    ContactsComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -176,7 +179,8 @@ export function createTranslateLoader(http: HttpClient) {
     MultiFactorAuthenticationDialogComponent,
     CreateLinkDialogComponent,
     TransferMethodDialogComponent,
-    FailedDialogComponent
+    FailedDialogComponent,
+    ContactsComponent
   ],
   imports: [
     BrowserModule,

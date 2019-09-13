@@ -4,6 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TransfersComponent } from './menu-items/transfers/transfers.component';
 import { UserSettingsComponent } from './menu-items/user-settings/user-settings.component';
 import { HistoryComponent } from './menu-items/history/history.component';
+import { ContactsComponent } from './menu-items/contacts/contacts.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -101,5 +103,19 @@ export class HomeComponent implements OnInit {
   }
 
    openContacts() {
+       if(this.mobile){
+         this.dialog.open(ContactsComponent, this.mobileDialogConfig);
+       } else {
+         const contactsConfig = new MatDialogConfig();
+         contactsConfig.height = '100vh';
+         contactsConfig.width = '100vw';
+         contactsConfig.maxWidth = '100vw';
+         contactsConfig.maxHeight = '100vh';
+         contactsConfig.position = {
+           top: '0',
+           left: '0'
+       }
+       this.dialog.open(ContactsComponent, contactsConfig);
+       }
   }
 }

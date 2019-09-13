@@ -2,5 +2,5 @@ export const environment = {
   production: false,
   webSocketUrl: 'https://backend-sandbox.copa.io',
   errorSeparator: '```',
-  passwordCheck: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+  passwordCheck: new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/),
 };
