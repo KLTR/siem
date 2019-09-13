@@ -50,7 +50,11 @@ export class ApiService {
 		requestP2P: '/api/rest/request_p2p',
 		confirmP2P: '/api/rest/confirm_p2p',
 
-		contactRequest: '/api/peer/add_to_whitelist'
+		//Contacts
+		contactRequest: '/api/peer/add_to_whitelist',
+		loadContacts: '/api/peer/contact/get/all',
+		searchPeer: '/api/peer/search_peer',
+
 	};
 
 	constructor(private sails: Sails, private router: Router, private dialog: MatDialog) {
@@ -212,6 +216,12 @@ export class ApiService {
 	}
 	contactRequest(obj: ApiModel.IContactRequest): Observable<SailsResponse> {
 		return this.request.post(this.serverUrls.contactRequest, obj);
+	}
+	loadContacts(): Observable<SailsResponse> {
+		return this.request.get(this.serverUrls.loadContacts);
+	}
+	searchPeer(obj: ApiModel.ISearchPeer): Observable<SailsResponse> {
+		return this.request.get(this.serverUrls.searchPeer);
 	}
 }
 

@@ -59,4 +59,7 @@ namespace ApiModel {
 	export interface IContactRequest {
 		peerId: string
 	}
+	export interface ISearchPeer {
+		property: string
+	}
 }
