@@ -1,0 +1,61 @@
+@import '../../../../../styles/colors.scss';
+
+.mat-dialog-container{
+  position: relative;
+}
+  .title{
+    color: $primary-text;
+    text-align: center;
+    border-bottom: 1px solid $primary-text;
+    padding: 15px;
+
+  .title-text{
+    width: fit-content;
+  }
+    .close-btn{
+      position: absolute;
+      right: 5px;
+      top: 0;
+    }
+  }
+  .text-wrapper{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+    .contacts{
+    border: 1px solid #064eff24;
+    min-height: 70px;
+    margin: 5px;
+    padding: 2px;
+    overflow-y: auto;
+      .contacts-list{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-top: 5px;
+        width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        .mat-list-item-content{
+          padding: 0;
+        }
+        .contact-item{
+          .contact-icon{
+            font-size: 12px;
+            color: $primary-text;
+          }
+          .contact-email{
+            margin-left: 5px;
+          }
+          .li-underline{
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
