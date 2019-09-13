@@ -1,9 +1,11 @@
 namespace ContactModel {
-	export interface IExternalContact {
+	export interface IContact {
 	  id: string;
 	  email: string;
-	  need2FA: boolean;
-	  s3: boolean;
+	  username?: string;
+	  pending?: boolean;
+	  need2FA?: boolean;
+	  s3?: boolean;
 	}
 	export interface IContactRequest {
 	  id: string;

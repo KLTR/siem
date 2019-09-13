@@ -5,6 +5,10 @@ import {
 	SocketService,
 } from '@services';
 import { SailsResponse } from 'ngx-sails-socketio';
+import {
+	Observable,
+	BehaviorSubject
+} from 'rxjs';
 
 
 interface IContactsService {
@@ -12,67 +16,105 @@ interface IContactsService {
 	createNewContact(peerId: string, email?: string, username?: string): Contact;
 	saveContact(contact: Contact): any;
 	loadContacts(): any;
-	searchPeer(property: string): Promise<any>
+	searchPeer(property: string)
 }
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ContactsService implements IContactsService {
-	myContact: Contact[] = [];
-	externalContact: ContactModel.IExternalContact[] = [];
+	contacts: Contact[] = [];
+	contactsSubject: BehaviorSubject<Contact[]>;
+	contactsSubject$: Observable<Contact[]>;
+
+	pendingContacts: ContactModel.IContact[] = [];
+	pendingsSubject: BehaviorSubject<ContactModel.IContact[]>;
+	pendingsSubject$: Observable<ContactModel.IContact[]>;
+
+	externalContacts: ContactModel.IContact[] = [];
+	externalsSubject: BehaviorSubject<ContactModel.IContact[]>;
+	externalsSubject$: Observable<ContactModel.IContact[]>;
+
 	contactRequests: ContactModel.IContactRequest[] = [];
+	requestsSubject: BehaviorSubject<ContactModel.IContactRequest[]>;
+	requestsSubject$: Observable<ContactModel.IContactRequest[]>;
 
 	constructor(private apiService: ApiService, private socketService: SocketService) {
+		this.contactsSubject = new BehaviorSubject(null);
+		this.contactsSubject$ = this.contactsSubject.asObservable();
+
+		this.pendingsSubject = new BehaviorSubject(null);
+		this.pendingsSubject$ = this.pendingsSubject.asObservable();
+
+		this.externalsSubject = new BehaviorSubject(null);
+		this.externalsSubject$ = this.externalsSubject.asObservable();
+
+		this.requestsSubject = new BehaviorSubject(null);
+		this.requestsSubject$ = this.requestsSubject.asObservable();
 
 		this.initialize();
+		this.startListen();
 	}
 
-	async initialize() {
-		await this.loadContacts();
-		this.startListen();
-		console.log('socketService: ', this.socketService)
+	initialize() {
+		this.loadContacts();
 	}
 	startListen() {
-		console.log('startlisten events...')
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
-	      console.log('got contact event: ', event);
-		  const contact = this.getContact(event.JWR.id);
-		  if(!contact) {
-			  return console.log('contact is not existing...');
-		  }
-		  contact.confirmed();
-		  console.log('this\n', this)
-	    });
+			console.log('got contact event: ', event);
+			const pendingContact = this.removePendingContact(event.JWR.id);
+			if (!pendingContact) {
+				return console.log('contact is not existing...');
+			}
+			const newContact = this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username);
+			this.contacts.push(newContact);
+			this.contactsSubject.next(this.contacts);
+		});
 	}
-	getContact(id: string): Contact {
-		const contact = (this.myContact.filter(contact => contact.peerId == id)).pop();
+	removePendingContact(id: string): ContactModel.IContact {
+		let pendingContact: any;
+		console.log('before this.pendingContacts: ', this.pendingContacts);
+
+		this.pendingContacts = this.pendingContacts.filter(pending => {
+			if (pending.id != id) {
+				return true;
+			}
+			pendingContact = pending;
+			return false;
+		});
+		console.log('after this.pendingContacts: ', this.pendingContacts);
+		console.log('pendingContact:: ', pendingContact)
+		return pendingContact;
+	}
+	createNewContact(peerId: string, email: string, username: string): Contact {
+		let contact = new Contact(peerId, email, username);
 		return contact;
 	}
-	createNewContact(peerId: string, email: string, username: string, pending?: boolean): Contact {
-		let contact = new Contact(peerId, email, username, pending);
-		return contact;
-	}
-	async loadContacts(): Promise<void> {
+	loadContacts() {
 		this.apiService.loadContacts().subscribe((res: SailsResponse) => {
 			const contactsData = res.getBody();
-			for (let mContact of contactsData.myContact) {
-				this.myContact.push(this.createNewContact(mContact.id, mContact.email, mContact.username))
+			for (let mContact of contactsData.contacts) {
+				this.contacts.push(this.createNewContact(mContact.id, mContact.email, mContact.username))
 			}
-			for (let pending of contactsData.pendingContact) {
-				this.myContact.push(this.createNewContact(pending.id, pending.email, pending.username, true))
-			}
-			this.externalContact = contactsData.externalContact;
+			this.contactsSubject.next(this.contacts);
+			this.pendingContacts = contactsData.pendingContacts;
+			this.pendingsSubject.next(this.pendingContacts);
+
+			this.externalContacts = contactsData.externalContacts;
+			this.externalsSubject.next(this.externalContacts);
+
 			this.contactRequests = contactsData.contactRequests;
-			console.log('Contacts service: \n', this)
+			console.log("this.contactRequests: ", this.contactRequests)
+			this.requestsSubject.next(this.contactRequests);
+
 		}, (err) => {
 			console.log('err', err)
 			// this.errorService.logError(err)
 		});
 	}
 
-	async searchPeer(property: string): Promise<any> {
-		return this.apiService.searchPeer({
+	searchPeer(property: string) {
+		this.apiService.searchPeer({
 			property
 		}).subscribe((res: SailsResponse) => {
 			const body = res.getBody();
