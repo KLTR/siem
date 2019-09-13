@@ -17,16 +17,35 @@
             <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
               <span class="name truncate">{{item.fileName}}</span>
               <ng-container *ngIf="!['denied', 'aborted', 'failed'].includes(item.status); else failed">
-              <span class="size">{{item.size}}</span>
+              <span class="size">{{item.size | fileSize}}</span>
               <span class="sender truncate">{{item.from}}</span>
             </ng-container>
             <ng-template #failed>
               <span class="size">{{item.message}}</span>
             </ng-template>
             </div>
-            <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+            <div class="status-container" fxLayout="column" fxLayoutAlign="space-evenly center">
             <span class="status">{{item.status}}</span>
             <span class="date">{{item.date | date:'shortTime'}}</span>
+            </div>
+            <div class="menu">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>dialpad</mat-icon>
+                  <span>Redial</span>
+                </button>
+                <button mat-menu-item disabled>
+                  <mat-icon>voicemail</mat-icon>
+                  <span>Check voice mail</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>notifications_off</mat-icon>
+                  <span>Disable alerts</span>
+                </button>
+              </mat-menu>
             </div>
             </li>
           </ul>

@@ -53,7 +53,7 @@
                       <mat-icon class="icon">inbox</mat-icon>
                       <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
                         <span class="name truncate">{{item.filename}}</span>
-                        <span class="size">{{item.fileSize}}</span>
+                        <span class="size">{{item.fileSize | fileSize}}</span>
                         <span class="sender truncate">{{item?.sender?.email}}</span>
                       </div>
                       <div class="status" fxLayout="column" fxLayoutAlign="space-evenly center">
@@ -120,7 +120,7 @@
                     <mat-icon class="icon">inbox</mat-icon>
                     <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
                       <span class="name truncate">{{item.filename}}</span>
-                      <span class="size">{{item.fileSize}}</span>
+                      <span class="size">{{item.fileSize | fileSize}}</span>
                       <span class="sender truncate" *ngIf="item.receivers.length > 0">
                         {{item.receivers[0].email}}
                         <span *ngIf="item.receivers.length > 0">
@@ -170,7 +170,7 @@
                             <mat-icon class="icon">inbox</mat-icon>
                             <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
                               <span class="name truncate">{{item.filename}}</span>
-                              <span class="size">{{item.fileSize}}</span>
+                              <span class="size">{{item.fileSize | fileSize}}</span>
                               <span class="sender truncate" *ngIf="item.receivers.length > 0">
                                 {{item.receivers[0].email}}
                                 <span *ngIf="item.receivers.length > 0">

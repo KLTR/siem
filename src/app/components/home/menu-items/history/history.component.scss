@@ -1,31 +1,30 @@
 @import '../dialog-style/dialog-style.scss';
 @import '../../../../../styles/colors.scss';
 
-.mat-dialog-content {
-  max-height: 100%;
-  .mat-tab-body-wrapper{
-    height: 100%;
-  }
-}
 
+.mat-dialog-content{
+  max-height: 100%;
+}
 .container {
-  mat-sidenav-container{
+  mat-sidenav-container {
     min-height: 90vh;
-    mat-sidenav{
+
+    mat-sidenav {
       width: 175px;
     }
-    mat-sidenav-content{
+
+    mat-sidenav-content {
       overflow: hidden;
     }
   }
 
   .tab-content {
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     overflow-x: hidden;
+
     .wrapper {
       width: 100%;
       overflow: hidden;
@@ -36,7 +35,8 @@
         mat-menu {
           position: absolute;
         }
-        &.desktop{
+
+        &.desktop {
           .info {
             width: 300px;
 
@@ -44,15 +44,19 @@
               width: 100%;
             }
           }
-          .menus{
+
+          .menus {
             width: 110px;
-            .menu-btn{
+
+            .menu-btn {
               margin-left: auto;
             }
           }
+
           div {
             &.status {
               width: 300px;
+
               .status {
                 text-transform: uppercase;
                 width: 50%;
@@ -61,11 +65,13 @@
             }
           }
         }
-        &.mobile{
-          div{
+
+        &.mobile {
+          div {
             height: 55px;
           }
-          span{
+
+          span {
             text-align: center;
             width: 30vw
           }
@@ -93,11 +99,12 @@
           -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
           -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
           box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
           span {
             color: $primary;
 
             &.status {
-              background: #bbcaff;
+              background: #bbcaff40;
             }
           }
 
@@ -113,11 +120,13 @@
           -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
           -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
           box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
           span {
-            color: $red;
+            color: #db0000fa;
 
             &.status {
-              background: #ffc6d6;
+              background: #e3486e1a;
+
             }
           }
 
@@ -158,11 +167,12 @@ mat-dialog-actions {
 }
 
 
-.full{
+.full {
   height: 80vh;
   display: flex;
   align-items: center;
 }
-.desktop-wrapper{
+
+.desktop-wrapper {
   width: 100%;
 }

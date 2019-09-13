@@ -1,20 +1,128 @@
 @import '../dialog-style/dialog-style.scss';
-::ng-deep{
-  mat-dialog-container{
+
+::ng-deep {
+  mat-dialog-container {
     margin-bottom: 65px;
+
+    mat-dialog-content {
+      overflow: hidden;
+    }
+
+    mat-tab-group {
+      height: 100%;
+    }
   }
 }
-.container{
-  .tab-content{
+
+.container {
+  .tab-content {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    .list-container{
+
+    .list-container {
       width: 100%;
-      ul{
+      height: 100%;
+
+      ul {
         margin: 0;
+        padding: 1px;
+        height: 100%;
+
+        li {
+          &.box {
+            height: 60px;
+            box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            .status-container{
+              width: 150px;
+              text-align: center;
+            .status {
+              padding: 3px;
+              width: 50%;
+              text-align: center;
+            }
+            }
+            // Failed statuses
+            &.failed,
+            &.denied,
+            &.aborted {
+              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+              .mat-icon {
+                color: $red;
+              }
+              .status-container{
+                span {
+                  color: #db0000fa;
+                  &.status {
+                    background: #e3486e1a;
+                }
+              }
+             
+              }
+            }
+
+            &.new,
+            &.accepting {
+              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+              .mat-icon {
+                color: $primary;
+              }
+
+              span {
+                color: $primary;
+
+                &.status {
+                  background: #bbcaff40;
+                }
+              }
+            }
+          }
+
+          &.completed {
+            box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            -webkit-box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            -ms-box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+
+            .mat-icon {
+              color: $green;
+            }
+
+            span {
+              color: $green;
+
+              &.status {
+                background: #bbffd8;
+              }
+            }
+          }
+
+
+
+          .info {
+            width: 250px;
+
+            .truncate {
+              width: 100%;
+              text-align: center;
+            }
+          }
+        }
+
       }
     }
   }
 }
+
