@@ -6,6 +6,7 @@
     "deprecation": {
       "severity": "warn"
     },
+    "indent":false,
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,

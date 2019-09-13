@@ -1,11 +1,9 @@
 @import '../dialog-style/dialog-style.scss';
 @import '../../../../../styles/colors.scss';
-::ng-deep{
   .mat-tab-body-content {
     overflow: hidden !important;
     height: 100%;
   }
-}
 .mat-dialog-content{
   width: 600px;
   height: 100vh;

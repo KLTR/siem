@@ -1,16 +1,19 @@
 @import '../dialog-style/dialog-style.scss';
 
-::ng-deep {
-  mat-dialog-container {
-    margin-bottom: 65px;
+mat-dialog-container {
+  margin-bottom: 65px;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    mat-dialog-content {
-      overflow: hidden;
-    }
+  mat-dialog-content {
+    overflow: hidden;
+  }
 
-    mat-tab-group {
-      height: 100%;
-    }
+  mat-tab-group {
+    height: 100%;
   }
 }
 
@@ -37,86 +40,126 @@
             -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
             -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
             box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-            .status-container{
+
+            .info {
+              .sender{
+                font-size: 14px;
+              }
+            }
+            .progress{
+              width: 125px;
+              .mat-progress-bar-buffer {
+                background: #E4E8EB;
+            }
+            
+             .mat-progress-bar {
+                border-radius: 2px;
+            }
+            }
+            .status-container {
               width: 150px;
               text-align: center;
-            .status {
-              padding: 3px;
-              width: 50%;
-              text-align: center;
+
+              .status {
+                padding: 5px;
+                width: fit-content;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 14px;
+                font-weight: bold;
+              }
             }
-            }
+
             // Failed statuses
             &.failed,
             &.denied,
             &.aborted {
-              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              box-shadow: 0px 1px $red;
 
               .mat-icon {
                 color: $red;
               }
-              .status-container{
-                span {
-                  color: #db0000fa;
-                  &.status {
-                    background: #e3486e1a;
-                }
+              
+            .info {
+              .sender{
+                color: $red
               }
-             
+            }
+            .progress{
+               .mat-progress-bar-fill::after {
+                background-color: $red;
+            }
+            }
+              .status-container {
+                span {
+                  &.status {
+                    color: #db0000fa;
+                    background: #e3486e1a;
+                  }
+                }
               }
             }
 
             &.new,
             &.accepting {
-              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              -webkit-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              -ms-box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-              box-shadow: 20px 7px 20px 0px rgba(255, 198, 214, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+              box-shadow: 0px 1px $primary;
 
               .mat-icon {
                 color: $primary;
               }
-
-              span {
-                color: $primary;
-
-                &.status {
-                  background: #bbcaff40;
+              .info {
+                .sender{
+                  color: $primary
+                }
+              }
+              .progress{
+                .mat-progress-bar-fill::after {
+                 background-color: $primary;
+             }
+             }
+              .status-container {
+                span {
+                  &.status {
+                    color: $primary;
+                    background: #bbcaff40;
+                  }
                 }
               }
             }
           }
 
           &.completed {
-            box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-            -webkit-box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-            -ms-box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
-            box-shadow: 20px 7px 20px 0px rgba(187, 255, 216, 0.25), 2px 3px 1px rgba(9, 30, 66, 0.31);
+            box-shadow: 0px 1px $green;
+           
 
             .mat-icon {
               color: $green;
             }
-
+          }
+          .info {
+            .sender{
+              color: $green
+            }
+          }
+          .progress{
+            .mat-progress-bar-fill::after {
+             background-color: $green;
+         }
+         }
+          .status-container {
             span {
-              color: $green;
-
               &.status {
+                color: $green;
                 background: #bbffd8;
               }
             }
           }
-
-
 
           .info {
             width: 250px;
 
             .truncate {
               width: 100%;
-              text-align: center;
             }
           }
         }
@@ -125,4 +168,44 @@
     }
   }
 }
+.mute{
+  font-size:12px;
+  color: #000000b0;
+}
+.menu {
+  button {
 
+    &.delete {
+      color: $red;
+
+      .mat-icon {
+        color: $red;
+      }
+    }
+
+    &.confirm {
+      color: $primary;
+
+      .mat-icon {
+        color: $primary;
+      }
+    }
+
+    &.download {
+      color: $green;
+
+      .mat-icon {
+        color: $green;
+      }
+    }
+
+    &.decline {
+      color: black;
+
+      .mat-icon {
+        color: black;
+      }
+    }
+  }
+
+}

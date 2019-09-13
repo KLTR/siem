@@ -10,7 +10,8 @@ import {
 import {
   Component,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  ViewEncapsulation
 } from '@angular/core';
 import {
   ApiService
@@ -32,7 +33,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
-  styleUrls: ['./user-settings.component.scss']
+  styleUrls: ['./user-settings.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserSettingsComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;

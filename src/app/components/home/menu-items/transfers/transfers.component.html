@@ -10,40 +10,53 @@
     <mat-tab label="Incoming">
       <div class="tab-content">
         <div *ngIf="incoming.length > 0; else noIncoming" class="list-container">
-          <ul>
-            <li class="box" [ngClass]="item.status" *ngFor="let item of incoming" fxLayout="row"
+          <ul class="p-5">
+            <li class="box px-15 py-5" [ngClass]="item.status" *ngFor="let item of incoming" fxLayout="row"
             fxLayoutAlign="space-between center">
             <mat-icon class="icon">insert_drive_file</mat-icon>
-            <div class="info" fxLayout="column" fxLayoutAlign="space-evenly center">
+            <div class="info" fxLayout="column" fxLayoutAlign="space-evenly start">
               <span class="name truncate">{{item.fileName}}</span>
               <ng-container *ngIf="!['denied', 'aborted', 'failed'].includes(item.status); else failed">
-              <span class="size">{{item.size | fileSize}}</span>
+              <span class="size mute">{{item.size | fileSize}}</span>
               <span class="sender truncate">{{item.from}}</span>
             </ng-container>
             <ng-template #failed>
-              <span class="size">{{item.message}}</span>
+              <span *ngIf="item.status !== 'failed'; else error" class="size mute" >{{item.message}}</span>
+              <ng-template #error>
+                <span role="button" class="err-btn mute pointer">show error</span>
+              </ng-template>
             </ng-template>
+            </div>
+            <div class="progress" fxLayout="row" fxLayoutAlign="stretch center" fxLayoutGap="10px">
+              <ng-container *ngIf="item.status === 'completed'">
+                  <mat-progress-bar class="progress-bar" mode="determinate" [value]="item.progress"></mat-progress-bar>
+                  <span class="progress-text mute">{{item.progress}}%</span>
+              </ng-container>
             </div>
             <div class="status-container" fxLayout="column" fxLayoutAlign="space-evenly center">
             <span class="status">{{item.status}}</span>
-            <span class="date">{{item.date | date:'shortTime'}}</span>
+            <span *ngIf="!['denied', 'aborted', 'failed'].includes(item.status);" class="date mute">{{item.date | date:'shortTime'}}</span>
             </div>
             <div class="menu">
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                  <mat-icon>dialpad</mat-icon>
-                  <span>Redial</span>
+              <mat-menu class="menu" #menu="matMenu" >
+                <button (click)="acceptIncoming(item)" *ngIf="['accepting', 'new'].includes(item.status)" class="confirm" mat-menu-item>
+                  <mat-icon fontSet="material-icons-outlined">done</mat-icon>
+                  <span>CONFIRM</span>
                 </button>
-                <button mat-menu-item disabled>
-                  <mat-icon>voicemail</mat-icon>
-                  <span>Check voice mail</span>
+                <button *ngIf="['accepting', 'new'].includes(item.status)" class="decline" mat-menu-item>
+                  <mat-icon>cancel</mat-icon>
+                  <span>DECLINE</span>
                 </button>
-                <button mat-menu-item>
-                  <mat-icon>notifications_off</mat-icon>
-                  <span>Disable alerts</span>
+                <button *ngIf="item.status === 'completed'" class="download" mat-menu-item>
+                  <mat-icon fontSet="material-icons-outlined">cloud_download</mat-icon>
+                  <span>DOWNLOAD</span>
+                </button>
+                <button *ngIf="!['accepting', 'new'].includes(item.status)" class="delete" mat-menu-item>
+                  <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+                  <span>DELETE</span>
                 </button>
               </mat-menu>
             </div>

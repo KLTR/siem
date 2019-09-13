@@ -92,7 +92,8 @@ import {
   HomeComponent,
   DragAndDropComponent,
   TransfersComponent,
-  UserSettingsComponent
+  UserSettingsComponent,
+  SetSessionKeyDialogComponent
 } from '@components';
 import {
   PrivacyPolicyDialog,
@@ -165,6 +166,7 @@ export function createTranslateLoader(http: HttpClient) {
     TransferMethodDialogComponent,
     FailedDialogComponent,
     ContactsComponent,
+    SetSessionKeyDialogComponent,
   ],
   entryComponents: [
     PrivacyPolicyDialog,
@@ -180,7 +182,8 @@ export function createTranslateLoader(http: HttpClient) {
     CreateLinkDialogComponent,
     TransferMethodDialogComponent,
     FailedDialogComponent,
-    ContactsComponent
+    ContactsComponent,
+    SetSessionKeyDialogComponent
   ],
   imports: [
     BrowserModule,

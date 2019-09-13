@@ -3,7 +3,8 @@ import {
 } from '@services';
 import {
   Component,
-  OnInit
+  OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 import {
   ApiService
@@ -22,7 +23,8 @@ import {
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  styleUrls: ['./history.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HistoryComponent implements OnInit {
   sideNavOpened = false;
