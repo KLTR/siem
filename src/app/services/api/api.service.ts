@@ -221,7 +221,7 @@ export class ApiService {
 		return this.request.get(this.serverUrls.loadContacts);
 	}
 	searchPeer(obj: ApiModel.ISearchPeer): Observable<SailsResponse> {
-		return this.request.get(this.serverUrls.searchPeer);
+		return this.request.get(this.serverUrls.searchPeer, obj);
 	}
 }
 

@@ -12,11 +12,10 @@ import {
 
 
 interface IContactsService {
-
 	createNewContact(peerId: string, email?: string, username?: string): Contact;
 	saveContact(contact: Contact): any;
 	loadContacts(): any;
-	searchPeer(property: string)
+	removePendingContact(id: string): ContactModel.IContact;
 }
 
 @Injectable({
@@ -51,7 +50,7 @@ export class ContactsService implements IContactsService {
 
 		this.requestsSubject = new BehaviorSubject(null);
 		this.requestsSubject$ = this.requestsSubject.asObservable();
-
+		
 		this.initialize();
 		this.startListen();
 	}
@@ -72,8 +71,7 @@ export class ContactsService implements IContactsService {
 		});
 	}
 	removePendingContact(id: string): ContactModel.IContact {
-		let pendingContact: any;
-		console.log('before this.pendingContacts: ', this.pendingContacts);
+		let pendingContact: ContactModel.IContact;
 
 		this.pendingContacts = this.pendingContacts.filter(pending => {
 			if (pending.id != id) {
@@ -82,8 +80,7 @@ export class ContactsService implements IContactsService {
 			pendingContact = pending;
 			return false;
 		});
-		console.log('after this.pendingContacts: ', this.pendingContacts);
-		console.log('pendingContact:: ', pendingContact)
+		this.pendingsSubject.next(this.pendingContacts);
 		return pendingContact;
 	}
 	createNewContact(peerId: string, email: string, username: string): Contact {
@@ -104,24 +101,10 @@ export class ContactsService implements IContactsService {
 			this.externalsSubject.next(this.externalContacts);
 
 			this.contactRequests = contactsData.contactRequests;
-			console.log("this.contactRequests: ", this.contactRequests)
 			this.requestsSubject.next(this.contactRequests);
 
 		}, (err) => {
 			console.log('err', err)
-			// this.errorService.logError(err)
-		});
-	}
-
-	searchPeer(property: string) {
-		this.apiService.searchPeer({
-			property
-		}).subscribe((res: SailsResponse) => {
-			const body = res.getBody();
-			console.log('search results: ', body)
-			return body;
-		}, (err) => {
-			console.log('search err', err)
 			// this.errorService.logError(err)
 		});
 	}
