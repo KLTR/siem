@@ -15,88 +15,88 @@ interface IContactsService {
 	createNewContact(peerId: string, email?: string, username?: string): Contact;
 	saveContact(contact: ContactModel.IContact): any;
 	loadContacts(): any;
-	removePendingContact(peerId: string): ContactModel.IContact;
-	pendingConfirmed(peerId: string);
-	removeContactRequest(reqId: string);
+	removePending(peerId: string): ContactModel.IContact;
+	pendingConfirmed(peerId: string): void;
+	removetRequest(reqId: string): void;
+	removeContact(peerId: string): void;
 }
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ContactsService implements IContactsService {
-	contacts: Contact[] = [];
-	contactsSubject: BehaviorSubject<Contact[]>;
-	contactsSubject$: Observable<Contact[]>;
+	private readonly _contacts = new BehaviorSubject<Contact[]>([]);
+	readonly contacts$ = this._contacts.asObservable();
 
-	pendingContacts: ContactModel.IContact[] = [];
-	pendingsSubject: BehaviorSubject<ContactModel.IContact[]>;
-	pendingsSubject$: Observable<ContactModel.IContact[]>;
+	private readonly _pendings = new BehaviorSubject<ContactModel.IContact[]>([]);
+	readonly pendings$ = this._pendings.asObservable();
 
-	externalContacts: ContactModel.IContact[] = [];
-	externalsSubject: BehaviorSubject<ContactModel.IContact[]>;
-	externalsSubject$: Observable<ContactModel.IContact[]>;
+	private readonly _externals = new BehaviorSubject<ContactModel.IContact[]>([]);
+	readonly externals$ = this._externals.asObservable();
 
-	contactRequests: ContactModel.IContactRequest[] = [];
-	requestsSubject: BehaviorSubject<ContactModel.IContactRequest[]>;
-	requestsSubject$: Observable<ContactModel.IContactRequest[]>;
+	private readonly _requests = new BehaviorSubject<ContactModel.IContactRequest[]>([]);
+	readonly requests$ = this._requests.asObservable();
 
 	constructor(private apiService: ApiService, private socketService: SocketService) {
-		this.contactsSubject = new BehaviorSubject(null);
-		this.contactsSubject$ = this.contactsSubject.asObservable();
-
-		this.pendingsSubject = new BehaviorSubject(null);
-		this.pendingsSubject$ = this.pendingsSubject.asObservable();
-
-		this.externalsSubject = new BehaviorSubject(null);
-		this.externalsSubject$ = this.externalsSubject.asObservable();
-
-		this.requestsSubject = new BehaviorSubject(null);
-		this.requestsSubject$ = this.requestsSubject.asObservable();
-
 		this.initialize();
 		this.startListen();
 	}
 
+	get contacts(): Contact[]{
+		return this._contacts.getValue();
+	}
+	get pendings(): ContactModel.IContact[]{
+		return this._pendings.getValue();
+	}
+	get externals(): ContactModel.IContact[]{
+		return this._externals.getValue();
+	}
+	get requests(): ContactModel.IContactRequest[]{
+		return this._requests.getValue();
+	}
 	initialize() {
 		this.loadContacts();
 	}
 	startListen() {
+		this.socketService.socket.on('peer').subscribe(event => {
+			const res: any = event.getData();
+			if (res.eventName === 'newWhitelistRequest' && res.hasOwnProperty('eventData')) {
+				this._requests.next([...this.requests, res.eventData.whitelistRequest]);
+			}
+		});
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
 			this.pendingConfirmed(event.JWR.id);
 		});
-		this.socketService.socket.on('peer').subscribe(event => {
-	      const res: any = event.getData();
-	      if (res.eventName === 'newWhitelistRequest' && res.hasOwnProperty('eventData')) {
-			  this.contactRequests.push(res.eventData.whitelistRequest);
-			  this.requestsSubject.next(this.contactRequests);
-	      }
-	    });
+		this.socketService.socket.on('whitelist_removed').subscribe((event: any) => {
+			if (event.JWR && event.JWR.hasOwnProperty('removePeer')) {
+				this.removeContact(event.JWR.removePeer.id);
+			}
+		});
 	}
-	pendingConfirmed(peerId: string) {
-		const pendingContact = this.removePendingContact(peerId);
+	pendingConfirmed(peerId: string): void {
+		const pendingContact = this.removePending(peerId);
 		if (!pendingContact) {
 			return console.log('contact is not existing...');
 		}
-		const newContact = this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username);
-		this.contacts.push(newContact);
-		this.contactsSubject.next(this.contacts);
+		this._contacts.next([...this.contacts, this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username)]);
 	}
-	removePendingContact(id: string): ContactModel.IContact {
+	removePending(id: string): ContactModel.IContact {
 		let pendingContact: ContactModel.IContact;
 
-		this.pendingContacts = this.pendingContacts.filter(pending => {
+		this._pendings.next(this.pendings.filter(pending => {
 			if (pending.id != id) {
 				return true;
 			}
 			pendingContact = pending;
 			return false;
-		});
-		this.pendingsSubject.next(this.pendingContacts);
+		}));
 		return pendingContact;
 	}
-	removeContactRequest(id: string) {
-		this.contactRequests = this.contactRequests.filter(req => req.id != id);
-		this.requestsSubject.next(this.contactRequests);
+	removetRequest(id: string): void {
+		this._requests.next(this.requests.filter(req => req.id != id));
+	}
+	removeContact(id: string): void {
+		this._contacts.next(this.contacts.filter(contact => contact.id != id));
 	}
 	createNewContact(peerId: string, email: string, username: string): Contact {
 		let contact = new Contact(peerId, email, username);
@@ -105,19 +105,14 @@ export class ContactsService implements IContactsService {
 	loadContacts() {
 		this.apiService.loadContacts().subscribe((res: SailsResponse) => {
 			const contactsData = res.getBody();
+			let createdContacts: Contact[] = [];
 			for (let mContact of contactsData.contacts) {
-				this.contacts.push(this.createNewContact(mContact.id, mContact.email, mContact.username))
+				createdContacts.push(this.createNewContact(mContact.id, mContact.email, mContact.username));
 			}
-			this.contactsSubject.next(this.contacts);
-			this.pendingContacts = contactsData.pendingContacts;
-			this.pendingsSubject.next(this.pendingContacts);
-
-			this.externalContacts = contactsData.externalContacts;
-			this.externalsSubject.next(this.externalContacts);
-
-			this.contactRequests = contactsData.contactRequests;
-			this.requestsSubject.next(this.contactRequests);
-
+			this._contacts.next([...this.contacts, ...createdContacts]);
+			this._pendings.next([...this.pendings, ...contactsData.pendingContacts]);
+			this._externals.next([...this.externals, ...contactsData.externalContacts]);
+			this._requests.next([...this.requests, ...contactsData.contactRequests]);
 		}, (err) => {
 			console.log('err', err)
 			// this.errorService.logError(err)
@@ -134,13 +129,11 @@ export class ContactsService implements IContactsService {
 		this.apiService.contactRequest(postBody).subscribe((res: SailsResponse) => {
 			const body = res.getBody();
 			if (body.addedFlag) {
-				this.pendingContacts.push(contact);
+				this._pendings.next([...this.pendings, contact]);
 				if (contactReqId) {
-					this.removeContactRequest(contactReqId);
+					this.removetRequest(contactReqId);
 				}
-				if (body.pending) {
-					this.pendingsSubject.next(this.pendingContacts);
-				} else {
+				if (!body.pending) {
 					this.pendingConfirmed(contact.id);
 				}
 			}

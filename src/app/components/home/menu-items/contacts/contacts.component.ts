@@ -17,18 +17,18 @@ export class ContactsComponent implements OnInit, OnDestroy {
 	requests: ContactModel.IContactRequest[];
 
 	constructor(private contactService: ContactsService, private apiService: ApiService) {
-		contactService.contactsSubject$.subscribe(contacts => {
-			contacts && console.log('in contact component: contact subject: ', contacts);
+		contactService.contacts$.subscribe(contacts => {
+			contacts.length && console.log('in contact component: contact subject: ', contacts);
 		});
-		contactService.pendingsSubject$.subscribe(pendings => {
-			pendings && console.log('in contact component: pendingsSubject: ', pendings);
+		contactService.pendings$.subscribe(pendings => {
+			pendings.length && console.log('in contact component: pendingsSubject: ', pendings);
 		});
-		contactService.externalsSubject$.subscribe(externals => {
-			externals && console.log('in contact component: externalsSubject: ', externals);
+		contactService.externals$.subscribe(externals => {
+			externals.length && console.log('in contact component: externalsSubject: ', externals);
 		});
-		contactService.requestsSubject$.subscribe(requests => {
+		contactService.requests$.subscribe(requests => {
 			this.requests = requests;
-			requests && console.log('in contact component: requestsSubject: ', requests);
+			requests.length && console.log('in contact component: requestsSubject: ', requests);
 		});
 	}
 
