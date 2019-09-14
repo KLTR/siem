@@ -13,9 +13,11 @@ import {
 
 interface IContactsService {
 	createNewContact(peerId: string, email?: string, username?: string): Contact;
-	saveContact(contact: Contact): any;
+	saveContact(contact: ContactModel.IContact): any;
 	loadContacts(): any;
-	removePendingContact(id: string): ContactModel.IContact;
+	removePendingContact(peerId: string): ContactModel.IContact;
+	pendingConfirmed(peerId: string);
+	removeContactRequest(reqId: string);
 }
 
 @Injectable({
@@ -50,7 +52,7 @@ export class ContactsService implements IContactsService {
 
 		this.requestsSubject = new BehaviorSubject(null);
 		this.requestsSubject$ = this.requestsSubject.asObservable();
-		
+
 		this.initialize();
 		this.startListen();
 	}
@@ -60,15 +62,25 @@ export class ContactsService implements IContactsService {
 	}
 	startListen() {
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
-			console.log('got contact event: ', event);
-			const pendingContact = this.removePendingContact(event.JWR.id);
-			if (!pendingContact) {
-				return console.log('contact is not existing...');
-			}
-			const newContact = this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username);
-			this.contacts.push(newContact);
-			this.contactsSubject.next(this.contacts);
+			console.log('got whitelist_added event: ', event);
+			this.pendingConfirmed(event.JWR.id);
 		});
+		this.socketService.socket.on('peer').subscribe(event => {
+	      const res: any = event.getData();
+	      if (res.eventName === 'newWhitelistRequest' && res.hasOwnProperty('eventData')) {
+			  this.contactRequests.push(res.eventData.whitelistRequest);
+			  this.requestsSubject.next(this.contactRequests);
+	      }
+	    });
+	}
+	pendingConfirmed(peerId: string) {
+		const pendingContact = this.removePendingContact(peerId);
+		if (!pendingContact) {
+			return console.log('contact is not existing...');
+		}
+		const newContact = this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username);
+		this.contacts.push(newContact);
+		this.contactsSubject.next(this.contacts);
 	}
 	removePendingContact(id: string): ContactModel.IContact {
 		let pendingContact: ContactModel.IContact;
@@ -82,6 +94,10 @@ export class ContactsService implements IContactsService {
 		});
 		this.pendingsSubject.next(this.pendingContacts);
 		return pendingContact;
+	}
+	removeContactRequest(id: string) {
+		this.contactRequests = this.contactRequests.filter(req => req.id != id);
+		this.requestsSubject.next(this.contactRequests);
 	}
 	createNewContact(peerId: string, email: string, username: string): Contact {
 		let contact = new Contact(peerId, email, username);
@@ -109,12 +125,26 @@ export class ContactsService implements IContactsService {
 		});
 	}
 
-	saveContact(contact: Contact) {
-
-		let postBody: ApiModel.IContactRequest = contact.getJson();
+	/*saveContact will either send or confirm a contact request.
+	* expects: either the selected peer from searchPeer function results or the IContactRequest.from after confirm request.
+	* when done, this function will either add to pending or to contact*/
+	saveContact(contact: ContactModel.IContact, contactReqId?: string) {
+		const postBody: ApiModel.IContactRequest = {
+			peerId: contact.id
+		};
 		this.apiService.contactRequest(postBody).subscribe((res: SailsResponse) => {
 			const body = res.getBody();
-			console.log('body', body)
+			if (body.addedFlag) {
+				this.pendingContacts.push(contact);
+				if (contactReqId) {
+					this.removeContactRequest(contactReqId);
+				}
+				if (body.pending) {
+					this.pendingsSubject.next(this.pendingContacts);
+				} else {
+					this.pendingConfirmed(contact.id);
+				}
+			}
 		}, (err) => {
 			console.log('err', err)
 			// this.errorService.logError(err)

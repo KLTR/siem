@@ -1,3 +1,8 @@
 <p>
   contacts works!
 </p>
+<mat-form-field class="search-field">
+  <input matInput placeholder="Search user" #searchInput (input)="searchPeer(searchInput.value)">
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="add()">add</button>
+<button mat-raised-button color="primary" (click)="confirm()">confirm</button>

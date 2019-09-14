@@ -13,7 +13,7 @@ namespace ContactModel {
 	  need2FA: boolean;
 	  s3: boolean;
 	  createdAt: Date;
-	  from: string;
+	  from: IContact;
 	  fromIsExist: boolean;//need check this attribute logic
 	  seen: boolean;
 	  to: string;
