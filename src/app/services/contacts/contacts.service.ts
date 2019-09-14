@@ -62,7 +62,6 @@ export class ContactsService implements IContactsService {
 	}
 	startListen() {
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
-			console.log('got whitelist_added event: ', event);
 			this.pendingConfirmed(event.JWR.id);
 		});
 		this.socketService.socket.on('peer').subscribe(event => {

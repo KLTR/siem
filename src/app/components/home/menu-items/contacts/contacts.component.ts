@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ContactsService } from '@app/services/contacts/contacts.service';
 import { ApiService } from '@services';
@@ -10,11 +10,11 @@ import { Contact } from '@app/classes/contact';
 	templateUrl: './contacts.component.html',
 	styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent implements OnInit {
-    contacts: Contact[];
-    pendings: ContactModel.IContact[];
-    externals: ContactModel.IContact[];
-    requests: ContactModel.IContactRequest[];
+export class ContactsComponent implements OnInit, OnDestroy {
+	contacts: Contact[];
+	pendings: ContactModel.IContact[];
+	externals: ContactModel.IContact[];
+	requests: ContactModel.IContactRequest[];
 
 	constructor(private contactService: ContactsService, private apiService: ApiService) {
 		contactService.contactsSubject$.subscribe(contacts => {
@@ -27,14 +27,16 @@ export class ContactsComponent implements OnInit {
 			externals && console.log('in contact component: externalsSubject: ', externals);
 		});
 		contactService.requestsSubject$.subscribe(requests => {
-            this.requests = requests;
+			this.requests = requests;
 			requests && console.log('in contact component: requestsSubject: ', requests);
 		});
 	}
 
 	ngOnInit() {
 	}
-
+	ngOnDestroy() {
+		// unsibscribes...
+	}
 	/*search users in DB that match the property value by email/username\sessionKey.
 	*! I just set the base here, need to complete.*/
 	searchPeer(property: string) {
@@ -56,7 +58,7 @@ export class ContactsComponent implements OnInit {
 			username: "danniG",
 		});
 	}
-    confirm(contactRequest: ContactModel.IContactRequest) {
+	confirm(contactRequest: ContactModel.IContactRequest) {
 		this.contactService.saveContact({
 			email: "danni@gmail.com",
 			id: "5c8165b9e84c1d2218492fd6",
