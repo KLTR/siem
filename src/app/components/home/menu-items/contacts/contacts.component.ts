@@ -55,16 +55,16 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
 	add() {
 		this.contactService.saveContact({
-			email: "danni@gmail.com",
-			id: "5c8165b9e84c1d2218492fd6",
-			username: "danniG",
+			email: "eran@copa.io",
+			id: "5d24debf149759c878f855a2",
+			username: "eranCopa",
 		});
 	}
 	confirm() {
 		this.contactService.saveContact({
-			email: "danni@gmail.com",
-			id: "5c8165b9e84c1d2218492fd6",
-			username: "danniG",
+			email: this.requests[0].from.email,
+			id: this.requests[0].from.id,
+			username: this.requests[0].from.username,
 		}, this.requests[0].id);
 	}
     deny() {
