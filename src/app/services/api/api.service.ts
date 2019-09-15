@@ -54,6 +54,10 @@ export class ApiService {
 		contactRequest: '/api/peer/add_to_whitelist',
 		loadContacts: '/api/peer/contact/get/all',
 		searchPeer: '/api/peer/search_peer',
+		denyContactRequest: '/api/peer/remove_from_pending',
+		deleteContact: '/api/peer/remove_from_whitelist',
+		deletePending: '/api/peer/remove_from_my_pending',
+		deleteContactRequest: '/api/peer/whitelist/request/update',
 
 	};
 
@@ -222,6 +226,18 @@ export class ApiService {
 	}
 	searchPeer(obj: ApiModel.ISearchPeer): Observable<SailsResponse> {
 		return this.request.get(this.serverUrls.searchPeer, obj);
+	}
+	denyContactRequest(obj: ApiModel.IDenyContactRequest): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.denyContactRequest, obj);
+	}
+	deleteContact(obj: ApiModel.IDeleteContact): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.deleteContact, obj);
+	}
+	deletePending(obj: ApiModel.IDeleteContact): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.deletePending, obj);
+	}
+	deleteContactRequest(obj: ApiModel.IDeleteContactRequest): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.deleteContactRequest, obj);
 	}
 }
 

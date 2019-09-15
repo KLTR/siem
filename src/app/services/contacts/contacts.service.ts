@@ -17,8 +17,10 @@ interface IContactsService {
 	loadContacts(): any;
 	removePending(peerId: string): ContactModel.IContact;
 	pendingConfirmed(peerId: string): void;
-	removetRequest(reqId: string): void;
+	removeRequest(reqId: string): void;
 	removeContact(peerId: string): void;
+	denyRequest(contactRequest: ContactModel.IContactRequest): void;
+
 }
 
 @Injectable({
@@ -58,21 +60,42 @@ export class ContactsService implements IContactsService {
 		this.loadContacts();
 	}
 	startListen() {
+		/* the event is on when a new request is coming */
 		this.socketService.socket.on('peer').subscribe(event => {
 			const res: any = event.getData();
 			if (res.eventName === 'newWhitelistRequest' && res.hasOwnProperty('eventData')) {
+				console.log('newWhitelistRequest event ....');
+				console.log(res.eventData)
 				this._requests.next([...this.requests, res.eventData.whitelistRequest]);
 			}
 		});
+		/* the event is on when other side confirmed my request */
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
+			console.log('whitelist_added event ....');
 			this.pendingConfirmed(event.JWR.id);
 		});
+		/* the event is on when an exists contact deleting me */
 		this.socketService.socket.on('whitelist_removed').subscribe((event: any) => {
 			if (event.JWR && event.JWR.hasOwnProperty('removePeer')) {
 				this.removeContact(event.JWR.removePeer.id);
 			}
 		});
+		/* the event is on when other side denied my request */
+		this.socketService.socket.on('pending_removed').subscribe((event: any) => {
+			console.log('pending_removed::::', event)
+			if (event.JWR && event.JWR.hasOwnProperty('id')) {
+			    this.removePending(event.JWR.id);
+			}
+		});
+		/* the event is on when user who send me a contact request cancel his request */
+		this.socketService.socket.on('whitelistRequest_removed').subscribe((event: any) => {
+			console.log('whitelistRequest_removed::::', event)
+			if (event.JWR && event.JWR.hasOwnProperty('id')) {
+			    this.removeRequest(event.JWR.id);
+			}
+		});
 	}
+
 	pendingConfirmed(peerId: string): void {
 		const pendingContact = this.removePending(peerId);
 		if (!pendingContact) {
@@ -92,7 +115,7 @@ export class ContactsService implements IContactsService {
 		}));
 		return pendingContact;
 	}
-	removetRequest(id: string): void {
+	removeRequest(id: string): void {
 		this._requests.next(this.requests.filter(req => req.id != id));
 	}
 	removeContact(id: string): void {
@@ -131,7 +154,7 @@ export class ContactsService implements IContactsService {
 			if (body.addedFlag) {
 				this._pendings.next([...this.pendings, contact]);
 				if (contactReqId) {
-					this.removetRequest(contactReqId);
+					this.removeRequest(contactReqId);
 				}
 				if (!body.pending) {
 					this.pendingConfirmed(contact.id);
@@ -139,6 +162,54 @@ export class ContactsService implements IContactsService {
 			}
 		}, (err) => {
 			console.log('err', err)
+			// this.errorService.logError(err)
+		});
+	}
+	deleteContact(contact: Contact): void {
+		const postBody = {
+			removePeer: contact
+		}
+		this.apiService.deleteContact(postBody).subscribe((res: SailsResponse) => {
+			const body = res.getBody();
+			this.removeContact(contact.id);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	denyRequest(contactRequest: ContactModel.IContactRequest): void {
+		const postBody = {
+			ownerId: contactRequest.from.id
+		}
+		this.apiService.denyContactRequest(postBody).subscribe((res: SailsResponse) => {
+			const body = res.getBody();
+			this.removeRequest(contactRequest.id);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	deletePending(contact: ContactModel.IContact): void {
+		const postBody = {
+			removePeer: contact
+		}
+		this.apiService.deletePending(postBody).subscribe((res: SailsResponse) => {
+			const body = res.getBody();
+			this.removePending(contact.id);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	deleteRequest(contactRequest: ContactModel.IContactRequest): void {
+		const postBody = {
+			whitelistId: contactRequest.id
+		}
+		this.apiService.deleteContactRequest(postBody).subscribe((res: SailsResponse) => {
+			const body = res.getBody();
+			this.removeRequest(contactRequest.id);
+		}, (err) => {
+			console.log('err', err);
 			// this.errorService.logError(err)
 		});
 	}

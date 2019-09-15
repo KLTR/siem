@@ -62,4 +62,13 @@ namespace ApiModel {
 	export interface ISearchPeer {
 		property: string
 	}
+	export interface IDenyContactRequest {
+		ownerId: string
+	}
+	export interface IDeleteContact {
+		removePeer: ContactModel.IContact
+	}
+	export interface IDeleteContactRequest {
+		whitelistId: string
+	}
 }

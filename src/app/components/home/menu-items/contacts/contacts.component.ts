@@ -18,17 +18,19 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
 	constructor(private contactService: ContactsService, private apiService: ApiService) {
 		contactService.contacts$.subscribe(contacts => {
-			contacts.length && console.log('in contact component: contact subject: ', contacts);
+			console.log('in contact component: contact subject: ', contacts);
+            this.contacts = contacts;
 		});
 		contactService.pendings$.subscribe(pendings => {
-			pendings.length && console.log('in contact component: pendingsSubject: ', pendings);
+			 console.log('in contact component: pendingsSubject: ', pendings);
+            this.pendings = pendings;
 		});
 		contactService.externals$.subscribe(externals => {
-			externals.length && console.log('in contact component: externalsSubject: ', externals);
+			console.log('in contact component: externalsSubject: ', externals);
 		});
 		contactService.requests$.subscribe(requests => {
 			this.requests = requests;
-			requests.length && console.log('in contact component: requestsSubject: ', requests);
+			console.log('in contact component: requestsSubject: ', requests);
 		});
 	}
 
@@ -51,19 +53,30 @@ export class ContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	add(contact: ContactModel.IContact) {
+	add() {
 		this.contactService.saveContact({
 			email: "danni@gmail.com",
 			id: "5c8165b9e84c1d2218492fd6",
 			username: "danniG",
 		});
 	}
-	confirm(contactRequest: ContactModel.IContactRequest) {
+	confirm() {
 		this.contactService.saveContact({
 			email: "danni@gmail.com",
 			id: "5c8165b9e84c1d2218492fd6",
 			username: "danniG",
 		}, this.requests[0].id);
 	}
-
+    deny() {
+		this.contactService.denyRequest(this.requests[0]);
+	}
+    delete() {
+		this.contactService.deleteContact(this.contacts[0]);
+	}
+    deletePending() {
+		this.contactService.deletePending(this.pendings[0]);
+	}
+    deleteRequest() {
+		this.contactService.deleteRequest(this.requests[0]);
+	}
 }
