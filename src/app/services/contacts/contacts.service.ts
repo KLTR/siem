@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Contact } from '@app/classes/contact';
+import { Contact } from '@app/classes/contact/contact';
 import {
 	ApiService,
 	SocketService,
@@ -9,6 +9,7 @@ import {
 	Observable,
 	BehaviorSubject
 } from 'rxjs';
+import { ExternalContact } from '@app/classes/external-contact/external-contact';
 
 
 interface IContactsService {
@@ -33,7 +34,7 @@ export class ContactsService implements IContactsService {
 	private readonly _pendings = new BehaviorSubject<ContactModel.IContact[]>([]);
 	readonly pendings$ = this._pendings.asObservable();
 
-	private readonly _externals = new BehaviorSubject<ContactModel.IContact[]>([]);
+	private readonly _externals = new BehaviorSubject<ExternalContact[]>([]);
 	readonly externals$ = this._externals.asObservable();
 
 	private readonly _requests = new BehaviorSubject<ContactModel.IContactRequest[]>([]);
@@ -50,7 +51,7 @@ export class ContactsService implements IContactsService {
 	get pendings(): ContactModel.IContact[]{
 		return this._pendings.getValue();
 	}
-	get externals(): ContactModel.IContact[]{
+	get externals(): ExternalContact[]{
 		return this._externals.getValue();
 	}
 	get requests(): ContactModel.IContactRequest[]{
@@ -208,6 +209,23 @@ export class ContactsService implements IContactsService {
 		this.apiService.deleteContactRequest(postBody).subscribe((res: SailsResponse) => {
 			const body = res.getBody();
 			this.removeRequest(contactRequest.id);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	createExternal(external: ContactModel.IExternalContact): ExternalContact{
+		let newExternal = new ExternalContact(external.id, external.email, external.need2FA, external.s3);
+		return newExternal;
+	}
+	addExternal(externalContact: ContactModel.IExternalContact) {
+		const postBody = {
+			nonPeer: externalContact
+		}
+		this.apiService.addExternal(postBody).subscribe((res: SailsResponse) => {
+			const body = res.getBody();
+			console.log('return body: ', body)
+			this._externals.next([...this.externals, this.createExternal(body)]);
 		}, (err) => {
 			console.log('err', err);
 			// this.errorService.logError(err)

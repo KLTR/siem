@@ -71,4 +71,13 @@ namespace ApiModel {
 	export interface IDeleteContactRequest {
 		whitelistId: string
 	}
+	export interface IAddExternal {
+		nonPeer: {
+			email: string;
+			need2FA: boolean;
+			s3: boolean;
+			phone?: string;
+			countryCode?: ContactModel.ICountryCode;
+		}
+	}
 }

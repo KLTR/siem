@@ -3,7 +3,6 @@ namespace ContactModel {
 		id: string;
 		email: string;
 		username?: string;
-		pending?: boolean;
 		need2FA?: boolean;
 		s3?: boolean;
 	}
@@ -21,5 +20,17 @@ namespace ContactModel {
 		seen: boolean;
 		to: string;
 		updatedAt: Date;
+	}
+	export interface IExternalContact {
+		id?: string;
+		email: string;
+		need2FA: boolean;
+		s3: boolean;
+		phone?: string;
+		countryCode?: ICountryCode;
+	}
+	export interface ICountryCode {
+		id: string;
+		code: string;
 	}
 }

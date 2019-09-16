@@ -58,6 +58,7 @@ export class ApiService {
 		deleteContact: '/api/peer/remove_from_whitelist',
 		deletePending: '/api/peer/remove_from_my_pending',
 		deleteContactRequest: '/api/peer/whitelist/request/update',
+		addExternal: '/api/peer/add_to_external',
 
 	};
 
@@ -238,6 +239,9 @@ export class ApiService {
 	}
 	deleteContactRequest(obj: ApiModel.IDeleteContactRequest): Observable<SailsResponse> {
 		return this.request.post(this.serverUrls.deleteContactRequest, obj);
+	}
+	addExternal(obj: ApiModel.IAddExternal): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.addExternal, obj);
 	}
 }
 

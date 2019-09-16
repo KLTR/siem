@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContactsService } from '@app/services/contacts/contacts.service';
 import { ApiService } from '@services';
 import { SailsResponse } from 'ngx-sails-socketio';
-import { Contact } from '@app/classes/contact';
+import { Contact } from '@app/classes/contact/contact';
 
 @Component({
 	selector: 'app-contacts',
@@ -58,6 +58,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
 			email: "eran@copa.io",
 			id: "5d24debf149759c878f855a2",
 			username: "eranCopa",
+		});
+	}
+	addExternal() {
+		this.contactService.addExternal({
+			email: "copamedialtd@gmail.com",
+			need2FA: false,
+			s3: true
 		});
 	}
 	confirm() {
