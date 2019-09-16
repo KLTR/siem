@@ -59,6 +59,9 @@ export class ApiService {
 		deletePending: '/api/peer/remove_from_my_pending',
 		deleteContactRequest: '/api/peer/whitelist/request/update',
 		addExternal: '/api/peer/add_to_external',
+		deleteExternal: '/api/peer/remove_from_my_externals',
+		resetExternalPassword: '/api/peer/new_external_password',
+		updateExternal: '/api/peer/update_external_upload',
 
 	};
 
@@ -242,6 +245,15 @@ export class ApiService {
 	}
 	addExternal(obj: ApiModel.IAddExternal): Observable<SailsResponse> {
 		return this.request.post(this.serverUrls.addExternal, obj);
+	}
+	deleteExternal(obj: ApiModel.IDeleteExternal): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.deleteExternal, obj);
+	}
+	resetExternalPassword(obj: ApiModel.IResetExternalPassowrd): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.resetExternalPassword, obj);
+	}
+	updateExternal(obj: ApiModel.IUpdateExternal): Observable<SailsResponse> {
+		return this.request.post(this.serverUrls.updateExternal, obj);
 	}
 }
 

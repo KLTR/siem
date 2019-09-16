@@ -4,6 +4,7 @@ import { ContactsService } from '@app/services/contacts/contacts.service';
 import { ApiService } from '@services';
 import { SailsResponse } from 'ngx-sails-socketio';
 import { Contact } from '@app/classes/contact/contact';
+import { ExternalContact } from '@app/classes/external-contact/external-contact';
 
 @Component({
 	selector: 'app-contacts',
@@ -13,7 +14,7 @@ import { Contact } from '@app/classes/contact/contact';
 export class ContactsComponent implements OnInit, OnDestroy {
 	contacts: Contact[];
 	pendings: ContactModel.IContact[];
-	externals: ContactModel.IContact[];
+	externals: ExternalContact[];
 	requests: ContactModel.IContactRequest[];
 
 	constructor(private contactService: ContactsService, private apiService: ApiService) {
@@ -27,6 +28,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
 		});
 		contactService.externals$.subscribe(externals => {
 			console.log('in contact component: externalsSubject: ', externals);
+			this.externals = externals;
 		});
 		contactService.requests$.subscribe(requests => {
 			this.requests = requests;
@@ -80,10 +82,19 @@ export class ContactsComponent implements OnInit, OnDestroy {
     delete() {
 		this.contactService.deleteContact(this.contacts[0]);
 	}
+	deleteExternal() {
+		this.contactService.deleteExternal(this.externals[0]);
+	}
     deletePending() {
 		this.contactService.deletePending(this.pendings[0]);
 	}
     deleteRequest() {
 		this.contactService.deleteRequest(this.requests[0]);
+	}
+	resetExternalPassword() {
+		this.contactService.resetExternalPassword(this.externals[0]);
+	}
+	updateExternal() {
+		this.contactService.updateExternal(this.externals[0]);
 	}
 }

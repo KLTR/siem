@@ -56,28 +56,7 @@ namespace ApiModel {
 		newVersion?: boolean;
 		version?: string;
 	}
-	export interface IContactRequest {
-		peerId: string
-	}
 	export interface ISearchPeer {
 		property: string
-	}
-	export interface IDenyContactRequest {
-		ownerId: string
-	}
-	export interface IDeleteContact {
-		removePeer: ContactModel.IContact
-	}
-	export interface IDeleteContactRequest {
-		whitelistId: string
-	}
-	export interface IAddExternal {
-		nonPeer: {
-			email: string;
-			need2FA: boolean;
-			s3: boolean;
-			phone?: string;
-			countryCode?: ContactModel.ICountryCode;
-		}
 	}
 }

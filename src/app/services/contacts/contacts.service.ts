@@ -6,22 +6,28 @@ import {
 } from '@services';
 import { SailsResponse } from 'ngx-sails-socketio';
 import {
-	Observable,
 	BehaviorSubject
 } from 'rxjs';
 import { ExternalContact } from '@app/classes/external-contact/external-contact';
 
 
 interface IContactsService {
+	loadContacts(): any;
 	createNewContact(peerId: string, email?: string, username?: string): Contact;
 	saveContact(contact: ContactModel.IContact): any;
-	loadContacts(): any;
+	deleteContact(contact: Contact): void;
+	removeContact(peerId: string): void;
 	removePending(peerId: string): ContactModel.IContact;
 	pendingConfirmed(peerId: string): void;
+	deletePending(contact: ContactModel.IContact): void;
 	removeRequest(reqId: string): void;
-	removeContact(peerId: string): void;
 	denyRequest(contactRequest: ContactModel.IContactRequest): void;
-
+	deleteRequest(contactRequest: ContactModel.IContactRequest): void
+	addExternal(externalContact: ContactModel.IExternalContact): void;
+	removeExternal(nonPeerId: string): void;
+	createExternal(external: ContactModel.IExternalContact): ExternalContact;
+	deleteExternal(externalContact: ExternalContact): void;
+	resetExternalPassword(externalContact: ExternalContact): void;
 }
 
 @Injectable({
@@ -122,6 +128,9 @@ export class ContactsService implements IContactsService {
 	removeContact(id: string): void {
 		this._contacts.next(this.contacts.filter(contact => contact.id != id));
 	}
+	removeExternal(id: string): void {
+		this._externals.next(this.externals.filter(external => external.id != id));
+	}
 	createNewContact(peerId: string, email: string, username: string): Contact {
 		let contact = new Contact(peerId, email, username);
 		return contact;
@@ -170,8 +179,7 @@ export class ContactsService implements IContactsService {
 		const postBody = {
 			removePeer: contact
 		}
-		this.apiService.deleteContact(postBody).subscribe((res: SailsResponse) => {
-			const body = res.getBody();
+		this.apiService.deleteContact(postBody).subscribe(() => {
 			this.removeContact(contact.id);
 		}, (err) => {
 			console.log('err', err);
@@ -182,8 +190,7 @@ export class ContactsService implements IContactsService {
 		const postBody = {
 			ownerId: contactRequest.from.id
 		}
-		this.apiService.denyContactRequest(postBody).subscribe((res: SailsResponse) => {
-			const body = res.getBody();
+		this.apiService.denyContactRequest(postBody).subscribe(() => {
 			this.removeRequest(contactRequest.id);
 		}, (err) => {
 			console.log('err', err);
@@ -194,8 +201,7 @@ export class ContactsService implements IContactsService {
 		const postBody = {
 			removePeer: contact
 		}
-		this.apiService.deletePending(postBody).subscribe((res: SailsResponse) => {
-			const body = res.getBody();
+		this.apiService.deletePending(postBody).subscribe(() => {
 			this.removePending(contact.id);
 		}, (err) => {
 			console.log('err', err);
@@ -206,8 +212,7 @@ export class ContactsService implements IContactsService {
 		const postBody = {
 			whitelistId: contactRequest.id
 		}
-		this.apiService.deleteContactRequest(postBody).subscribe((res: SailsResponse) => {
-			const body = res.getBody();
+		this.apiService.deleteContactRequest(postBody).subscribe(() => {
 			this.removeRequest(contactRequest.id);
 		}, (err) => {
 			console.log('err', err);
@@ -226,6 +231,38 @@ export class ContactsService implements IContactsService {
 			const body = res.getBody();
 			console.log('return body: ', body)
 			this._externals.next([...this.externals, this.createExternal(body)]);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	deleteExternal(externalContact: ExternalContact) {
+		const postBody = {
+			removePeer: externalContact
+		}
+		this.apiService.deleteExternal(postBody).subscribe(() => {
+			this.removeExternal(externalContact.id);
+		}, (err) => {
+			console.log('err', err);
+			// this.errorService.logError(err)
+		});
+	}
+	resetExternalPassword(externalContact: ExternalContact) {
+		this.apiService.resetExternalPassword(externalContact).subscribe({
+			error: (err) => {
+				console.log('err', err);
+				// this.errorService.logError(err)
+			}
+		});
+	}
+	updateExternal(externalContact: ExternalContact) {
+		console.log('externalContact.s3: ', externalContact.s3)
+		externalContact.s3 = !externalContact.s3;
+		console.log('after externalContact.s3: ', externalContact.s3)
+		const postBody = {
+			peer: externalContact
+		};
+		this.apiService.updateExternal(postBody).subscribe(() => {
 		}, (err) => {
 			console.log('err', err);
 			// this.errorService.logError(err)

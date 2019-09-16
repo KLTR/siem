@@ -1,13 +1,19 @@
 <p>
   contacts works!
 </p>
+<div class="" fxLayout="column">
 <mat-form-field class="search-field">
   <input matInput placeholder="Search user" #searchInput (input)="searchPeer(searchInput.value)">
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="add()">add</button>
-<button mat-raised-button color="primary" (click)="confirm()">confirm</button>
-<button mat-raised-button color="primary" (click)="deny()">deny</button>
-<button mat-raised-button color="primary" (click)="delete()">delete</button>
-<button mat-raised-button color="primary" (click)="deletePending()">deletePending</button>
-<button mat-raised-button color="primary" (click)="deleteRequest()">deleteRequest</button>
-<button mat-raised-button color="primary" (click)="addExternal()">addExternal</button>
+    <button mat-raised-button color="primary" (click)="add()">add Contact</button>
+    <button mat-raised-button color="primary" (click)="confirm()">confirm request</button>
+    <button mat-raised-button color="primary" (click)="deny()">deny request</button>
+    <button mat-raised-button color="primary" (click)="delete()">delete contact</button>
+    <button mat-raised-button color="primary" (click)="deletePending()">delete pending</button>
+    <button mat-raised-button color="primary" (click)="deleteRequest()">remove request</button>
+    <button mat-raised-button color="primary" (click)="addExternal()">add External</button>
+    <button mat-raised-button color="primary" (click)="deleteExternal()">delete external</button>
+    <button mat-raised-button color="primary" (click)="resetExternalPassword()">reset external password</button>
+    <button mat-raised-button color="primary" (click)="updateExternal()">updateExternal</button>
+
+</div>
