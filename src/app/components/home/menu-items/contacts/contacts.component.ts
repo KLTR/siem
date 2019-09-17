@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ContactsService } from '@app/services/contacts/contacts.service';
-import { ApiService } from '@services';
-import { SailsResponse } from 'ngx-sails-socketio';
+import { ApiService } from '@app/services/api/api.service';
 import { Contact } from '@app/classes/contact/contact';
 import { ExternalContact } from '@app/classes/external-contact/external-contact';
 
@@ -35,17 +34,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
 			console.log('in contact component: requestsSubject: ', requests);
 		});
 	}
-
-	ngOnInit() {
-	}
-	ngOnDestroy() {
-		// unsibscribes...
-	}
+	ngOnInit() {}
+	ngOnDestroy() {}
 	/*search users in DB that match the property value by email/username\sessionKey.
 	*! I just set the base here, need to complete.*/
 	searchPeer(property: string) {
 		if (property) {
-			this.apiService.searchPeer({ property }).subscribe((res: SailsResponse) => {
+			this.apiService.searchPeer({ property }).subscribe(res => {
 				const searchData = res.getBody();
 				console.log(searchData)
 			}, (err) => {
@@ -54,12 +49,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
 	add() {
 		this.contactService.saveContact({
-			email: "eran@copa.io",
-			id: "5d24debf149759c878f855a2",
-			username: "eranCopa",
+			email: "user-b@copa.io",
+			id: "5d6ceb40845f8028dc9dc9cf",
+			username: "user-b",
 		});
 	}
 	addExternal() {
