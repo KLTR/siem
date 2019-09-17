@@ -51,16 +51,16 @@ export class ContactsService implements IContactsService {
 		this.startListen();
 	}
 
-	get contacts(): Contact[]{
+	get contacts(): Contact[] {
 		return this._contacts.getValue();
 	}
-	get pendings(): ContactModel.IContact[]{
+	get pendings(): ContactModel.IContact[] {
 		return this._pendings.getValue();
 	}
-	get externals(): ExternalContact[]{
+	get externals(): ExternalContact[] {
 		return this._externals.getValue();
 	}
-	get requests(): ContactModel.IContactRequest[]{
+	get requests(): ContactModel.IContactRequest[] {
 		return this._requests.getValue();
 	}
 	initialize() {
@@ -91,14 +91,14 @@ export class ContactsService implements IContactsService {
 		this.socketService.socket.on('pending_removed').subscribe((event: any) => {
 			console.log('pending_removed::::', event)
 			if (event.JWR && event.JWR.hasOwnProperty('id')) {
-			    this.removePending(event.JWR.id);
+				this.removePending(event.JWR.id);
 			}
 		});
 		/* the event is on when user who send me a contact request cancel his request */
 		this.socketService.socket.on('whitelistRequest_removed').subscribe((event: any) => {
 			console.log('whitelistRequest_removed::::', event)
 			if (event.JWR && event.JWR.hasOwnProperty('id')) {
-			    this.removeRequest(event.JWR.id);
+				this.removeRequest(event.JWR.id);
 			}
 		});
 	}
@@ -219,7 +219,7 @@ export class ContactsService implements IContactsService {
 			// this.errorService.logError(err)
 		});
 	}
-	createExternal(external: ContactModel.IExternalContact): ExternalContact{
+	createExternal(external: ContactModel.IExternalContact): ExternalContact {
 		let newExternal = new ExternalContact(external.id, external.email, external.need2FA, external.s3);
 		return newExternal;
 	}

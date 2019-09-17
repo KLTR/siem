@@ -15,41 +15,23 @@ namespace ApiModel {
 		whitelistId: string
 	}
 	// TODO: need to modify contact apis below to accept the same parameters
-	export interface IAddExternal {
-		nonPeer: {
-			email: string;
-			need2FA: boolean;
-			s3: boolean;
-			phone?: string;
-			countryCode?: ContactModel.ICountryCode;
-		}
-	}
-	export interface IDeleteExternal {
-		removePeer: {
-			id: string;
-			email: string;
-			need2FA: boolean;
-			s3: boolean;
-			phone?: string;
-			countryCode?: ContactModel.ICountryCode;
-		}
-	}
-	export interface IResetExternalPassowrd {
-		id: string;
+	export interface ICreateExternal {
 		email: string;
 		need2FA: boolean;
 		s3: boolean;
 		phone?: string;
 		countryCode?: ContactModel.ICountryCode;
 	}
+	export interface IExternal extends ICreateExternal {
+		id: string;
+	}
+	export interface IAddExternal {
+		nonPeer: ICreateExternal
+	}
+	export interface IDeleteExternal {
+		removePeer: IExternal
+	}
 	export interface IUpdateExternal {
-		peer: {
-			id: string;
-			email: string;
-			need2FA: boolean;
-			s3: boolean;
-			phone?: string;
-			countryCode?: ContactModel.ICountryCode;
-		}
+		peer: IExternal
 	}
 }

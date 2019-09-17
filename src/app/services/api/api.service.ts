@@ -249,7 +249,7 @@ export class ApiService {
 	deleteExternal(obj: ApiModel.IDeleteExternal): Observable<SailsResponse> {
 		return this.request.post(this.serverUrls.deleteExternal, obj);
 	}
-	resetExternalPassword(obj: ApiModel.IResetExternalPassowrd): Observable<SailsResponse> {
+	resetExternalPassword(obj: ApiModel.IExternal): Observable<SailsResponse> {
 		return this.request.post(this.serverUrls.resetExternalPassword, obj);
 	}
 	updateExternal(obj: ApiModel.IUpdateExternal): Observable<SailsResponse> {
