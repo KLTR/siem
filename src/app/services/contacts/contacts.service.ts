@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { SailsResponse } from 'ngx-sails-socketio';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Contact } from '@app/classes/contact/contact';
 import { ExternalContact } from '@app/classes/external-contact/external-contact';
 import { ApiService } from '@app/services/api/api.service';
 import { SocketService } from '@app/services/socket/socket.service';
 import { ErrorService } from '@app/services/error/error.service';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface IContactsService {
 	loadContacts(): any;
-	createNewContact(peerId: string, email?: string, username?: string): Contact;
 	saveContact(contact: ContactModel.IContact): any;
 	deleteContact(contact: Contact): void;
 	removeContact(peerId: string): void;
@@ -21,9 +20,10 @@ interface IContactsService {
 	deleteRequest(contactRequest: ContactModel.IContactRequest): void
 	addExternal(externalContact: ContactModel.IExternalContact): void;
 	removeExternal(nonPeerId: string): void;
-	createExternal(external: ContactModel.IExternalContact): ExternalContact;
 	deleteExternal(externalContact: ExternalContact): void;
 	resetExternalPassword(externalContact: ExternalContact): void;
+	updateExternal(externalContact: ExternalContact): void;
+	searchContact(property: Observable<string>): Observable<Contact[]>;
 }
 
 @Injectable({
@@ -67,15 +67,14 @@ export class ContactsService implements IContactsService {
 		this.socketService.socket.on('peer').subscribe(event => {
 			const res: any = event.getData();
 			if (res.eventName === 'newWhitelistRequest' && res.hasOwnProperty('eventData')) {
-				console.log('newWhitelistRequest event ....');
-				console.log(res.eventData)
 				this._requests.next([...this.requests, res.eventData.whitelistRequest]);
 			}
 		});
 		/* the event is on when other side confirmed my request */
 		this.socketService.socket.on('whitelist_added').subscribe((event: any) => {
-			console.log('whitelist_added event ....');
-			this.pendingConfirmed(event.JWR.id);
+			if (event.JWR && event.JWR.hasOwnProperty('id')) {
+				this.pendingConfirmed(event.JWR.id);
+			}
 		});
 		/* the event is on when an exists contact deleting me */
 		this.socketService.socket.on('whitelist_removed').subscribe((event: any) => {
@@ -85,26 +84,33 @@ export class ContactsService implements IContactsService {
 		});
 		/* the event is on when other side denied my request */
 		this.socketService.socket.on('pending_removed').subscribe((event: any) => {
-			console.log('pending_removed::::', event)
 			if (event.JWR && event.JWR.hasOwnProperty('id')) {
 				this.removePending(event.JWR.id);
 			}
 		});
 		/* the event is on when user who send me a contact request cancel his request */
 		this.socketService.socket.on('whitelistRequest_removed').subscribe((event: any) => {
-			console.log('whitelistRequest_removed::::', event)
 			if (event.JWR && event.JWR.hasOwnProperty('id')) {
 				this.removeRequest(event.JWR.id);
 			}
 		});
 	}
-
+	loadContacts() {
+		this.apiService.loadContacts().subscribe(res => {
+			const contactsData = res.getBody();
+			this._contacts.next([...this.contacts, ...contactsData.contacts.map((contact: ContactModel.IContact) => new Contact(contact.id, contact.email, contact.username))]);
+			this._pendings.next([...this.pendings, ...contactsData.pendingContacts]);
+			this._externals.next([...this.externals, ...contactsData.externalContacts]);
+			this._requests.next([...this.requests, ...contactsData.contactRequests]);
+		}, err => {
+			this.errorService.logError(err)
+		});
+	}
 	pendingConfirmed(peerId: string): void {
 		const pendingContact = this.removePending(peerId);
-		if (!pendingContact) {
-			return console.log('contact is not existing...');
+		if (pendingContact) {
+			this._contacts.next([...this.contacts, new Contact(pendingContact.id, pendingContact.email, pendingContact.username)]);
 		}
-		this._contacts.next([...this.contacts, this.createNewContact(pendingContact.id, pendingContact.email, pendingContact.username)]);
 	}
 	removePending(id: string): ContactModel.IContact {
 		let pendingContact: ContactModel.IContact;
@@ -127,30 +133,13 @@ export class ContactsService implements IContactsService {
 	removeExternal(id: string): void {
 		this._externals.next(this.externals.filter(external => external.id != id));
 	}
-	createNewContact(peerId: string, email: string, username: string): Contact {
-		let contact = new Contact(peerId, email, username);
-		return contact;
-	}
-	loadContacts() {
-		this.apiService.loadContacts().subscribe(res => {
-			const contactsData = res.getBody();
-			this._contacts.next([...this.contacts, ...contactsData.contacts.map(elm => new Contact(elm.id, elm.email, elm.username))]);
-			this._pendings.next([...this.pendings, ...contactsData.pendingContacts]);
-			this._externals.next([...this.externals, ...contactsData.externalContacts]);
-			this._requests.next([...this.requests, ...contactsData.contactRequests]);
-		}, err => {
-			this.errorService.logError(err)
-		});
-	}
-
 	/*saveContact will either send or confirm a contact request.
 	* expects: either the selected peer from searchPeer function results or the IContactRequest.from after confirm request.
 	* when done, this function will either add to pending or to contact*/
 	saveContact(contact: ContactModel.IContact, contactReqId?: string) {
-		const postBody: ApiModel.IContactRequest = {
+		this.apiService.contactRequest({
 			peerId: contact.id
-		};
-		this.apiService.contactRequest(postBody).subscribe((res: SailsResponse) => {
+		}).subscribe((res) => {
 			const body = res.getBody();
 			if (body.addedFlag) {
 				this._pendings.next([...this.pendings, contact]);
@@ -162,109 +151,92 @@ export class ContactsService implements IContactsService {
 				}
 			}
 		}, (err) => {
-			console.log('err', err)
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	deleteContact(contact: Contact): void {
-		const postBody = {
+		this.apiService.deleteContact({
 			removePeer: contact
-		}
-		this.apiService.deleteContact(postBody).subscribe(() => {
+		}).subscribe(() => {
 			this.removeContact(contact.id);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	denyRequest(contactRequest: ContactModel.IContactRequest): void {
-		const postBody = {
+		this.apiService.denyContactRequest({
 			ownerId: contactRequest.from.id
-		}
-		this.apiService.denyContactRequest(postBody).subscribe(() => {
+		}).subscribe(() => {
 			this.removeRequest(contactRequest.id);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	deletePending(contact: ContactModel.IContact): void {
-		const postBody = {
+		this.apiService.deletePending({
 			removePeer: contact
-		}
-		this.apiService.deletePending(postBody).subscribe(() => {
+		}).subscribe(() => {
 			this.removePending(contact.id);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	deleteRequest(contactRequest: ContactModel.IContactRequest): void {
-		const postBody = {
+		this.apiService.deleteContactRequest({
 			whitelistId: contactRequest.id
-		}
-		this.apiService.deleteContactRequest(postBody).subscribe(() => {
+		}).subscribe(() => {
 			this.removeRequest(contactRequest.id);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
-	createExternal(external: ContactModel.IExternalContact): ExternalContact {
-		let newExternal = new ExternalContact(external.id, external.email, external.need2FA, external.s3);
-		return newExternal;
-	}
 	addExternal(externalContact: ContactModel.IExternalContact) {
-		const postBody = {
+		this.apiService.addExternal({
 			nonPeer: externalContact
-		}
-		this.apiService.addExternal(postBody).subscribe((res: SailsResponse) => {
+		}).subscribe((res) => {
 			const body = res.getBody();
-			console.log('return body: ', body)
-			this._externals.next([...this.externals, this.createExternal(body)]);
+			this._externals.next([...this.externals, new ExternalContact(body.id, body.email, body.need2FA, body.s3)]);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	deleteExternal(externalContact: ExternalContact) {
-		const postBody = {
+		this.apiService.deleteExternal({
 			removePeer: externalContact
-		}
-		this.apiService.deleteExternal(postBody).subscribe(() => {
+		}).subscribe(() => {
 			this.removeExternal(externalContact.id);
 		}, (err) => {
-			console.log('err', err);
-			// this.errorService.logError(err)
+			this.errorService.logError(err)
 		});
 	}
 	resetExternalPassword(externalContact: ExternalContact) {
 		this.apiService.resetExternalPassword(externalContact).subscribe({
 			error: (err) => {
-				console.log('err', err);
-				// this.errorService.logError(err)
+				this.errorService.logError(err)
 			}
 		});
 	}
 	updateExternal(externalContact: ExternalContact) {
-		console.log('externalContact.s3: ', externalContact.s3)
-		externalContact.s3 = !externalContact.s3;
-		console.log('after externalContact.s3: ', externalContact.s3)
-				
-		const postBody = {
+		this.apiService.updateExternal({
 			peer: externalContact
-		};
-		this.apiService.updateExternal(postBody).subscribe(() => {
-			this._externals.next(this.externals.map(elm => {
-				if (elm === externalContact) {
-					elm.s3 = externalContact.s3;
-				}
-				return elm;
-			}));
-		}, (err) => {
-			this._externals.next(this.externals);
-			console.log('err', err);
-			// this.errorService.logError(err)
+		}).subscribe({
+			error: (err) => {
+				this.errorService.logError(err)
+			}
 		});
+	}
+	searchContact(property: Observable<string>): Observable<Contact[]> {
+		return property.pipe(
+			distinctUntilChanged(),
+			switchMap(property => {
+				if (property) {
+					const regEx = new RegExp(property.toLowerCase());
+					const results = this.contacts.filter(contact => regEx.test(contact.email) || regEx.test(contact.username.toLowerCase()));
+					return of(results);
+				} else {
+					return of([]);
+				}
+			})
+		);
 	}
 }

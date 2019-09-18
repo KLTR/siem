@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs/internal/Subject';
 
 import { ContactsService } from '@app/services/contacts/contacts.service';
-import { ApiService } from '@app/services/api/api.service';
+import { SearchService } from '@app/services/search/search.service';
 import { Contact } from '@app/classes/contact/contact';
 import { ExternalContact } from '@app/classes/external-contact/external-contact';
 
@@ -15,45 +16,45 @@ export class ContactsComponent implements OnInit, OnDestroy {
 	pendings: ContactModel.IContact[];
 	externals: ExternalContact[];
 	requests: ContactModel.IContactRequest[];
+	searchResults: Object[];
+	searchContactResults: Contact[];
+	searchPeer$ = new Subject<string>();
+	searchContact$ = new Subject<string>();
 
-	constructor(private contactService: ContactsService, private apiService: ApiService) {
-		contactService.contacts$.subscribe(contacts => {
-			console.log('in contact component: contact subject: ', contacts);
-            this.contacts = contacts;
+	constructor(private contactService: ContactsService, private searchService: SearchService) {
+
+	}
+	ngOnInit() {
+		this.contactService.contacts$.subscribe(contacts => {
+			this.contacts = contacts;
 		});
-		contactService.pendings$.subscribe(pendings => {
-			 console.log('in contact component: pendingsSubject: ', pendings);
-            this.pendings = pendings;
+		this.contactService.pendings$.subscribe(pendings => {
+			this.pendings = pendings;
 		});
-		contactService.externals$.subscribe(externals => {
-			console.log('in contact component: externalsSubject: ', externals);
+		this.contactService.externals$.subscribe(externals => {
 			this.externals = externals;
 		});
-		contactService.requests$.subscribe(requests => {
+		this.contactService.requests$.subscribe(requests => {
 			this.requests = requests;
-			console.log('in contact component: requestsSubject: ', requests);
+		});
+		/*search method expect subject and the type of search you want
+		* search users in DB that match the property value by email/username\sessionKey.*/
+		this.searchService.search(this.searchPeer$, 'peer').subscribe(results => {
+			this.searchResults = results;
+		});
+		/*search local in local contacts */
+		this.contactService.searchContact(this.searchContact$).subscribe(results => {
+			this.searchContactResults = results;
 		});
 	}
-	ngOnInit() {}
-	ngOnDestroy() {}
-	/*search users in DB that match the property value by email/username\sessionKey.
-	*! I just set the base here, need to complete.*/
-	searchPeer(property: string) {
-		if (property) {
-			this.apiService.searchPeer({ property }).subscribe(res => {
-				const searchData = res.getBody();
-				console.log(searchData)
-			}, (err) => {
-				console.log('err', err)
-				// this.errorService.logError(err)
-			});
-		}
-	}
+	ngOnDestroy() { }
+
 	add() {
+		//sandbox user for testing
 		this.contactService.saveContact({
-			email: "user-b@copa.io",
-			id: "5d6ceb40845f8028dc9dc9cf",
-			username: "user-b",
+			email: "eran@copa.io",
+			id: "5d24debf149759c878f855a2",
+			username: "eranCopa",
 		});
 	}
 	addExternal() {
@@ -70,25 +71,40 @@ export class ContactsComponent implements OnInit, OnDestroy {
 			username: this.requests[0].from.username,
 		}, this.requests[0].id);
 	}
-    deny() {
+	deny() {
 		this.contactService.denyRequest(this.requests[0]);
 	}
-    delete() {
+	delete() {
 		this.contactService.deleteContact(this.contacts[0]);
 	}
 	deleteExternal() {
 		this.contactService.deleteExternal(this.externals[0]);
 	}
-    deletePending() {
+	deletePending() {
 		this.contactService.deletePending(this.pendings[0]);
 	}
-    deleteRequest() {
+	deleteRequest() {
 		this.contactService.deleteRequest(this.requests[0]);
 	}
 	resetExternalPassword() {
 		this.contactService.resetExternalPassword(this.externals[0]);
 	}
-	updateExternal() {
+	changeExternalTransferMethod() {
+		this.externals[0].s3 = !this.externals[0].s3;
+		this.contactService.updateExternal(this.externals[0]);
+	}
+	editExternal() {
+		this.externals[0].need2FA = !this.externals[0].need2FA;
+		if (this.externals[0].need2FA) {
+			this.externals[0].phone = '524637956';
+			this.externals[0].countryCode = {
+				id: 'Isreal',
+				code: '+972'
+			};
+		} else {
+			this.externals[0].phone = '';
+			this.externals[0].countryCode = null;
+		}
 		this.contactService.updateExternal(this.externals[0]);
 	}
 }

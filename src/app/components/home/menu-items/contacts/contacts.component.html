@@ -2,18 +2,33 @@
   contacts works!
 </p>
 <div class="" fxLayout="column">
-<mat-form-field class="search-field">
-  <input matInput placeholder="Search user" #searchInput (input)="searchPeer(searchInput.value)">
-</mat-form-field>
-    <button mat-raised-button color="primary" (click)="add()">add Contact</button>
-    <button mat-raised-button color="primary" (click)="confirm()">confirm request</button>
-    <button mat-raised-button color="primary" (click)="deny()">deny request</button>
-    <button mat-raised-button color="primary" (click)="delete()">delete contact</button>
-    <button mat-raised-button color="primary" (click)="deletePending()">delete pending</button>
-    <button mat-raised-button color="primary" (click)="deleteRequest()">remove request</button>
-    <button mat-raised-button color="primary" (click)="addExternal()">add External</button>
-    <button mat-raised-button color="primary" (click)="deleteExternal()">delete external</button>
-    <button mat-raised-button color="primary" (click)="resetExternalPassword()">reset external password</button>
-    <button mat-raised-button color="primary" (click)="updateExternal()">updateExternal</button>
-
+  <mat-form-field class="search-field">
+    <input matInput placeholder="Search user" #searchInput (input)="searchPeer$.next(searchInput.value)">
+  </mat-form-field>
+  <ul *ngIf="searchResults">
+    <li *ngFor="let result of searchResults">
+      <a href="{{ result.latest }}" target="_blank">
+        {{ result.email }}
+      </a>
+    </li>
+  </ul>
+  <button mat-raised-button color="primary" (click)="add()">add Contact</button>
+  <button mat-raised-button color="primary" (click)="confirm()">confirm request</button>
+  <button mat-raised-button color="primary" (click)="deny()">deny request</button>
+  <button mat-raised-button color="primary" (click)="delete()">delete contact</button>
+  <button mat-raised-button color="primary" (click)="deletePending()">delete pending</button>
+  <button mat-raised-button color="primary" (click)="deleteRequest()">remove request</button>
+  <button mat-raised-button color="primary" (click)="addExternal()">add External</button>
+  <button mat-raised-button color="primary" (click)="deleteExternal()">delete external</button>
+  <button mat-raised-button color="primary" (click)="resetExternalPassword()">reset external password</button>
+  <button mat-raised-button color="primary" (click)="changeExternalTransferMethod()">change external transfer method</button>
+  <button mat-raised-button color="primary" (click)="editExternal()">edit external</button>
+  <mat-form-field class="search-field">
+    <input matInput placeholder="Search user" #searchInput (input)="searchContact$.next(searchInput.value)">
+  </mat-form-field>
+  <ul *ngIf="searchContactResults">
+    <li *ngFor="let result of searchContactResults">
+      {{ result.email }}
+    </li>
+  </ul>
 </div>
