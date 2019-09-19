@@ -1,132 +1,134 @@
 import {
-  ConfirmDialogComponent
+	ConfirmDialogComponent
 } from '@app/dialogs/confirm.dialog/confirm.dialog.component';
 // Modules
 import {
-  BrowserModule
+	BrowserModule
 } from '@angular/platform-browser';
 import {
-  NgModule
+	NgModule
 } from '@angular/core';
 import {
-  HttpClientModule,
-  HttpClient
+	HttpClientModule,
+	HttpClient
 } from '@angular/common/http';
 import {
-  AppComponent
+	AppComponent
 } from './app.component';
 import {
-  FormsModule,
-  ReactiveFormsModule
+	FormsModule,
+	ReactiveFormsModule
 } from '@angular/forms';
 import {
-  BrowserAnimationsModule
+	BrowserAnimationsModule
 } from '@angular/platform-browser/animations';
 import {
-  FlexLayoutModule
+	FlexLayoutModule
 } from '@angular/flex-layout';
 import {
-  AppRoutingModule,
-  MaterialModule
+	AppRoutingModule,
+	MaterialModule
 } from '@modules';
 import {
-  SailsModule,
-  SailsOptions,
-  SailsEnvironment
+	SailsModule,
+	SailsOptions,
+	SailsEnvironment
 } from 'ngx-sails-socketio';
 import {
-  TranslateModule,
-  TranslateLoader
+	TranslateModule,
+	TranslateLoader
 } from '@ngx-translate/core';
 import {
-  TranslateHttpLoader
+	TranslateHttpLoader
 } from '@ngx-translate/http-loader';
 import {
-  environment
+	environment
 } from './../environments/environment';
 import {
-  CryappterModule
+	CryappterModule
 } from 'cryappter';
 
+import { NgPipesModule } from 'ngx-pipes';
+
 import {
-  NgxFileDropModule
+	NgxFileDropModule
 } from 'ngx-file-drop';
 // Sails Options
 const sailsOptions: SailsOptions = {
-  url: environment.webSocketUrl,
-  prefix: '',
-  environment: SailsEnvironment['PROD'],
-  // environment: SailsEnvironment[environment.production ? 'PROD' : 'DEV'],
-  query: '__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=windows&__sails_io_sdk_language=javascript',
-  reconnection: true,
-  autoConnect: false,
-  rejectUnauthorized: false,
-  // headers: {
-  //     // tslint:disable-next-line:max-line-length
-  //     Authorization: localStorage.getItem("token")
-  // },
-  // timeout: 3000,
+	url: environment.webSocketUrl,
+	prefix: '',
+	environment: SailsEnvironment['PROD'],
+	// environment: SailsEnvironment[environment.production ? 'PROD' : 'DEV'],
+	query: '__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=windows&__sails_io_sdk_language=javascript',
+	reconnection: true,
+	autoConnect: false,
+	rejectUnauthorized: false,
+	// headers: {
+	//     // tslint:disable-next-line:max-line-length
+	//     Authorization: localStorage.getItem("token")
+	// },
+	// timeout: 3000,
 };
 // Directives
 import {
-  DndDirective,
-  DisableControlDirective
+	DndDirective,
+	DisableControlDirective
 } from '@directives';
 
 // Services
 import {
-  ApiService,
-  SocketService,
-  ErrorService,
-  FileService,
-  INTERCEPTORS
+	ApiService,
+	SocketService,
+	ErrorService,
+	FileService,
+	INTERCEPTORS
 } from '@services';
 
 // Components
 import {
-  WelcomeComponent,
-  ForgotPasswordComponent,
-  ChangePasswordComponent,
-  LoginComponent,
-  RegisterComponent,
-  HomeComponent,
-  DragAndDropComponent,
-  TransfersComponent,
-  UserSettingsComponent
+	WelcomeComponent,
+	ForgotPasswordComponent,
+	ChangePasswordComponent,
+	LoginComponent,
+	RegisterComponent,
+	HomeComponent,
+	DragAndDropComponent,
+	TransfersComponent,
+	UserSettingsComponent
 } from '@components';
 import {
-  PrivacyPolicyDialog,
-  TermsOfUseDialog
+	PrivacyPolicyDialog,
+	TermsOfUseDialog
 } from './components/register/register.component';
 import {
-  ResetPasswordComponent
+	ResetPasswordComponent
 } from './components/home/menu-items/user-settings/reset-password/reset-password.component';
 import {
-  AuthGuard
+	AuthGuard
 } from '@guards';
 import {
-  HistoryComponent
+	HistoryComponent
 } from './components/home/menu-items/history/history.component';
 import {
-  SendPageComponent
+	SendPageComponent
 } from './components/home/send-page/send-page.component';
 import {
-  FileSizePipe
+	FileSizePipe
 } from './pipes/file-size.pipe';
 import {
-  ContactsDialogComponent
-} from './components/home/send-page/contacts-dialog/contacts-dialog/contacts-dialog.component';
+	ContactsDialogComponent
+} from './components/home/send-page/contacts-dialog/contacts-dialog.component';
 import {
-  NonCopaUsersDialogComponent
+	NonCopaUsersDialogComponent
 } from './components/home/send-page/non-copa-users-dialog/non-copa-users-dialog.component';
 import {
-  MultiFactorAuthenticationDialogComponent
+	MultiFactorAuthenticationDialogComponent
 } from './components/home/send-page/multi-factor-authentication-dialog/multi-factor-authentication-dialog.component';
 import {
-  CreateLinkDialogComponent
+	CreateLinkDialogComponent
 } from './components/home/send-page/create-link-dialog/create-link-dialog.component';
 import {
-  TransferMethodDialogComponent
+	TransferMethodDialogComponent
 } from './components/home/send-page/transfer-method-dialog/transfer-method-dialog.component';
 import { FailedDialogComponent } from './components/home/send-page/failed-dialog/failed-dialog.component';
 
@@ -134,75 +136,76 @@ import { ContactsComponent } from './components/home/menu-items/contacts/contact
 
 // Translate loader with AOT
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DndDirective,
-    DisableControlDirective,
-    WelcomeComponent,
-    LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    ChangePasswordComponent,
-    PrivacyPolicyDialog,
-    TermsOfUseDialog,
-    HomeComponent,
-    DragAndDropComponent,
-    TransfersComponent,
-    UserSettingsComponent,
-    ResetPasswordComponent,
-    HistoryComponent,
-    ConfirmDialogComponent,
-    SendPageComponent,
-    FileSizePipe,
-    ContactsDialogComponent,
-    NonCopaUsersDialogComponent,
-    MultiFactorAuthenticationDialogComponent,
-    CreateLinkDialogComponent,
-    TransferMethodDialogComponent,
-    FailedDialogComponent,
-    ContactsComponent,
-  ],
-  entryComponents: [
-    PrivacyPolicyDialog,
-    TermsOfUseDialog,
-    TransfersComponent,
-    UserSettingsComponent,
-    ResetPasswordComponent,
-    HistoryComponent,
-    ConfirmDialogComponent,
-    ContactsDialogComponent,
-    NonCopaUsersDialogComponent,
-    MultiFactorAuthenticationDialogComponent,
-    CreateLinkDialogComponent,
-    TransferMethodDialogComponent,
-    FailedDialogComponent,
-    ContactsComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    FlexLayoutModule,
-    NgxFileDropModule,
-    SailsModule.forRoot(sailsOptions, INTERCEPTORS),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient]
-      }
-    }),
-    CryappterModule
-  ],
-  providers: [ApiService, FileService, SocketService, AuthGuard, ErrorService],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		DndDirective,
+		DisableControlDirective,
+		WelcomeComponent,
+		LoginComponent,
+		RegisterComponent,
+		ForgotPasswordComponent,
+		ChangePasswordComponent,
+		PrivacyPolicyDialog,
+		TermsOfUseDialog,
+		HomeComponent,
+		DragAndDropComponent,
+		TransfersComponent,
+		UserSettingsComponent,
+		ResetPasswordComponent,
+		HistoryComponent,
+		ConfirmDialogComponent,
+		SendPageComponent,
+		FileSizePipe,
+		ContactsDialogComponent,
+		NonCopaUsersDialogComponent,
+		MultiFactorAuthenticationDialogComponent,
+		CreateLinkDialogComponent,
+		TransferMethodDialogComponent,
+		FailedDialogComponent,
+		ContactsComponent,
+	],
+	entryComponents: [
+		PrivacyPolicyDialog,
+		TermsOfUseDialog,
+		TransfersComponent,
+		UserSettingsComponent,
+		ResetPasswordComponent,
+		HistoryComponent,
+		ConfirmDialogComponent,
+		ContactsDialogComponent,
+		NonCopaUsersDialogComponent,
+		MultiFactorAuthenticationDialogComponent,
+		CreateLinkDialogComponent,
+		TransferMethodDialogComponent,
+		FailedDialogComponent,
+		ContactsComponent
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		FormsModule,
+		ReactiveFormsModule,
+		BrowserAnimationsModule,
+		MaterialModule,
+		FlexLayoutModule,
+		NgxFileDropModule,
+		SailsModule.forRoot(sailsOptions, INTERCEPTORS),
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: createTranslateLoader,
+				deps: [HttpClient]
+			}
+		}),
+		CryappterModule,
+		NgPipesModule
+	],
+	providers: [ApiService, FileService, SocketService, AuthGuard, ErrorService],
+	bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

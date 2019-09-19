@@ -38,7 +38,7 @@ import {
 } from '@angular/forms';
 import {
   ContactsDialogComponent
-} from './contacts-dialog/contacts-dialog/contacts-dialog.component';
+} from './contacts-dialog/contacts-dialog.component';
 import * as _ from 'lodash';
 import {
   ConfirmDialogComponent
@@ -53,6 +53,8 @@ import * as uuid from 'uuid';
 import { FailedDialogComponent } from './failed-dialog/failed-dialog.component';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ContactsService } from '@app/services/contacts/contacts.service';
+
 
 @Component({
   selector: 'app-send-page',
@@ -88,18 +90,20 @@ export class SendPageComponent implements OnInit {
   blockedFiles = [];
    _element: ElementRef;
   IL_PREFIX = '+972';
-  constructor(
-    private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private apiService: ApiService,
-    private errorService: ErrorService,
-    private router: Router,
-    public fileService: FileService) {
-    this.apiService.user.subscribe(user => {
-      this.user = user;
-      this.contactBy = this.user.contactByEmail ? 'email' : (this.user.contactByKey ? 'key' : 'username');
-    });
-  }
+	constructor(
+		private formBuilder: FormBuilder,
+		private dialog: MatDialog,
+		private apiService: ApiService,
+		private errorService: ErrorService,
+		private router: Router,
+		public fileService: FileService,
+		private contactsService: ContactsService
+	) {
+		this.apiService.user.subscribe(user => {
+			this.user = user;
+			this.contactBy = this.user.contactByEmail ? 'email' : (this.user.contactByKey ? 'key' : 'username');
+		});
+	}
 
   ngOnInit() {
     this.createForm()
@@ -169,6 +173,7 @@ export class SendPageComponent implements OnInit {
 
 
     this.dialog.open(ContactsDialogComponent, settingsConfig).afterClosed().subscribe(selectedContacts => {
+		console.log('selectedContacts',selectedContacts)
       this.selectedContacts = _.union(this.selectedContacts, selectedContacts);
       // this.selectedContacts = _.unionBy(this.selectedContacts, selectedContacts, 'id');
     });
@@ -299,7 +304,7 @@ export class SendPageComponent implements OnInit {
                 });
               }
             })
-          } 
+          }
           // No need to open TransferMaehodDialog
           else {
             // this.sendP2P([...contacts, this.selectedFiles]);
